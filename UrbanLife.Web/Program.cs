@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using UrbanLife.Web.Data;
+using UrbanLife.Data.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

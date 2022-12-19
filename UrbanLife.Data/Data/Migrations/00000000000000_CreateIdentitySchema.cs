@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace UrbanLife.Web.Data.Migrations
+namespace UrbanLife.Data.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {
