@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UrbanLife.Data.Data;
 
@@ -11,9 +12,10 @@ using UrbanLife.Data.Data;
 namespace UrbanLife.Data.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221219214547_FirstDatabaseModel")]
+    partial class FirstDatabaseModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -86,10 +88,6 @@ namespace UrbanLife.Data.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -141,8 +139,6 @@ namespace UrbanLife.Data.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -303,13 +299,9 @@ namespace UrbanLife.Data.Data.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PaymentNumber");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Purchases");
                 });
@@ -402,7 +394,7 @@ namespace UrbanLife.Data.Data.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -454,23 +446,6 @@ namespace UrbanLife.Data.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.Purchase", b =>
-                {
-                    b.HasOne("UrbanLife.Data.Data.Models.Payment", "Payment")
-                        .WithMany("Purchases")
-                        .HasForeignKey("PaymentNumber");
-
-                    b.HasOne("UrbanLife.Data.Data.Models.User", "User")
-                        .WithMany("Purchases")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Payment");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("UrbanLife.Data.Data.Models.PurchaseLine", b =>
@@ -530,6 +505,15 @@ namespace UrbanLife.Data.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("UrbanLife.Data.Data.Models.User", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithOne()
+                        .HasForeignKey("UrbanLife.Data.Data.Models.User", "Id")
+                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("UrbanLife.Data.Data.Models.Line", b =>
                 {
                     b.Navigation("TimeTables");
@@ -537,8 +521,6 @@ namespace UrbanLife.Data.Data.Migrations
 
             modelBuilder.Entity("UrbanLife.Data.Data.Models.Payment", b =>
                 {
-                    b.Navigation("Purchases");
-
                     b.Navigation("UserPayments");
                 });
 
@@ -554,8 +536,6 @@ namespace UrbanLife.Data.Data.Migrations
 
             modelBuilder.Entity("UrbanLife.Data.Data.Models.User", b =>
                 {
-                    b.Navigation("Purchases");
-
                     b.Navigation("UserPayments");
                 });
 #pragma warning restore 612, 618

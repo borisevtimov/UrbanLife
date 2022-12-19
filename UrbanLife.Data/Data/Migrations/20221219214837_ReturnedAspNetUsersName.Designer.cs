@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UrbanLife.Data.Data;
 
@@ -11,9 +12,10 @@ using UrbanLife.Data.Data;
 namespace UrbanLife.Data.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221219214837_ReturnedAspNetUsersName")]
+    partial class ReturnedAspNetUsersName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -303,13 +305,9 @@ namespace UrbanLife.Data.Data.Migrations
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("PaymentNumber");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Purchases");
                 });
@@ -456,23 +454,6 @@ namespace UrbanLife.Data.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.Purchase", b =>
-                {
-                    b.HasOne("UrbanLife.Data.Data.Models.Payment", "Payment")
-                        .WithMany("Purchases")
-                        .HasForeignKey("PaymentNumber");
-
-                    b.HasOne("UrbanLife.Data.Data.Models.User", "User")
-                        .WithMany("Purchases")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Payment");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("UrbanLife.Data.Data.Models.PurchaseLine", b =>
                 {
                     b.HasOne("UrbanLife.Data.Data.Models.Line", "Line")
@@ -537,8 +518,6 @@ namespace UrbanLife.Data.Data.Migrations
 
             modelBuilder.Entity("UrbanLife.Data.Data.Models.Payment", b =>
                 {
-                    b.Navigation("Purchases");
-
                     b.Navigation("UserPayments");
                 });
 
@@ -554,8 +533,6 @@ namespace UrbanLife.Data.Data.Migrations
 
             modelBuilder.Entity("UrbanLife.Data.Data.Models.User", b =>
                 {
-                    b.Navigation("Purchases");
-
                     b.Navigation("UserPayments");
                 });
 #pragma warning restore 612, 618

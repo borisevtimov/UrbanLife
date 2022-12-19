@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UrbanLife.Data.Data;
 
@@ -11,9 +12,10 @@ using UrbanLife.Data.Data;
 namespace UrbanLife.Data.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221219175849_ExtendedIdentityUser")]
+    partial class ExtendedIdentityUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -230,164 +232,6 @@ namespace UrbanLife.Data.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.Line", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Number")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Lines");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.Payment", b =>
-                {
-                    b.Property<string>("Number")
-                        .HasColumnType("char(19)");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("CVC")
-                        .IsRequired()
-                        .HasColumnType("char(3)");
-
-                    b.Property<DateTime>("ExpireDate")
-                        .HasColumnType("date");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(20)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(30)");
-
-                    b.HasKey("Number");
-
-                    b.ToTable("Payments");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.Purchase", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal?>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("End")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsCard")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PaymentNumber")
-                        .HasColumnType("char(19)");
-
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PaymentNumber");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Purchases");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.PurchaseLine", b =>
-                {
-                    b.Property<string>("PurchaseId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("LineId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("PurchaseId");
-
-                    b.HasIndex("LineId");
-
-                    b.ToTable("PurchaseLines");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.Stop", b =>
-                {
-                    b.Property<string>("Code")
-                        .HasColumnType("char(4)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Code");
-
-                    b.ToTable("Stops");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.TimeTable", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<TimeSpan>("Arrival")
-                        .HasColumnType("time");
-
-                    b.Property<bool>("IsWeekday")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("LineId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("StopCode")
-                        .IsRequired()
-                        .HasColumnType("char(4)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LineId");
-
-                    b.HasIndex("StopCode");
-
-                    b.ToTable("TimeTables");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.UserPayment", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("PaymentNumber")
-                        .HasColumnType("char(19)");
-
-                    b.HasKey("UserId", "PaymentNumber");
-
-                    b.HasIndex("PaymentNumber");
-
-                    b.ToTable("UserPayments");
-                });
-
             modelBuilder.Entity("UrbanLife.Data.Data.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
@@ -399,8 +243,8 @@ namespace UrbanLife.Data.Data.Migrations
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasDiscriminator().HasValue("User");
                 });
@@ -454,109 +298,6 @@ namespace UrbanLife.Data.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.Purchase", b =>
-                {
-                    b.HasOne("UrbanLife.Data.Data.Models.Payment", "Payment")
-                        .WithMany("Purchases")
-                        .HasForeignKey("PaymentNumber");
-
-                    b.HasOne("UrbanLife.Data.Data.Models.User", "User")
-                        .WithMany("Purchases")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Payment");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.PurchaseLine", b =>
-                {
-                    b.HasOne("UrbanLife.Data.Data.Models.Line", "Line")
-                        .WithMany()
-                        .HasForeignKey("LineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UrbanLife.Data.Data.Models.Purchase", "Purchase")
-                        .WithMany("PurchaseLines")
-                        .HasForeignKey("PurchaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Line");
-
-                    b.Navigation("Purchase");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.TimeTable", b =>
-                {
-                    b.HasOne("UrbanLife.Data.Data.Models.Line", "Line")
-                        .WithMany("TimeTables")
-                        .HasForeignKey("LineId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UrbanLife.Data.Data.Models.Stop", "Stop")
-                        .WithMany("TimeTables")
-                        .HasForeignKey("StopCode")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Line");
-
-                    b.Navigation("Stop");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.UserPayment", b =>
-                {
-                    b.HasOne("UrbanLife.Data.Data.Models.Payment", "Payment")
-                        .WithMany("UserPayments")
-                        .HasForeignKey("PaymentNumber")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("UrbanLife.Data.Data.Models.User", "User")
-                        .WithMany("UserPayments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Payment");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.Line", b =>
-                {
-                    b.Navigation("TimeTables");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.Payment", b =>
-                {
-                    b.Navigation("Purchases");
-
-                    b.Navigation("UserPayments");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.Purchase", b =>
-                {
-                    b.Navigation("PurchaseLines");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.Stop", b =>
-                {
-                    b.Navigation("TimeTables");
-                });
-
-            modelBuilder.Entity("UrbanLife.Data.Data.Models.User", b =>
-                {
-                    b.Navigation("Purchases");
-
-                    b.Navigation("UserPayments");
                 });
 #pragma warning restore 612, 618
         }
