@@ -15,11 +15,7 @@ namespace UrbanLife.Web.Controllers
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
+            _logger.LogInformation("Started index page");
             return View();
         }
 

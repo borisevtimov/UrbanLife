@@ -22,6 +22,7 @@
   <ItemGroup>
     <Folder Include="Areas\" />
     <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\images\profile-pictures\custom-pictures\" />
   </ItemGroup>
 
 </Project>

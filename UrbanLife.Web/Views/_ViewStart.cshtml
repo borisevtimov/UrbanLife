@@ -1,3 +1,22 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Identity;
+@using UrbanLife.Data.Data.Models;
+@inject UserManager<User> userManager;
+
+@{
     Layout = "_Layout";
+
+    if (User.Identity.IsAuthenticated)
+    {
+        UrbanLife.Data.Data.Models.User user = await userManager.GetUserAsync(User);
+        ViewBag.User = user;
+
+        if (!user.ProfileImageName.Equals("guest.png"))
+        {
+            ViewBag.ProfilePictureName = user.ProfileImageName;
+        }
+        else
+        {
+            ViewBag.ProfilePictureName = "guest.png";
+        }
+    }
 }

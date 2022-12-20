@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 #nullable disable warnings
 
@@ -13,6 +14,10 @@ namespace UrbanLife.Data.Data.Models
         [Required]
         [MaxLength(30)]
         public string LastName { get; set; }
+
+        [Unicode(false)]
+        [MaxLength(50)]
+        public string ProfileImageName { get; set; }
 
         public ICollection<UserPayment> UserPayments { get; set; }
 
