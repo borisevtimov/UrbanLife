@@ -1,6 +1,9 @@
 ﻿@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css');
 
 .main-nav {
+    position: fixed;
+    top: 0px;
+    width: 100%;
     height: 8vh;
     background-color: var(--clr-main-green);
     padding: 0px 30px;
@@ -8,9 +11,6 @@
     justify-content: space-between;
     align-items: center;
 }
-
-    .main-nav > span {
-    }
 
     .main-nav > ul {
         display: flex;
@@ -43,27 +43,88 @@
     height: 100%;
 }
 
-    .nav-list-item > a {
-        text-align: center;
+.nav-anchor {
+    text-decoration: none;
+    color: black;
+}
+
+.nav-list-item > a {
+    text-align: center;
+    height: 8vh;
+    width: 120px;
+    line-height: 8vh;
+    padding: 0px 10px;
+}
+
+.nav-list-item:nth-last-child(2) {
+    margin-right: 20px;
+}
+
+.nav-anchor:hover {
+    background-color: white;
+    transition: 0.3s;
+}
+
+/*user profile*/
+
+#profile-menu {
+    position: fixed;
+    display: flex;
+    background-color: var(--clr-main-gray);
+    top: 8vh;
+    right: 1vw;
+    width: 250px;
+}
+
+.profile-menu-list {
+    margin: 0px;
+    list-style-type: none;
+    padding-inline-start: 0px;
+    box-shadow: -1px 13px 31px -3px rgba(0,0,0,0.4);
+    -webkit-box-shadow: -1px 13px 31px -3px rgba(0,0,0,0.4);
+    -moz-box-shadow: -1px 13px 31px -3px rgba(0,0,0,0.4);
+}
+
+.profile-menu-list-item {
+    height: 8vh;
+    display: flex;
+    font-size: 20px;
+    border: 1px solid black;
+}
+
+    .profile-menu-list-item > span {
+        width: 100%;
         height: 8vh;
-        width: 120px;
         line-height: 8vh;
-        text-decoration: none;
-        color: black;
-        padding: 0px 10px;
+        text-align: center;
     }
 
-    .nav-list-item:nth-last-child(2) {
-        margin-right: 20px;
+    .profile-menu-list-item > .nav-anchor {
+        width: 100%;
+        height: 8vh;
+        line-height: 8vh;
+        text-align: center;
     }
 
-    .nav-list-item > a:hover {
-        background-color: white;
-        transition: 0.3s;
-    }
+#log-out-btn:hover {
+    background-color: var(--clr-log-out-red);
+}
+
+#log-in-btn:hover {
+    background-color: var(--clr-main-green);
+}
+
+/*end of user profile*/
+
+main {
+    padding-top: 8vh;
+    padding-left: 30px;
+    padding-right: 30px;
+}
 
 #footer-info {
     background-color: var(--clr-main-green);
+    padding: 0px 30px;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 80px;
@@ -82,5 +143,5 @@
     background-color: var(--clr-darker-green);
     display: flex;
     justify-content: space-between;
-    padding: 0px 10px;
+    padding: 0px 30px;
 }

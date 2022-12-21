@@ -26,4 +26,6 @@ body {
 :root {
     --clr-main-green: #63d79f;
     --clr-darker-green: #529272;
+    --clr-main-gray: #d3d3d3;
+    --clr-log-out-red: #f17786;
 }
