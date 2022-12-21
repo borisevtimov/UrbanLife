@@ -4,11 +4,13 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="./bus-logo.ico">
+    <link rel="stylesheet" href="./css/setup.css" />
+    <link rel="stylesheet" href="./css/layout.css" />
     <title>UrbanLife - @ViewData["Title"]</title>
 </head>
 <body>
     <header>
-        <nav>
+        <nav class="main-nav">
             <span id="main-logo">UrbanLife</span>
             <ul>
                 @if (ViewBag.User != null)
@@ -31,7 +33,7 @@
                     </li>
                 }
                 <li class="nav-list-item">
-                    <div>
+                    <div class="image-container">
                         @if (ViewBag.User != null)
                         {
                             <img src="./images/profile-pictures/custom-pictures/@ViewBag.ProfilePictureName" alt="Profile" />
@@ -49,6 +51,43 @@
         @RenderBody()
     </main>
     <footer>
+        <section id="footer-info">
+            <div class="footer-info-card">
+                <h3>Contacts</h3>
+                <ul class="contacts-list">
+                    <li>
+                        <span>
+                            <i class="fa-solid fa-phone-volume"></i>  +359 0000 00000
+                        </span>
+                    </li>
+                    <li>
+                        <span><i class="fa-solid fa-map-pin"></i>   Bulgaria, Sofia</span>
+                    </li>
+                    <li>
+                        <span><i class="fa-solid fa-envelope"></i>   mocking.address@test.com</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="footer-info-card">
+                <h3>Our mission</h3>
+                <p>
+                    UrbanLife's mission is integration, digitalization and facilitation
+                    of the urban transport system.
+                </p>
+            </div>
+            <div class="footer-info-card">
+                <h3>Content disclaimer</h3>
+                <p>
+                    The content and data used by this web project for users, lines,
+                    stops, payment info, contacts, purchase info etc. are not real
+                    and are for educational and graduation purpouses only!
+                </p>
+            </div>
+        </section>
+        <section id="footer-copyright">
+            <p class="footer-copyright-item">&#169; 2023 UrbanLife AG Bulgaria, All rights reserved.</p>
+            <p class="footer-copyright-item">Author - Boris Evtimov, Bulgaria, Sofia</p>
+        </section>
     </footer>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

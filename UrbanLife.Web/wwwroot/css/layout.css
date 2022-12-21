@@ -1,0 +1,86 @@
+﻿@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css');
+
+.main-nav {
+    height: 8vh;
+    background-color: var(--clr-main-green);
+    padding: 0px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .main-nav > span {
+    }
+
+    .main-nav > ul {
+        display: flex;
+        margin: 0px;
+        height: 100%;
+        list-style-type: none;
+        padding-inline-start: 0px;
+        align-items: center;
+    }
+
+.image-container {
+    height: 7vh;
+    object-fit: contain;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+    .image-container > img {
+        height: 100%;
+    }
+
+        .image-container > img:hover {
+            height: 100%;
+            cursor: pointer;
+        }
+
+.nav-list-item {
+    display: flex;
+    font-size: 20px;
+    height: 100%;
+}
+
+    .nav-list-item > a {
+        text-align: center;
+        height: 8vh;
+        width: 120px;
+        line-height: 8vh;
+        text-decoration: none;
+        color: black;
+        padding: 0px 10px;
+    }
+
+    .nav-list-item:nth-last-child(2) {
+        margin-right: 20px;
+    }
+
+    .nav-list-item > a:hover {
+        background-color: white;
+        transition: 0.3s;
+    }
+
+#footer-info {
+    background-color: var(--clr-main-green);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 80px;
+}
+
+.footer-info-card {
+    text-align: center;
+}
+
+.contacts-list {
+    list-style-type: none;
+    padding-inline-start: 0px;
+}
+
+#footer-copyright {
+    background-color: var(--clr-darker-green);
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 10px;
+}
