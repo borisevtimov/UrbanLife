@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 #nullable disable warnings
 
@@ -6,17 +7,25 @@ namespace UrbanLife.Core.ViewModels
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "Email is required!")]
-        [EmailAddress(ErrorMessage = "Email is not in the correct format!")]
+        [Required(ErrorMessage = "Имейл адресът е задължителен!")]
+        [EmailAddress(ErrorMessage = "Имейл адресът е с неправилен формат!")]
+        [Remote("CheckIfUserExistsAsync", "User", ErrorMessage = "Имейл адресът вече е зает!")]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "First name is required!")]
-        [MaxLength(20, ErrorMessage = "First name must be less than 20 characters!")]
+        [Required(ErrorMessage = "Първото име е задължително!")]
+        [MaxLength(20, ErrorMessage = "Първото име трябва да е с по-малко от 20 символа!")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Last name is required!")]
-        [MaxLength(30, ErrorMessage = "Last name must be less than 30 characters!")]
+        [Required(ErrorMessage = "Фамилията е задължителна!")]
+        [MaxLength(30, ErrorMessage = "Фамилията трябва да е с по-малко от 30 символа!")]
         public string LastName { get; set; }
+
+        [Required(ErrorMessage = "Паролата е задължителна!")]
+        [MinLength(6, ErrorMessage = "Паролата трябва да е поне 6 символа!")]
+        public string Password { get; set; }
+
+        [Compare(nameof(Password), ErrorMessage = "Паролите не съвпадат!")]
+        public string ConfirmPassword { get; set; }
 
         public IFormFile? ProfilePicture { get; set; }
     }

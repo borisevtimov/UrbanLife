@@ -13,11 +13,16 @@
         </p>
         <div class="form-body">
             <label asp-for=@Model.Email>*Имейл адрес</label>
-            <input asp-for=@Model.Email class="main-form-input" type="email" placeholder="mock@@test.com" />
+            <input asp-for=@Model.Email class="main-form-input form-control" type="email" placeholder="mock@@test.com" />
+            <span asp-validation-for=@Model.Email></span>
             <label asp-for=@Model.FirstName>*Име</label>
             <input asp-for=@Model.FirstName class="main-form-input" type="text" placeholder="Иван" />
             <label asp-for=@Model.LastName>*Фамилия</label>
             <input asp-for=@Model.LastName class="main-form-input" type="text" placeholder="Димитров" />
+            <label asp-for=@Model.Password>*Парола</label>
+            <input asp-for=@Model.Password class="main-form-input" type="password" />
+            <label asp-for=@Model.ConfirmPassword>*Потвърди паролата</label>
+            <input asp-for=@Model.ConfirmPassword class="main-form-input" type="password" />
             <label asp-for=@Model.ProfilePicture>Профилна снимка</label>
             <input asp-for=@Model.ProfilePicture type="file" class="image-input" accept="image/*" />
         </div>
@@ -30,4 +35,11 @@
 
 @section Styles{
     <link rel="stylesheet" href="~/css/register.css" />
+}
+
+@section Scripts{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
 }

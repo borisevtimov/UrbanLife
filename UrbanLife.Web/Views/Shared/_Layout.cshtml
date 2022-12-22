@@ -16,7 +16,9 @@
             <ul>
                 @if (ViewBag.User != null)
                 {
-                    <li class="nav-list-item">Welcome back, @ViewBag.User.FirstName</li>
+                    <li class="nav-list-item">
+                        <span>Welcome back, @ViewBag.User.FirstName</span>
+                    </li>
                 }
                 <li class="nav-list-item">
                     <a class="nav-anchor" href="/">Home</a>
@@ -37,7 +39,7 @@
                     <div class="image-container">
                         @if (ViewBag.User != null)
                         {
-                            <img class="profile-picture" src="~/images/profile-pictures/custom-pictures/@ViewBag.ProfilePictureName" alt="Profile" />
+                            <img class="profile-picture" src="~/images/profile-pictures/@ViewBag.ProfilePictureName" alt="Profile" />
                         }
                         else
                         {
@@ -86,7 +88,7 @@
                         </a>
                     </li>
                     <li class="profile-menu-list-item">
-                        <a id="log-out-btn" class="nav-anchor profile-item" href="#">
+                        <a id="log-out-btn" class="nav-anchor profile-item" href="/user/logout">
                             <i class="fa-solid fa-right-from-bracket"></i>
                             &ensp;Log out
                         </a>

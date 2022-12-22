@@ -15,8 +15,6 @@ namespace UrbanLife.Data.Data.Models
         [MaxLength(30)]
         public string LastName { get; set; }
 
-        [Unicode(false)]
-        [MaxLength(50)]
         public string ProfileImageName { get; set; }
 
         public ICollection<UserPayment> UserPayments { get; set; }

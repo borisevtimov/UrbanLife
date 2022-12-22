@@ -43,6 +43,13 @@
     height: 100%;
 }
 
+    .nav-list-item > span {
+        text-align: center;
+        height: 8vh;
+        line-height: 8vh;
+        padding: 0px 10px;
+    }
+
 .nav-anchor {
     text-decoration: none;
     color: black;
@@ -51,7 +58,7 @@
 .nav-list-item > a {
     text-align: center;
     height: 8vh;
-    width: 120px;
+    width: 150px;
     line-height: 8vh;
     padding: 0px 10px;
 }
