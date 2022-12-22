@@ -1,0 +1,71 @@
+﻿main {
+    background-image: url("../images/login-register-background.jpg");
+    background-size: cover;
+    background-position-y: center;
+    height: 80vh;
+}
+
+#register {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+#register-form {
+    background-color: rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    padding: 20px;
+    color: white;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.form-header {
+    margin-top: 0px;
+}
+
+    .form-header > a {
+        color: white;
+    }
+
+        .form-header > a:hover {
+            color: var(--clr-main-green);
+        }
+
+.form-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.register-btn-container {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.register-btn {
+    padding: 10px 35px;
+    border-radius: 5px;
+    font-family: 'Roboto Flex', sans-serif;
+}
+
+    .register-btn:hover {
+        background-color: var(--clr-main-green);
+        cursor: pointer;
+    }
+
+.image-input {
+    font-family: 'Roboto Flex', sans-serif;
+}
+
+.main-form-input {
+    padding: 5px 0px;
+    border-radius: 5px;
+    font-family: 'Roboto Flex', sans-serif;
+}

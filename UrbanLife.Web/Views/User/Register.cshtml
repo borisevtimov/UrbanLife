@@ -1,0 +1,33 @@
+﻿@using UrbanLife.Core.ViewModels;
+@model RegisterViewModel
+@{
+    ViewData["Title"] = "Регистриране";
+}
+
+<section id="register">
+    <h1>Регистрирай се в UrbanLife!</h1>
+    <form id="register-form" action="/user/register" method="post" enctype="multipart/form-data">
+        <p class="form-header">
+            Вече имате профил?
+            <a href="/user/login">Вписване</a>
+        </p>
+        <div class="form-body">
+            <label asp-for=@Model.Email>*Имейл адрес</label>
+            <input asp-for=@Model.Email class="main-form-input" type="email" placeholder="mock@@test.com" />
+            <label asp-for=@Model.FirstName>*Име</label>
+            <input asp-for=@Model.FirstName class="main-form-input" type="text" placeholder="Иван" />
+            <label asp-for=@Model.LastName>*Фамилия</label>
+            <input asp-for=@Model.LastName class="main-form-input" type="text" placeholder="Димитров" />
+            <label asp-for=@Model.ProfilePicture>Профилна снимка</label>
+            <input asp-for=@Model.ProfilePicture type="file" class="image-input" accept="image/*" />
+        </div>
+        <div class="register-btn-container">
+            <input type="submit" class="register-btn" value="Регистриране" />
+        </div>
+        <strong>Полетата със * са задължителни!</strong>
+    </form>
+</section>
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/register.css" />
+}

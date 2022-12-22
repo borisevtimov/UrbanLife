@@ -3,9 +3,10 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" href="./bus-logo.ico">
-    <link rel="stylesheet" href="./css/setup.css" />
-    <link rel="stylesheet" href="./css/layout.css" />
+    <link rel="icon" href="~/bus-logo.ico">
+    <link rel="stylesheet" href="~/css/setup.css" />
+    <link rel="stylesheet" href="~/css/layout.css" />
+    @await RenderSectionAsync("Styles", required: false);
     <title>UrbanLife - @ViewData["Title"]</title>
 </head>
 <body>
@@ -36,11 +37,11 @@
                     <div class="image-container">
                         @if (ViewBag.User != null)
                         {
-                            <img class="profile-picture" src="./images/profile-pictures/custom-pictures/@ViewBag.ProfilePictureName" alt="Profile" />
+                            <img class="profile-picture" src="~/images/profile-pictures/custom-pictures/@ViewBag.ProfilePictureName" alt="Profile" />
                         }
                         else
                         {
-                            <img class="profile-picture" src="./images/profile-pictures/guest.png" alt="Profile" />
+                            <img class="profile-picture" src="~/images/profile-pictures/guest.png" alt="Profile" />
                         }
                     </div>
                 </li>
@@ -55,10 +56,10 @@
                         <span class="profile-item">Guest</span>
                     </li>
                     <li class="profile-menu-list-item">
-                        <a id="log-in-btn" class="nav-anchor profile-item" href="#">Log in</a>
+                        <a id="log-in-btn" class="nav-anchor profile-item" href="/user/login">Log in</a>
                     </li>
                     <li class="profile-menu-list-item">
-                        <a class="nav-anchor profile-item" href="#">Register</a>
+                        <a class="nav-anchor profile-item" href="/user/register">Register</a>
                     </li>
                 }
                 else
@@ -136,7 +137,7 @@
             <p class="footer-copyright-item">Author - Boris Evtimov, Bulgaria, Sofia</p>
         </section>
     </footer>
-    <script src="./js/profilePartialMenu.js"></script>
+    <script src="~/js/profilePartialMenu.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
