@@ -2,10 +2,10 @@
     background-image: url("../images/login-register-background.jpg");
     background-size: cover;
     background-position-y: center;
-    padding-bottom: 10vh;
+    padding-bottom: 100px;
 }
 
-#register {
+#login {
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -13,11 +13,11 @@
     align-items: center;
 }
 
-    #register > h1 {
+    #login > h1 {
         font-size: 46px;
     }
 
-#register-form {
+#login-form {
     background-color: rgba(0, 0, 0, 0.5);
     -webkit-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
     -moz-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
@@ -27,10 +27,6 @@
     border-radius: 12px;
     font-size: 24px;
 }
-
-    #register-form > strong {
-        text-align: center;
-    }
 
 .form-header {
     margin-top: 0px;
@@ -45,57 +41,35 @@
             color: var(--clr-main-green);
         }
 
-.form-single-element {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-}
-
 .form-row {
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     margin-top: 20px;
 }
 
     .form-row input {
         padding: 10px 0px;
+        border-radius: 5px;
+        font-family: 'Roboto Flex', sans-serif;
     }
 
-.form-row-element {
-    display: flex;
-    flex-direction: column;
-}
-
-.form-family-element {
-    width: 60%;
-}
-
-.register-btn-container {
+.login-btn-container {
     margin-top: 20px;
     margin-bottom: 10px;
     text-align: center;
 }
 
-.register-btn {
+.login-btn {
     padding: 10px 35px;
     border-radius: 5px;
     font-family: 'Roboto Flex', sans-serif;
 }
 
-    .register-btn:hover {
+    .login-btn:hover {
         background-color: var(--clr-main-green);
         cursor: pointer;
     }
-
-.image-input {
-    font-family: 'Roboto Flex', sans-serif;
-}
-
-.main-form-input {
-    padding: 10px 0px;
-    border-radius: 5px;
-    font-family: 'Roboto Flex', sans-serif;
-}
 
 .form-text-danger {
     color: var(--clr-log-out-red);

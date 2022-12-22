@@ -25,7 +25,7 @@ namespace UrbanLife.Core.ViewModels
         public string Password { get; set; }
 
         [Compare(nameof(Password), ErrorMessage = "Паролите не съвпадат!")]
-        public string ConfirmPassword { get; set; }
+        public string? ConfirmPassword { get; set; }
 
         public IFormFile? ProfilePicture { get; set; }
     }

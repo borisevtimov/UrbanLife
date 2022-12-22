@@ -1,4 +1,39 @@
-﻿@{
-    ViewData["Title"] = "Login";
+﻿@using UrbanLife.Core.ViewModels;
+@model LoginViewModel
+@{
+    ViewData["Title"] = "Вписване";
 }
 
+<section id="login">
+    <h1>Вписване в UrbanLife!</h1>
+    <form id="login-form" action="/user/login" method="post">
+        <p class="form-header">
+            Нямате профил?
+            <a href="/user/register">Регистриране</a>
+        </p>
+        <div class="form-row">
+            <label asp-for=@Model.Email>Имейл адрес</label>
+            <input asp-for=@Model.Email type="email" />
+        </div>
+        <div><span asp-validation-for=@Model.Email class="form-text-danger"></span></div>
+        <div class="form-row">
+            <label asp-for=@Model.Password>Парола</label>
+            <input asp-for=@Model.Password type="password" />
+        </div>
+        <div><span asp-validation-for=@Model.Password class="form-text-danger"></span></div>
+        <div class="login-btn-container">
+            <input type="submit" class="login-btn" value="Вписване" />
+        </div>
+    </form>
+</section>
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/login.css" />
+}
+
+@section Scripts{
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+}

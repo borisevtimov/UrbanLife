@@ -11,17 +11,14 @@ namespace UrbanLife.Web.Controllers
     public class UserController : Controller
     {
         private readonly UserService userService;
-        private readonly RoleManager<IdentityRole> roleManager;
         private readonly SignInManager<User> signInManager;
         private readonly IWebHostEnvironment webhostEnvironment;
 
         public UserController(UserService userService,
-            RoleManager<IdentityRole> roleManager,
             SignInManager<User> signInManager,
             IWebHostEnvironment webHostEnvironment)
         {
             this.userService = userService;
-            this.roleManager = roleManager;
             this.signInManager = signInManager;
             this.webhostEnvironment = webHostEnvironment;
         }
@@ -34,6 +31,22 @@ namespace UrbanLife.Web.Controllers
             }
 
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel model)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                return Redirect("/");
+            }
+
+            if (!ModelState.IsValid || !await userService.SignUserAsync(model))
+            {
+                return View();
+            }
+
+            return Redirect("/");
         }
 
         public IActionResult Register()
@@ -89,13 +102,13 @@ namespace UrbanLife.Web.Controllers
 
         private async Task<string> SaveImageAsync(IFormFile image)
         {
-            string uniqueFileName = null;
-
             if (image != null && image.FileName != "guest.png")
             {
-                uniqueFileName = Guid.NewGuid().ToString()
-                    .Replace('/', 'a').Replace('\\', 'b') + "==_" + image.FileName;
-
+                string uniqueFileName = Guid.NewGuid()
+                    .ToString()
+                    .Replace('/', 'a')
+                    .Replace('\\', 'b') + "==_" + image.FileName;
+                
                 string filePath = Path.Combine(webhostEnvironment.WebRootPath, "images");
                 filePath = Path.Combine(filePath, "profile-pictures");
                 filePath = Path.Combine(filePath, "custom-pictures");

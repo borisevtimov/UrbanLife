@@ -17,22 +17,22 @@
                 @if (ViewBag.User != null)
                 {
                     <li class="nav-list-item">
-                        <span>Welcome back, @ViewBag.User.FirstName</span>
+                        <span>Здравейте, @ViewBag.User.FirstName</span>
                     </li>
                 }
                 <li class="nav-list-item">
-                    <a class="nav-anchor" href="/">Home</a>
+                    <a class="nav-anchor" href="/">Начало</a>
                 </li>
                 <li class="nav-list-item">
-                    <a class="nav-anchor" href="#">Travel</a>
+                    <a class="nav-anchor" href="#">Пътувай</a>
                 </li>
                 <li class="nav-list-item">
-                    <a class="nav-anchor" href="#">Time table</a>
+                    <a class="nav-anchor" href="#">Разписание</a>
                 </li>
                 @if (ViewBag.User != null)
                 {
                     <li class="nav-list-item">
-                        <a class="nav-anchor" href="#">Subscriptions</a>
+                        <a class="nav-anchor" href="#">Абонаменти</a>
                     </li>
                 }
                 <li class="nav-list-item">
@@ -55,13 +55,13 @@
                 @if (!User.Identity.IsAuthenticated)
                 {
                     <li class="profile-menu-list-item">
-                        <span class="profile-item">Guest</span>
+                        <span class="profile-item">Гост</span>
                     </li>
                     <li class="profile-menu-list-item">
-                        <a id="log-in-btn" class="nav-anchor profile-item" href="/user/login">Log in</a>
+                        <a id="log-in-btn" class="nav-anchor profile-item" href="/user/login">Вписване</a>
                     </li>
                     <li class="profile-menu-list-item">
-                        <a class="nav-anchor profile-item" href="/user/register">Register</a>
+                        <a class="nav-anchor profile-item" href="/user/register">Регистрация</a>
                     </li>
                 }
                 else
@@ -72,25 +72,25 @@
                     <li class="profile-menu-list-item">
                         <a class="nav-anchor profile-item" href="#">
                             <i class="fa-solid fa-user"></i>
-                            &ensp;Account
+                            &ensp;Профил
                         </a>
                     </li>
                     <li class="profile-menu-list-item">
                         <a class="nav-anchor profile-item" href="#">
                             <i class="fa-solid fa-ticket"></i>
-                            &ensp;Purchases
+                            &ensp;Покупки
                         </a>
                     </li>
                     <li class="profile-menu-list-item">
                         <a class="nav-anchor profile-item" href="#">
                             <i class="fa-solid fa-credit-card"></i>
-                            &ensp;Payment methods
+                            &ensp;Банкови карти
                         </a>
                     </li>
                     <li class="profile-menu-list-item">
                         <a id="log-out-btn" class="nav-anchor profile-item" href="/user/logout">
                             <i class="fa-solid fa-right-from-bracket"></i>
-                            &ensp;Log out
+                            &ensp;Отписване
                         </a>
                     </li>
                 }
@@ -103,7 +103,7 @@
     <footer>
         <section id="footer-info">
             <div class="footer-info-card">
-                <h3>Contacts</h3>
+                <h3>Контакти</h3>
                 <ul class="contacts-list">
                     <li>
                         <span>
@@ -111,7 +111,7 @@
                         </span>
                     </li>
                     <li>
-                        <span><i class="fa-solid fa-map-pin"></i>   Bulgaria, Sofia</span>
+                        <span><i class="fa-solid fa-map-pin"></i>   България, София</span>
                     </li>
                     <li>
                         <span><i class="fa-solid fa-envelope"></i>   mocking.address@test.com</span>
@@ -119,24 +119,24 @@
                 </ul>
             </div>
             <div class="footer-info-card">
-                <h3>Our mission</h3>
+                <h3>Нашата цел</h3>
                 <p>
-                    UrbanLife's mission is integration, digitalization and facilitation
-                    of the urban transport system.
+                    Целта на UrbanLife е интеграция, дигитализация и улеснение на системата
+                    за градски транспорт.
                 </p>
             </div>
             <div class="footer-info-card">
-                <h3>Content disclaimer</h3>
+                <h3>Информация за съдържанието</h3>
                 <p>
-                    The content and data used by this web project for users, lines,
-                    stops, payment info, contacts, purchase info etc. are not real
-                    and are for educational and graduation purpouses only!
+                    Съдържанието и данните, използвани в това уеб приложение, касащи потребители,
+                    линии, спирки, разплащателна информация, контакти и тн., не са истински!
+                    Ползват се само с цел обучение и дипломиране!
                 </p>
             </div>
         </section>
         <section id="footer-copyright">
-            <p class="footer-copyright-item">&#169; 2023 UrbanLife AG Bulgaria, All rights reserved.</p>
-            <p class="footer-copyright-item">Author - Boris Evtimov, Bulgaria, Sofia</p>
+            <p class="footer-copyright-item">&#169; 2023 "ЪрбънЛайф" АД България, всички права запазени.</p>
+            <p class="footer-copyright-item">Автор - Борис Евтимов, България, София</p>
         </section>
     </footer>
     <script src="~/js/profilePartialMenu.js"></script>

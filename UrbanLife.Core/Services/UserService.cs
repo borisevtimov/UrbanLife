@@ -5,6 +5,7 @@ using System.Text;
 using UrbanLife.Core.ViewModels;
 using UrbanLife.Data.Data;
 using UrbanLife.Data.Data.Models;
+#nullable disable warnings
 
 namespace UrbanLife.Core.Services
 {
@@ -62,6 +63,20 @@ namespace UrbanLife.Core.Services
             }
 
             await signInManager.SignInAsync(user, isPersistent: false);
+        }
+
+        public async Task<bool> SignUserAsync(LoginViewModel model)
+        {
+            User? user = await dbContext.Users
+                .FirstOrDefaultAsync(u => u.NormalizedEmail == model.Email.ToUpper()
+                                        && HashPassword(model.Password) == u.PasswordHash);
+
+            if (user != null)
+            {
+                await signInManager.SignInAsync(user, isPersistent: false);
+            }
+
+            return user != null;
         }
 
         private static string HashPassword(string password)
