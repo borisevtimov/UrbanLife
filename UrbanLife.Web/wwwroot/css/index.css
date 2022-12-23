@@ -63,12 +63,11 @@
 .service-card-image-container {
     height: 50%;
     width: 100%;
-    object-fit: cover;
+    object-fit: contain;
     overflow: hidden;
 }
 
     .service-card-image-container > img {
-        width: 100%;
     }
 
 .service-card-btn {
