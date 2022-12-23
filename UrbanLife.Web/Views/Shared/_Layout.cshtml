@@ -6,10 +6,7 @@
     <link rel="icon" href="~/bus-logo.ico">
     <link rel="stylesheet" href="~/css/setup.css" />
     <link rel="stylesheet" href="~/css/layout.css" />
-    @await RenderSectionAsync("Styles", required: false);
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    @await RenderSectionAsync("Styles", required: false)
     <title>UrbanLife - @ViewData["Title"]</title>
 </head>
 <body>
@@ -42,11 +39,11 @@
                     <div class="image-container">
                         @if (ViewBag.User != null)
                         {
-                            <img class="profile-picture" src="~/images/profile-pictures/@ViewBag.ProfilePictureName" alt="Profile" />
+                            <img class="profile-picture" src="~/images/profile-pictures/@ViewBag.ProfilePictureName" alt="Профил" />
                         }
                         else
                         {
-                            <img class="profile-picture" src="~/images/profile-pictures/guest.png" alt="Profile" />
+                            <img class="profile-picture" src="~/images/profile-pictures/guest.png" alt="Профил" />
                         }
                     </div>
                 </li>

@@ -1,0 +1,92 @@
+﻿main {
+    background-color: var(--clr-main-gray);
+}
+
+#hero {
+    width: 100%;
+    height: 50vh;
+}
+
+    #hero > img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        object-position: 0% 50%;
+        filter: brightness(40%);
+    }
+
+.hero-intro-container {
+    position: absolute;
+    margin: 0 auto;
+    width: 100%;
+    z-index: 2;
+    top: 15vh;
+    font-size: 24px;
+    color: white;
+    text-align: center;
+}
+
+#services {
+    text-align: center;
+}
+
+.divider {
+    background-color: var(--clr-main-green);
+    height: 7px;
+    width: 30vw;
+    border-radius: 3px;
+    border: 1px solid black;
+    margin-bottom: 10vh;
+}
+
+.services-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 30px 10vh 30px;
+}
+
+.service-card {
+    width: 20vw;
+    height: 60vh;
+    border: 2px solid black;
+    border-radius: 10px;
+    box-shadow: 0px 0px 19px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 0px 0px 19px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0px 0px 19px 0px rgba(0,0,0,0.75);
+    overflow: hidden;
+}
+
+.service-card:hover {
+    background-color: white;
+}
+
+.service-card-image-container {
+    height: 50%;
+    width: 100%;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+    .service-card-image-container > img {
+        width: 100%;
+    }
+
+.service-card-btn {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 4px 20px;
+    border: 2px solid black;
+    border-radius: 10px;
+    color: black;
+    background-color: white;
+    text-decoration: none;
+}
+
+    .service-card-btn:hover {
+        background-color: var(--clr-main-green);
+        transition: 0.3s;
+    }
+
+.service-card-content-container{
+    padding: 0px 12px;
+}

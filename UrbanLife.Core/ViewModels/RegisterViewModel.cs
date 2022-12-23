@@ -9,7 +9,6 @@ namespace UrbanLife.Core.ViewModels
     {
         [Required(ErrorMessage = "Имейл адресът е задължителен!")]
         [EmailAddress(ErrorMessage = "Имейл адресът е с неправилен формат!")]
-        [Remote("CheckIfUserExistsAsync", "User", ErrorMessage = "Имейл адресът вече е зает!")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Първото име е задължително!")]

@@ -2,4 +2,53 @@
     ViewData["Title"] = "Начало";
 }
 
-<span>Text to divide navigation from footer</span>
+<section id="hero">
+    <img src="~/images/bus-stop-hero.jpg" />
+    <div class="hero-intro-container">
+        <h1 class="title">
+            Добре дошли в сайта на UrbanLife. <br>
+            Ще ви помогнем да стигнете <br>
+            където пожелаете, когато пожелаете. <br> Да пътуваме!
+        </h1>
+    </div>
+</section>
+<section id="services">
+    <h2>Възползвайте се от нашите услуги!</h2>
+    <hr class="divider" />
+    <div class="services-container">
+        <article class="service-card">
+            <div class="service-card-image-container">
+                <img src="~/images/home-screen-travel-card.jpg" alt="Транспорт" />
+            </div>
+            <div class="service-card-content-container">
+                <h3 class="service-card-title">Пътуване</h3>
+                <p class="service-card-desc">Въведете начална и крайна спирка, както и абонамент, и сте готови за път!</p>
+                <a href="#" class="service-card-btn">Пътувай!</a>
+            </div>
+        </article>
+        <article class="service-card">
+            <div class="service-card-image-container">
+                <img src="~/images/home-screen-timetable-card.jpg" alt="Разписание" />
+            </div>
+            <div class="service-card-content-container">
+                <h3 class="service-card-title">Разписания</h3>
+                <p class="service-card-desc">Прегледай разписанията на градския транспорт и наличните линии!</p>
+                <a href="#" class="service-card-btn">Разписания</a>
+            </div>
+        </article>
+        <article class="service-card">
+            <div class="service-card-image-container">
+                <img src="~/images/home-screen-subscription-card.jpg" alt="Абонаменти" />
+            </div>
+            <div class="service-card-content-container">
+                <h3 class="service-card-title">Абонаменти</h3>
+                <p class="service-card-desc">Изберете вашия абонамент - дали ще пътувате с карта или билет и от какъв вид!</p>
+                <a href="#" class="service-card-btn">Абонаменти!</a>
+            </div>
+        </article>
+    </div>
+</section>
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/index.css" />
+}
