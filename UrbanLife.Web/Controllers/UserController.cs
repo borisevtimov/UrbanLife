@@ -108,7 +108,7 @@ namespace UrbanLife.Web.Controllers
                     .ToString()
                     .Replace('/', 'a')
                     .Replace('\\', 'b') + "==_" + image.FileName;
-                
+
                 string filePath = Path.Combine(webhostEnvironment.WebRootPath, "images");
                 filePath = Path.Combine(filePath, "profile-pictures");
                 filePath = Path.Combine(filePath, "custom-pictures");
