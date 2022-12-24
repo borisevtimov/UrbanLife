@@ -10,5 +10,8 @@ namespace UrbanLife.Core.ViewModels
 
         [Required(ErrorMessage = "Не сте въвели парола!")]
         public string Password { get; set; }
+
+        [Range(0, 0, ErrorMessage = "Неправилен имейл адрес или парола!")]
+        public int InvalidProfile { get; set; }
     }
 }

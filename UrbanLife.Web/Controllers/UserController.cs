@@ -41,10 +41,20 @@ namespace UrbanLife.Web.Controllers
                 return Redirect("/");
             }
 
-            if (!ModelState.IsValid || !await userService.SignUserAsync(model))
+            if (!await userService.SignUserAsync(model))
+            {
+                model.InvalidProfile = 1;
+            }
+
+            ModelState.Clear();
+            TryValidateModel(model);
+
+            if (!ModelState.IsValid)
             {
                 return View();
             }
+
+            await userService.SignUserAsync(model);
 
             return Redirect("/");
         }
@@ -67,6 +77,14 @@ namespace UrbanLife.Web.Controllers
                 return Redirect("/");
             }
 
+            if (await userService.UserExistsAsync(registerViewModel.Email))
+            {
+                registerViewModel.EmailAlreadyUsed = 1;
+            }
+
+            ModelState.Clear();
+            TryValidateModel(registerViewModel);
+
             if (!ModelState.IsValid)
             {
                 return View();
@@ -82,9 +100,9 @@ namespace UrbanLife.Web.Controllers
                 string fileName = await SaveImageAsync(registerViewModel.ProfilePicture);
                 await userService.AddUserAsync(registerViewModel, fileName);
             }
-            catch (Exception)
+            catch (IOException)
             {
-                throw;
+                return View();
             }
 
             return Redirect("/");
