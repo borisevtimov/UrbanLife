@@ -1,9 +1,15 @@
 ﻿main {
-    background-image: url('../images/2853458.jpg');
-    background-size: cover;
-    background-position-y: 40%;
     padding-bottom: 30px;
-    object-fit: fill;
+}
+
+.profile-settings-background {
+    position: absolute;
+    width: 100%;
+    height: calc(100% + 12vh);
+    object-position: center;
+    object-fit: cover;
+    z-index: -1;
+    opacity: 70%;
 }
 
 #profile-settings-aside {
@@ -12,7 +18,9 @@
     background-color: var(--clr-main-gray);
     text-align: center;
     border: 2px solid black;
-    filter: brightness(100%);
+    box-shadow: -1px 13px 31px -3px rgba(0,0,0,0.4);
+    -webkit-box-shadow: -1px 13px 31px -3px rgba(0,0,0,0.4);
+    -moz-box-shadow: -1px 13px 31px -3px rgba(0,0,0,0.4);
 }
 
 .settings-side-menu {
@@ -49,11 +57,18 @@ h1 {
 #profile-settings-form {
     margin-left: 21vw;
     margin-right: 30px;
+    color: black;
 }
 
 .fieldset-item {
     margin-bottom: 20px;
     padding-left: 30px;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: rgba(0,0,0,0.1);
+    box-shadow: -1px 13px 31px -3px rgba(0,0,0,0.4);
+    -webkit-box-shadow: -1px 13px 31px -3px rgba(0,0,0,0.4);
+    -moz-box-shadow: -1px 13px 31px -3px rgba(0,0,0,0.4);
 }
 
 .form-row {
@@ -106,6 +121,6 @@ h1 {
         background-color: white;
     }
 
-.form-text-danger{
+.form-text-danger {
     color: var(--clr-log-out-red);
 }

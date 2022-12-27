@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UrbanLife.Core.Services;
+using UrbanLife.Core.Utilities;
 using UrbanLife.Core.ViewModels;
 using UrbanLife.Data.Data.Models;
 #nullable disable warnings
@@ -97,7 +98,9 @@ namespace UrbanLife.Web.Controllers
 
             try
             {
-                string fileName = await SaveImageAsync(registerViewModel.ProfilePicture);
+                string fileName = await PictureProcessor
+                    .DownloadProfilePictureAsync(webhostEnvironment.WebRootPath, registerViewModel.ProfilePicture);
+
                 await userService.AddUserAsync(registerViewModel, fileName);
             }
             catch (IOException)
@@ -116,29 +119,6 @@ namespace UrbanLife.Web.Controllers
             }
 
             return Redirect("/");
-        }
-
-        private async Task<string> SaveImageAsync(IFormFile image)
-        {
-            if (image != null && image.FileName != "guest.png")
-            {
-                string uniqueFileName = Guid.NewGuid()
-                    .ToString()
-                    .Replace('/', 'a')
-                    .Replace('\\', 'b') + "==_" + image.FileName;
-
-                string filePath = Path.Combine(webhostEnvironment.WebRootPath, "images");
-                filePath = Path.Combine(filePath, "profile-pictures");
-                filePath = Path.Combine(filePath, "custom-pictures");
-                filePath = Path.Combine(filePath, uniqueFileName);
-
-                using FileStream fileStream = new(filePath, FileMode.Create);
-                await image.CopyToAsync(fileStream);
-
-                return $"custom-pictures/{uniqueFileName}";
-            }
-
-            return "guest.png";
         }
     }
 }

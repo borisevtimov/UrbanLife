@@ -3,14 +3,25 @@
 @{
     ViewData["Title"] = "Редактиране на профил";
 }
+<div class="profile-settings-container">
+    <img src="~/images/account-settings-background.jpg" class="profile-settings-background" />
+</div>
 
 <aside id="profile-settings-aside">
     <h2>Настройки</h2>
     <ul class="settings-side-menu">
-        <li class="settings-item"><a href="#">Профилна снимка</a></li>
-        <li class="settings-item"><a href="#email-address">Имейл адрес</a></li>
-        <li class="settings-item"><a href="#names">Имена</a></li>
-        <li class="settings-item"><a href="#passwords">Парола</a></li>
+        <li class="settings-item">
+            <a href="#"><i class="fa-solid fa-user"></i>&ensp;Профилна снимка</a>
+        </li>
+        <li class="settings-item">
+            <a href="#email-address"><i class="fa-solid fa-envelope"></i>&ensp;Имейл адрес</a>
+        </li>
+        <li class="settings-item">
+            <a href="#names"><i class="fa-solid fa-file-signature"></i>&ensp;Имена</a>
+        </li>
+        <li class="settings-item">
+            <a href="#passwords"><i class="fa-solid fa-lock"></i>&ensp;Парола</a>
+        </li>
     </ul>
 </aside>
 <h1>Настройки на профила</h1>

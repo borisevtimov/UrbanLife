@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UrbanLife.Core.Services;
+using UrbanLife.Core.Utilities;
 using UrbanLife.Core.ViewModels;
 using UrbanLife.Data.Data.Models;
 
@@ -23,7 +24,6 @@ namespace UrbanLife.Web.Controllers
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        //[Route("/user/account/settings/{id}")]
         public IActionResult Settings(string id)
         {
             return View();
@@ -58,52 +58,26 @@ namespace UrbanLife.Web.Controllers
                 return View();
             }
 
-            string? fileName = null;
-
-            if (model.ProfilePicture != null)
+            try
             {
-                fileName = await SaveImageAsync(model.ProfilePicture);
-                DeletePicture(user);
-            }
+                string? fileName = null;
 
-            await userService.UpdateProfileAsync(user, model, fileName);
+                if (model.ProfilePicture != null)
+                {
+                    fileName = await PictureProcessor
+                        .DownloadProfilePictureAsync(webHostEnvironment.WebRootPath, model.ProfilePicture);
+
+                    PictureProcessor.DeleteProfilePicture(webHostEnvironment.WebRootPath, user.ProfileImageName);
+                }
+
+                await userService.UpdateProfileAsync(user, model, fileName);
+            }
+            catch (IOException)
+            {
+                return View();
+            }
 
             return Redirect("/");
-        }
-
-        private async Task<string> SaveImageAsync(IFormFile image)
-        {
-            if (image != null && image.FileName != "guest.png")
-            {
-                string uniqueFileName = Guid.NewGuid()
-                    .ToString()
-                    .Replace('/', 'a')
-                    .Replace('\\', 'b') + "==_" + image.FileName;
-
-                string filePath = Path.Combine(webHostEnvironment.WebRootPath, "images");
-                filePath = Path.Combine(filePath, "profile-pictures");
-                filePath = Path.Combine(filePath, "custom-pictures");
-                filePath = Path.Combine(filePath, uniqueFileName);
-
-                using FileStream fileStream = new(filePath, FileMode.Create);
-                await image.CopyToAsync(fileStream);
-
-                return $"custom-pictures/{uniqueFileName}";
-            }
-
-            return "guest.png";
-        }
-
-        private void DeletePicture(User user)
-        {
-            string customPicturesPath = Path.Combine(webHostEnvironment.WebRootPath, "images");
-            customPicturesPath = Path.Combine(customPicturesPath, "profile-pictures");
-            customPicturesPath = Path.Combine(customPicturesPath, user.ProfileImageName);
-
-            if (System.IO.File.Exists(customPicturesPath))
-            {
-                System.IO.File.Delete(customPicturesPath);
-            }
         }
     }
 }
