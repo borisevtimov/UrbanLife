@@ -38,6 +38,12 @@ namespace UrbanLife.Core.Services
                 .FirstOrDefaultAsync(u => u.NormalizedEmail == email.ToUpper()) != null;
         }
 
+        public async Task<bool> PasswordExists(string email, string password)
+        {
+            return await dbContext.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == email.ToUpper()
+                && u.PasswordHash == HashPassword(password)) != null;
+        }
+
         public async Task AddUserAsync(RegisterViewModel model, string fileName)
         {
             User user = new()
@@ -79,7 +85,40 @@ namespace UrbanLife.Core.Services
             return user != null;
         }
 
-        private static string HashPassword(string password)
+        public async Task UpdateProfileAsync(User user, UpdateProfileViewModel updateModel, string fileName)
+        {
+            if (updateModel.Email != null)
+            {
+                user.Email = updateModel.Email;
+                user.UserName = updateModel.Email;
+                user.NormalizedEmail = updateModel.Email.ToUpper();
+                user.NormalizedUserName = updateModel.Email.ToUpper();
+            }
+
+            if (updateModel.FirstName != null)
+            {
+                user.FirstName = updateModel.FirstName;
+            }
+
+            if (updateModel.LastName != null)
+            {
+                user.LastName = updateModel.LastName;
+            }
+
+            if (updateModel.Password != null)
+            {
+                user.PasswordHash = HashPassword(updateModel.Password);
+            }
+
+            if (updateModel.ProfilePicture != null && fileName != null)
+            {
+                user.ProfileImageName = fileName;
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public static string HashPassword(string password)
         {
             byte[] bytePassword = Encoding.UTF8.GetBytes(password);
 

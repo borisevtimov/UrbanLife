@@ -1,0 +1,90 @@
+﻿@using UrbanLife.Core.ViewModels;
+@model UpdateProfileViewModel
+@{
+    ViewData["Title"] = "Редактиране на профил";
+}
+
+<aside id="profile-settings-aside">
+    <h2>Настройки</h2>
+    <ul class="settings-side-menu">
+        <li class="settings-item"><a href="#">Профилна снимка</a></li>
+        <li class="settings-item"><a href="#email-address">Имейл адрес</a></li>
+        <li class="settings-item"><a href="#names">Имена</a></li>
+        <li class="settings-item"><a href="#passwords">Парола</a></li>
+    </ul>
+</aside>
+<h1>Настройки на профила</h1>
+<form id="profile-settings-form" action="/user/account/settings" enctype="multipart/form-data" method="post">
+    <section id="profile-fieldsets">
+        <fieldset id="email-address" class="fieldset-item">
+            <legend>Профилна снимка</legend>
+            <div class="form-row">
+                <p>Текуща снимка</p>
+                <div class="image-container">
+                    <img src="~/images/profile-pictures/@ViewBag.User.ProfileImageName" />
+                </div>
+            </div>
+            <div class="form-row">
+                <p>Нова снимка</p>
+                <input asp-for=@Model.ProfilePicture type="file" accept="image/*" class="main-input" />
+            </div>
+        </fieldset>
+        <fieldset id="email-address" class="fieldset-item">
+            <legend>Имейл адрес</legend>
+            <div><span asp-validation-for=@Model.Email class="form-text-danger"></span></div>
+            <div><span asp-validation-for=@Model.EmailAlreadyUsed class="form-text-danger"></span></div>
+            <p>Текущ имейл адрес: @ViewBag.User.Email</p>
+            <div class="form-row">
+                <p>Нов имейл адрес</p>
+                <input asp-for=@Model.Email type="email" placeholder="pesho@@abc.de" class="main-input" />
+            </div>
+        </fieldset>
+        <fieldset id="names" class="fieldset-item">
+            <legend>Имена</legend>
+            <div class="form-column">
+                <div><span asp-validation-for=@Model.FirstName class="form-text-danger"></span></div>
+                <p>Текущо първо име: @ViewBag.User.FirstName</p>
+                <div class="form-row">
+                    <p>Ново първо име</p>
+                    <input asp-for=@Model.FirstName type="text" placeholder="Петър" class="main-input" />
+                </div>
+            </div>
+            <div class="form-column">
+                <div><span asp-validation-for=@Model.LastName class="form-text-danger"></span></div>
+                <p>Текуща фамилия: @ViewBag.User.LastName</p>
+                <div class="form-row">
+                    <p>Нова фамилия</p>
+                    <input asp-for=@Model.LastName type="text" placeholder="Иванов" class="main-input" />
+                </div>
+            </div>
+        </fieldset>
+        <fieldset id="passwords" class="fieldset-item">
+            <legend>Парола</legend>
+            <div><span asp-validation-for=@Model.Password class="form-text-danger"></span></div>
+            <div><span asp-validation-for=@Model.ConfirmPassword class="form-text-danger"></span></div>
+            <div><span asp-validation-for=@Model.SamePassword class="form-text-danger"></span></div>
+            <div class="form-row">
+                <p>Нова парола</p>
+                <input asp-for=@Model.Password type="password" class="password-input main-input" />
+            </div>
+            <div class="form-row">
+                <p>Потвърди паролата</p>
+                <input asp-for=@Model.ConfirmPassword type="password" class="password-input main-input" />
+            </div>
+        </fieldset>
+    </section>
+    <div class="form-row form-row-btns">
+        <input type="submit" value="Потвърди промените" class="main-input submit-btn" />
+        <a href="/user/account/settings/@ViewBag.User.Id" class="main-input anchor-button submit-btn">Отмяна</a>
+    </div>
+</form>
+
+@section Styles{
+    <link rel="stylesheet" href="~/css/profile-settings.css" />
+}
+
+@section Scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+}

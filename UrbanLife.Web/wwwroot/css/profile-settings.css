@@ -1,0 +1,111 @@
+﻿main {
+    background-image: url('../images/2853458.jpg');
+    background-size: cover;
+    background-position-y: 40%;
+    padding-bottom: 30px;
+    object-fit: fill;
+}
+
+#profile-settings-aside {
+    position: fixed;
+    width: 20vw;
+    background-color: var(--clr-main-gray);
+    text-align: center;
+    border: 2px solid black;
+    filter: brightness(100%);
+}
+
+.settings-side-menu {
+    list-style-type: none;
+    padding-inline-start: 0px;
+    margin-bottom: 0px;
+}
+
+.settings-item {
+    width: 100%;
+    height: 5vh;
+}
+
+    .settings-item > a {
+        display: inline-block;
+        color: black;
+        text-align: center;
+        text-decoration: none;
+        height: 5vh;
+        width: 100%;
+        line-height: 5vh;
+    }
+
+        .settings-item > a:hover {
+            background-color: white;
+            border: 1px solid black;
+        }
+
+h1 {
+    text-align: center;
+    margin-left: 21vw;
+}
+
+#profile-settings-form {
+    margin-left: 21vw;
+    margin-right: 30px;
+}
+
+.fieldset-item {
+    margin-bottom: 20px;
+    padding-left: 30px;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+#names {
+    display: flex;
+    justify-content: space-between;
+}
+
+.main-input {
+    height: 30px;
+    border-radius: 5px;
+}
+
+.form-row-btns {
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.submit-btn {
+    display: inline-flex;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-family: 'Roboto Flex', sans-serif;
+    font-size: 16px;
+    border: 1px solid black;
+    background-color: white;
+}
+
+    .submit-btn:hover {
+        transition: 0.3s;
+        background-color: var(--clr-main-green);
+        border: 2px solid black;
+        cursor: pointer;
+    }
+
+.anchor-button {
+    border: 1px solid black;
+    text-decoration: none;
+    color: black;
+}
+
+    .anchor-button:hover {
+        background-color: white;
+    }
+
+.form-text-danger{
+    color: var(--clr-log-out-red);
+}
