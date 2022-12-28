@@ -13,7 +13,7 @@
             {
                 <div class="payment-card">
                     <div class="first-row">
-                        @if (Model.DefaultPaymentNumber != null)
+                        @if (payment.IsDefault)
                         {
                             <p class="card-default">По подразбиране <i class="fa-solid fa-circle-check"></i></p>
                             <p class="card-logo">UrbanLife</p>
@@ -29,6 +29,7 @@
                     </div>
                     <div class="payment-row custom-font-row">
                         <p class="card-number">@payment.CardNumber</p>
+                        <p class="amount">@payment.Amount lv.</p>
                     </div>
                     <div class="card-last-row payment-row custom-font-row">
                         <p class="card-name">@payment.CardFirstName @payment.CardLastName</p>
@@ -36,9 +37,12 @@
                         <p class="card-cvc">CVC: @payment.CVC</p>
                     </div>
                     <div class="payment-actions">
-                        <a class="payment-btn default-btn" href="#">Задай по подразбиране</a>
-                        <a class="payment-btn edit-btn" href="#">Редактирай</a>
-                        <a class="payment-btn delete-btn" href="#">Изтрий</a>
+                        <a class="payment-btn default-btn"
+                   href="/user/account/setDefault?paymentId=@payment.PaymentId">Задай по подразбиране</a>
+                        <a class="payment-btn edit-btn"
+                   href="/user/account/editPayment?paymentId=@payment.PaymentId">Редактирай</a>
+                        <a class="payment-btn delete-btn"
+                   href="/user/account/delete?paymentId=@payment.PaymentId">Изтрий</a>
                     </div>
                 </div>
             }
@@ -49,7 +53,7 @@
         <h1 class="title">Нямате добавени банкови карти, @Model.AccountFirstName</h1>
     }
     <div class="submit-container">
-        <a href="/user/account/addPayment?userId=@Model.UserId" class="main-input anchor-button submit-btn">Добавяне на карта</a>
+        <a href="/user/account/addPayment" class="main-input anchor-button submit-btn">Добавяне на карта</a>
     </div>
 </section>
 

@@ -27,7 +27,7 @@ namespace UrbanLife.Web.Controllers
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        public IActionResult Settings(string userId)
+        public IActionResult Settings()
         {
             return View();
         }
@@ -83,38 +83,39 @@ namespace UrbanLife.Web.Controllers
             return Redirect("/");
         }
 
-        public async Task<IActionResult> Payments(string userId)
+        public async Task<IActionResult> Payments()
         {
-            if (userId == null)
-            {
-                return Redirect("/");
-            }
-
-            UrbanLife.Data.Data.Models.User user = await userService.GetUserByIdAsync(userId);
-            List<Payment> payments = await paymentService.GetPaymentsByUser(userId);
+            UrbanLife.Data.Data.Models.User user = await userManager.GetUserAsync(User);
+            List<PaymentMethodViewModel> payments = await paymentService.GetPaymentsForAccountPage(user.Id);
 
             PaymentInfoViewModel paymentInfoViewModel = new()
             {
                 AccountFirstName = user.FirstName,
-                UserId = userId,
-                DefaultPaymentNumber = await paymentService.GetDefaultPayment(userId),
-                Payments = payments.Select(p => new PaymentMethodViewModel
-                {
-                    CardFirstName = p.FirstName,
-                    CardLastName = p.LastName,
-                    CardNumber = p.Number,
-                    ExpireDate = p.ExpireDate,
-                    CVC = p.CVC,
-                })
-                .ToList()
+                UserId = user.Id,
+                Payments = payments
             };
 
             return View(paymentInfoViewModel);
         }
 
-        public IActionResult AddPayment(string userId)
+        public IActionResult AddPayment()
         {
             return View();
+        }
+
+        public IActionResult SetDefault(string paymentId)
+        {
+            return Redirect("/user/account/payments");
+        }
+
+        public IActionResult EditPayment(string paymentId)
+        {
+            return View();
+        }
+
+        public IActionResult Delete(string paymentId)
+        {
+            return Redirect("/user/account/payments");
         }
     }
 }

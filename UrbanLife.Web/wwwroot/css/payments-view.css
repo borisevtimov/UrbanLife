@@ -4,6 +4,11 @@
 main {
     padding-left: 30px;
     padding-right: 30px;
+    min-height: 69vh;
+    background-image: url('../images/payment-info-background.png');
+    background-repeat: no-repeat;
+    background-position-y: 10%;
+    background-size: 100%;
 }
 
 .title {
@@ -14,7 +19,7 @@ main {
 
 .payment-cards-container {
     display: flex;
-    gap: 20vw;
+    gap: 5vw;
     justify-content: center;
 }
 

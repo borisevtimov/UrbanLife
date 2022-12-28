@@ -8,6 +8,9 @@ namespace UrbanLife.Data.Data.Models
     public class Payment
     {
         [Key]
+        public string Id { get; set; }
+
+        [Required]
         [Column(TypeName = "char(19)")]
         public string Number { get; set; }
 
@@ -38,6 +41,7 @@ namespace UrbanLife.Data.Data.Models
 
         public Payment()
         {
+            Id = Guid.NewGuid().ToString();
             UserPayments = new HashSet<UserPayment>();
             Purchases = new HashSet<Purchase>();
         }

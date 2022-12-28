@@ -9,7 +9,5 @@ namespace UrbanLife.Core.ViewModels
         public string AccountFirstName { get; set; }
 
         public List<PaymentMethodViewModel> Payments { get; set; }
-
-        public string DefaultPaymentNumber { get; set; }
     }
 }

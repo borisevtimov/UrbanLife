@@ -34,7 +34,7 @@ namespace UrbanLife.Data.Data
             base.OnModelCreating(builder);
 
             builder.Entity<UserPayment>()
-                .HasKey(up => new { up.UserId, up.PaymentNumber });
+                .HasKey(up => new { up.UserId, up.PaymentId });
         }
     }
 }

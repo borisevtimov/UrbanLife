@@ -15,7 +15,7 @@ namespace UrbanLife.Data.Data.Models
 
         [Required]
         [ForeignKey(nameof(Payment))]
-        public string PaymentNumber { get; set; }
+        public string PaymentId { get; set; }
 
         [Required]
         public Payment Payment { get; set; }

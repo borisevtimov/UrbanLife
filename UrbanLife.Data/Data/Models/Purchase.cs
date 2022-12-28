@@ -13,9 +13,8 @@ namespace UrbanLife.Data.Data.Models
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
 
-        [Column(TypeName = "char(19)")]
         [ForeignKey(nameof(Payment))]
-        public string? PaymentNumber { get; set; }
+        public string? PaymentId { get; set; }
 
         public decimal? Amount { get; set; }
 
