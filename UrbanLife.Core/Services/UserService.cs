@@ -44,6 +44,11 @@ namespace UrbanLife.Core.Services
                 && u.PasswordHash == HashPassword(password)) != null;
         }
 
+        public async Task<User> GetUserByIdAsync(string userId)
+        {
+            return await dbContext.Users.FirstOrDefaultAsync(u => u.Id == userId);
+        }
+
         public async Task AddUserAsync(RegisterViewModel model, string fileName)
         {
             User user = new()

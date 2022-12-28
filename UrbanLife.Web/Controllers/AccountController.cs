@@ -12,19 +12,22 @@ namespace UrbanLife.Web.Controllers
     public class AccountController : Controller
     {
         private readonly UserService userService;
+        private readonly PaymentService paymentService;
         private readonly UserManager<User> userManager;
         private readonly IWebHostEnvironment webHostEnvironment;
 
         public AccountController(UserService userService,
+            PaymentService paymentService,
             UserManager<User> userManager,
             IWebHostEnvironment webHostEnvironment)
         {
             this.userService = userService;
+            this.paymentService = paymentService;
             this.userManager = userManager;
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        public IActionResult Settings(string id)
+        public IActionResult Settings(string userId)
         {
             return View();
         }
@@ -62,7 +65,7 @@ namespace UrbanLife.Web.Controllers
             {
                 string? fileName = null;
 
-                if (model.ProfilePicture != null)
+                if (model.ProfilePicture != null && user.ProfileImageName != "guest.png")
                 {
                     fileName = await PictureProcessor
                         .DownloadProfilePictureAsync(webHostEnvironment.WebRootPath, model.ProfilePicture);
@@ -78,6 +81,40 @@ namespace UrbanLife.Web.Controllers
             }
 
             return Redirect("/");
+        }
+
+        public async Task<IActionResult> Payments(string userId)
+        {
+            if (userId == null)
+            {
+                return Redirect("/");
+            }
+
+            UrbanLife.Data.Data.Models.User user = await userService.GetUserByIdAsync(userId);
+            List<Payment> payments = await paymentService.GetPaymentsByUser(userId);
+
+            PaymentInfoViewModel paymentInfoViewModel = new()
+            {
+                AccountFirstName = user.FirstName,
+                UserId = userId,
+                DefaultPaymentNumber = await paymentService.GetDefaultPayment(userId),
+                Payments = payments.Select(p => new PaymentMethodViewModel
+                {
+                    CardFirstName = p.FirstName,
+                    CardLastName = p.LastName,
+                    CardNumber = p.Number,
+                    ExpireDate = p.ExpireDate,
+                    CVC = p.CVC,
+                })
+                .ToList()
+            };
+
+            return View(paymentInfoViewModel);
+        }
+
+        public IActionResult AddPayment(string userId)
+        {
+            return View();
         }
     }
 }

@@ -1,0 +1,58 @@
+﻿@using UrbanLife.Core.ViewModels;
+@model PaymentInfoViewModel
+@{
+    ViewData["Title"] = "Банкови карти";
+}
+
+<section id="payments">
+    @if (Model.Payments.Count != 0)
+    {
+        <h1 class="title">Вашите банкови карти, @Model.AccountFirstName</h1>
+        <div class="payment-cards-container">
+            @foreach (PaymentMethodViewModel payment in Model.Payments)
+            {
+                <div class="payment-card">
+                    <div class="first-row">
+                        @if (Model.DefaultPaymentNumber != null)
+                        {
+                            <p class="card-default">По подразбиране <i class="fa-solid fa-circle-check"></i></p>
+                            <p class="card-logo">UrbanLife</p>
+                        }
+                        else
+                        {
+                            <p class="card-default"></p>
+                            <p class="card-logo">UrbanLife</p>
+                        }
+                    </div>
+                    <div class="card-chip payment-row">
+                        <img src="~/images/card_chip_gold.png" />
+                    </div>
+                    <div class="payment-row custom-font-row">
+                        <p class="card-number">@payment.CardNumber</p>
+                    </div>
+                    <div class="card-last-row payment-row custom-font-row">
+                        <p class="card-name">@payment.CardFirstName @payment.CardLastName</p>
+                        <p class="card-expire">Ex: @payment.ExpireDate.ToString("MM/yy")</p>
+                        <p class="card-cvc">CVC: @payment.CVC</p>
+                    </div>
+                    <div class="payment-actions">
+                        <a class="payment-btn default-btn" href="#">Задай по подразбиране</a>
+                        <a class="payment-btn edit-btn" href="#">Редактирай</a>
+                        <a class="payment-btn delete-btn" href="#">Изтрий</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <h1 class="title">Нямате добавени банкови карти, @Model.AccountFirstName</h1>
+    }
+    <div class="submit-container">
+        <a href="/user/account/addPayment?userId=@Model.UserId" class="main-input anchor-button submit-btn">Добавяне на карта</a>
+    </div>
+</section>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/payments-view.css" />
+}

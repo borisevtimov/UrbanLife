@@ -19,5 +19,8 @@ namespace UrbanLife.Data.Data.Models
 
         [Required]
         public Payment Payment { get; set; }
+
+        [Required]
+        public bool IsDefault { get; set; } = false;
     }
 }

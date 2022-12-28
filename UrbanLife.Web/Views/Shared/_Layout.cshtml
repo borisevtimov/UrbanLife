@@ -70,7 +70,7 @@
                         <span class="profile-item">@ViewBag.User.FirstName @ViewBag.User.LastName</span>
                     </li>
                     <li class="profile-menu-list-item">
-                        <a class="nav-anchor profile-item" href="/user/account/settings/@ViewBag.User.Id">
+                        <a class="nav-anchor profile-item" href="/user/account/settings?userId=@ViewBag.User.Id">
                             <i class="fa-solid fa-user"></i>
                             &ensp;Профил
                         </a>
@@ -82,7 +82,7 @@
                         </a>
                     </li>
                     <li class="profile-menu-list-item">
-                        <a class="nav-anchor profile-item" href="#">
+                        <a class="nav-anchor profile-item" href="/user/account/payments?userId=@ViewBag.User.Id">
                             <i class="fa-solid fa-credit-card"></i>
                             &ensp;Банкови карти
                         </a>
