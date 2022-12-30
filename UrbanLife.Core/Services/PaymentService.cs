@@ -14,22 +14,20 @@ namespace UrbanLife.Core.Services
             this.dbContext = dbContext;
         }
 
-        public async Task<List<Payment>> GetPaymentsByUser(string userId)
+        public async Task<List<Payment>> GetPaymentsByUserAsync(string userId)
         {
             return await dbContext.Payments
                 .Where(p => p.UserPayments.Select(up => up.UserId).Contains(userId))
                 .ToListAsync();
         }
 
-        public async Task<string> GetDefaultPayment(string userId)
+        public async Task<UserPayment> GetDefaultUserPaymentAsync(string userId)
         {
-            UserPayment? userPayment = await dbContext.UserPayments
+            return await dbContext.UserPayments
                 .FirstOrDefaultAsync(up => up.UserId == userId && up.IsDefault);
-
-            return userPayment == null ? null : userPayment.PaymentId;
         }
 
-        public async Task<List<PaymentMethodViewModel>> GetPaymentsForAccountPage(string userId)
+        public async Task<List<PaymentMethodViewModel>> GetPaymentsForAccountPageAsync(string userId)
         {
             return await dbContext.Payments
                 .Where(p => p.UserPayments.Select(up => up.UserId).Contains(userId))
@@ -45,6 +43,39 @@ namespace UrbanLife.Core.Services
                     IsDefault = p.UserPayments.Select(up => up.IsDefault == true).FirstOrDefault()
                 })
                 .ToListAsync();
+        }
+
+        public async Task AddPaymentMethodAsync(string userId, BankCardViewModel model)
+        {
+            Payment payment = new()
+            {
+                FirstName = model.FirstName.ToUpper(),
+                LastName = model.LastName.ToUpper(),
+                Number = model.CardNumber,
+                CVC = model.CVC,
+                Amount = model.Amount.GetValueOrDefault(),
+                ExpireDate = model.ExpireDate,
+            };
+
+            await dbContext.Payments.AddAsync(payment);
+            await dbContext.SaveChangesAsync();
+
+            UserPayment newUserPayment = new()
+            {
+                PaymentId = payment.Id,
+                UserId = userId
+            };
+
+            UserPayment defaultUserPayment = await GetDefaultUserPaymentAsync(userId);
+
+            if (defaultUserPayment != null && model.IsDefault)
+            {
+                defaultUserPayment.IsDefault = false;
+                newUserPayment.IsDefault = true;
+            }
+
+            await dbContext.UserPayments.AddAsync(newUserPayment);
+            await dbContext.SaveChangesAsync();
         }
     }
 }

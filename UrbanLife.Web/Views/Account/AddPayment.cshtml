@@ -1,5 +1,66 @@
-﻿@{
+﻿@using UrbanLife.Core.ViewModels;
+@model BankCardViewModel
+@{
     ViewData["Title"] = "Добавяне на банкова карта";
 }
 
-<p>Accessed create bank card page</p>
+<section id="payment">
+    <h1>Добавете банкова карта!</h1>
+    <form class="payment-form" action="/user/account/addPayment" method="post">
+        <span asp-validation-for=@Model.FirstName class="form-text-danger"></span>
+        <span asp-validation-for=@Model.LastName class="form-text-danger"></span>
+        <div class="form-row">
+            <div class="form-col">
+                <label asp-for=@Model.FirstName>*Първо име</label>
+                <input asp-for=@Model.FirstName class="main-form-input" type="text" />
+            </div>
+            <div class="form-col">
+                <label asp-for=@Model.LastName>*Фамилия</label>
+                <input asp-for=@Model.LastName class="main-form-input" type="text" />
+            </div>
+        </div>
+        <span asp-validation-for=@Model.CardNumber class="form-text-danger"></span>
+        <span asp-validation-for=@Model.CVC class="form-text-danger"></span>
+        <div class="form-row">
+            <div class="form-col wide-input-container card-number-input">
+                <label asp-for=@Model.CardNumber>*Номер на картата</label>
+                <input asp-for=@Model.CardNumber class="main-form-input" type="text" />
+            </div>
+            <div class="form-col small-input-container">
+                <label asp-for=@Model.CVC>*Код &ensp;<i class="fa-solid fa-eye-slash cvc-eye-icon"></i></label>
+                <input asp-for=@Model.CVC class="main-form-input" type="password" />
+            </div>
+        </div>
+        <span asp-validation-for=@Model.ExpireDate class="form-text-danger"></span>
+        <span asp-validation-for=@Model.Amount class="form-text-danger"></span>
+        <div class="form-row">
+            <div class="form-col">
+                <label asp-for=@Model.ExpireDate>*Валидна до</label>
+                <input asp-for=@Model.ExpireDate class="main-form-input" type="month" min=@DateTime.Now.ToString("yyyy-MM") />
+            </div>
+            <div class="form-col small-input-container">
+                <label asp-for=@Model.Amount>Сума</label>
+                <input asp-for=@Model.Amount class="main-form-input numeric-input" type="number" inputmode="numeric" placeholder="В лева" />
+            </div>
+        </div>
+        <div class="form-inline-row">
+            <label asp-for=@Model.IsDefault>По подразбиране</label>
+            <input asp-for=@Model.IsDefault type="checkbox" />
+        </div>
+        <p class="all-fields-required">Полетата със * са задължителни!</p>
+        <div class="form-row-submit">
+            <input class="submit-btn main-form-input" type="submit" value="Добавяне" />
+        </div>
+    </form>
+</section>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/payment.css" />
+}
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/js/cardForm.js"></script>
+}

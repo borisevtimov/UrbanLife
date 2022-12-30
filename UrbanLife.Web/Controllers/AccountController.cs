@@ -86,7 +86,7 @@ namespace UrbanLife.Web.Controllers
         public async Task<IActionResult> Payments()
         {
             UrbanLife.Data.Data.Models.User user = await userManager.GetUserAsync(User);
-            List<PaymentMethodViewModel> payments = await paymentService.GetPaymentsForAccountPage(user.Id);
+            List<PaymentMethodViewModel> payments = await paymentService.GetPaymentsForAccountPageAsync(user.Id);
 
             PaymentInfoViewModel paymentInfoViewModel = new()
             {
@@ -101,6 +101,30 @@ namespace UrbanLife.Web.Controllers
         public IActionResult AddPayment()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddPayment(BankCardViewModel model)
+        {
+            UrbanLife.Data.Data.Models.User user = await userManager.GetUserAsync(User);
+            List<Payment> paymentsByUser = await paymentService.GetPaymentsByUserAsync(user.Id);
+
+            if (paymentsByUser.FirstOrDefault(p => p.Number == model.CardNumber) != null)
+            {
+                model.IsCardAlreadyAdded = 1;
+            }
+
+            ModelState.Clear();
+            TryValidateModel(model);
+
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            await paymentService.AddPaymentMethodAsync(user.Id, model);
+
+            return Redirect("/user/account/payments");
         }
 
         public IActionResult SetDefault(string paymentId)

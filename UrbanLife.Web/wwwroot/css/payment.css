@@ -1,0 +1,108 @@
+﻿main {
+    min-height: 69vh;
+    background-image: url('../images/payment-info-background.png');
+    background-repeat: no-repeat;
+    background-position-y: 10%;
+    background-size: 100%;
+}
+
+#payment {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 30px;
+}
+
+.payment-form {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+    border-radius: 12px;
+    min-width: 30vw;
+    background-color: rgba(0,0,0, 0.4);
+    color: white;
+    -webkit-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-col {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-inline-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+    .form-inline-row > input {
+        margin-top: 5px;
+        margin-bottom: 0px;
+        accent-color: var(--clr-main-green);
+    }
+
+.form-row-submit {
+    display: flex;
+    justify-content: center;
+}
+
+.wide-input-container {
+    width: 12vw;
+}
+
+.small-input-container {
+    width: 6vw;
+}
+
+.submit-btn {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+    .submit-btn:hover {
+        transition: 0.3s;
+        cursor: pointer;
+        background-color: var(--clr-main-green);
+    }
+
+.cvc-eye-icon:hover {
+    cursor: pointer;
+}
+
+.main-form-input {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    font-family: 'Roboto Flex', sans-serif;
+}
+
+.all-fields-required {
+    margin: 0 auto;
+    margin-bottom: 15px;
+}
+
+.numeric-input::-webkit-outer-spin-button,
+.numeric-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.numeric-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.form-text-danger {
+    color: var(--clr-log-out-red);
+}
