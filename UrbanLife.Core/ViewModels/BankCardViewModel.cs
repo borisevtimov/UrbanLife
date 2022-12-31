@@ -35,5 +35,8 @@ namespace UrbanLife.Core.ViewModels
 
         [Range(0, 0, ErrorMessage = "Вече сте добавили тази карта!")]
         public int IsCardAlreadyAdded { get; set; }
+
+        [Range(0, 0, ErrorMessage = "Попълнени са некоректни данни!")]
+        public int IsCardInvalid { get; set; }
     }
 }

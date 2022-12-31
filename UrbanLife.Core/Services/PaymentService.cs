@@ -42,7 +42,13 @@ namespace UrbanLife.Core.Services
                     ExpireDate = p.ExpireDate,
                     IsDefault = p.UserPayments.Select(up => up.IsDefault == true).FirstOrDefault()
                 })
+                .OrderByDescending(p => p.IsDefault)
                 .ToListAsync();
+        }
+
+        public async Task<Payment> GetPaymentByNumberAsync(string paymentNumber)
+        {
+            return await dbContext.Payments.FirstOrDefaultAsync(p => p.Number == paymentNumber);
         }
 
         public async Task AddPaymentMethodAsync(string userId, BankCardViewModel model)
@@ -68,14 +74,91 @@ namespace UrbanLife.Core.Services
 
             UserPayment defaultUserPayment = await GetDefaultUserPaymentAsync(userId);
 
-            if (defaultUserPayment != null && model.IsDefault)
+            if (model.IsDefault)
             {
-                defaultUserPayment.IsDefault = false;
+                if (defaultUserPayment != null)
+                {
+                    defaultUserPayment.IsDefault = false;
+                }
+
                 newUserPayment.IsDefault = true;
             }
 
             await dbContext.UserPayments.AddAsync(newUserPayment);
             await dbContext.SaveChangesAsync();
+        }
+
+        public async Task AddUserPaymentAsync(string userId, string paymentId, bool isDefault)
+        {
+            UserPayment userPayment = new()
+            {
+                UserId = userId,
+                PaymentId = paymentId,
+            };
+
+            await dbContext.UserPayments.AddAsync(userPayment);
+            await dbContext.SaveChangesAsync();
+            await SetDefaultPaymentAsync(userId, paymentId);
+        }
+
+        public async Task DeletePaymentAsync(string userId, string paymentId)
+        {
+            Payment? payment = await dbContext.Payments
+                .FirstOrDefaultAsync(p => p.Id == paymentId && p.UserPayments
+                                        .Select(up => up.UserId).Contains(userId));
+
+            if (payment == null)
+            {
+                throw new InvalidOperationException("Извинявайте, нещо се обърка! Вашата карта не беше изтрита!");
+            }
+
+            dbContext.Payments.Remove(payment);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task SetDefaultPaymentAsync(string userId, string paymentId)
+        {
+            UserPayment? newDefaultUserPayment = await dbContext.UserPayments
+                .FirstOrDefaultAsync(up => up.UserId == userId && up.PaymentId == paymentId);
+
+            UserPayment? oldDefaultUserPayment = await GetDefaultUserPaymentAsync(userId);
+
+            if (oldDefaultUserPayment != null)
+            {
+                oldDefaultUserPayment.IsDefault = false;
+            }
+
+            if (newDefaultUserPayment != null)
+            {
+                newDefaultUserPayment.IsDefault = true;
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task<BankCardViewModel> GetPaymentForUserAsync(string userId, string paymentId)
+        {
+            BankCardViewModel? payment = await dbContext.Payments
+                .Where(p => p.Id == paymentId && p.UserPayments
+                            .Select(up => up.UserId).Contains(userId))
+                .Select(p => new BankCardViewModel()
+                {
+                    Amount = p.Amount,
+                    CardNumber = p.Number,
+                    CVC = p.CVC,
+                    ExpireDate = p.ExpireDate,
+                    FirstName = p.FirstName,
+                    LastName = p.LastName,
+                    IsDefault = p.UserPayments.FirstOrDefault(up => up.UserId == userId).IsDefault
+                })
+                .FirstOrDefaultAsync();
+
+            if (payment == null)
+            {
+                throw new ArgumentException("Нещо се обърка!");
+            }
+
+            return payment;
         }
     }
 }

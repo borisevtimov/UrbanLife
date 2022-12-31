@@ -108,10 +108,24 @@ namespace UrbanLife.Web.Controllers
         {
             UrbanLife.Data.Data.Models.User user = await userManager.GetUserAsync(User);
             List<Payment> paymentsByUser = await paymentService.GetPaymentsByUserAsync(user.Id);
+            Payment payment = await paymentService.GetPaymentByNumberAsync(model.CardNumber);
+
+            if (payment != null)
+            {
+                if (payment.ExpireDate != model.ExpireDate ||
+                payment.FirstName != model.FirstName.ToUpper() ||
+                payment.LastName != model.LastName.ToUpper() ||
+                payment.Amount != model.Amount ||
+                payment.CVC != model.CVC)
+                {
+                    model.IsCardInvalid = 1;
+                }
+            }
 
             if (paymentsByUser.FirstOrDefault(p => p.Number == model.CardNumber) != null)
             {
                 model.IsCardAlreadyAdded = 1;
+                model.IsCardInvalid = 0;
             }
 
             ModelState.Clear();
@@ -122,23 +136,48 @@ namespace UrbanLife.Web.Controllers
                 return View();
             }
 
-            await paymentService.AddPaymentMethodAsync(user.Id, model);
+            try
+            {
+                if (payment != null)
+                {
+                    await paymentService.AddUserPaymentAsync(user.Id, payment.Id, model.IsDefault);
+                }
+                else
+                {
+                    await paymentService.AddPaymentMethodAsync(user.Id, model);
+                }
+
+            }
+            catch (Exception)
+            {
+                return Redirect("/user/account/payments");
+            }
 
             return Redirect("/user/account/payments");
         }
 
-        public IActionResult SetDefault(string paymentId)
+        public async Task<IActionResult> SetDefault(string paymentId)
         {
+            UrbanLife.Data.Data.Models.User user = await userManager.GetUserAsync(User);
+
+            await paymentService.SetDefaultPaymentAsync(user.Id, paymentId);
+
             return Redirect("/user/account/payments");
         }
 
-        public IActionResult EditPayment(string paymentId)
+        public async Task<IActionResult> Delete(string paymentId)
         {
-            return View();
-        }
+            UrbanLife.Data.Data.Models.User user = await userManager.GetUserAsync(User);
 
-        public IActionResult Delete(string paymentId)
-        {
+            try
+            {
+                await paymentService.DeletePaymentAsync(user.Id, paymentId);
+            }
+            catch (InvalidOperationException)
+            {
+                return Redirect("/user/account/payments");
+            }
+
             return Redirect("/user/account/payments");
         }
     }

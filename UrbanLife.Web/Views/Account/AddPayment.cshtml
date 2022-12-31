@@ -21,6 +21,7 @@
         </div>
         <span asp-validation-for=@Model.CardNumber class="form-text-danger"></span>
         <span asp-validation-for=@Model.CVC class="form-text-danger"></span>
+        <span asp-validation-for=@Model.IsCardAlreadyAdded class="form-text-danger"></span>
         <div class="form-row">
             <div class="form-col wide-input-container card-number-input">
                 <label asp-for=@Model.CardNumber>*Номер на картата</label>
@@ -47,6 +48,7 @@
             <label asp-for=@Model.IsDefault>По подразбиране</label>
             <input asp-for=@Model.IsDefault type="checkbox" />
         </div>
+        <span asp-validation-for=@Model.IsCardInvalid class="form-text-danger"></span>
         <p class="all-fields-required">Полетата със * са задължителни!</p>
         <div class="form-row-submit">
             <input class="submit-btn main-form-input" type="submit" value="Добавяне" />
