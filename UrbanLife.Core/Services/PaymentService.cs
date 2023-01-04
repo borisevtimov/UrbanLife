@@ -98,7 +98,11 @@ namespace UrbanLife.Core.Services
 
             await dbContext.UserPayments.AddAsync(userPayment);
             await dbContext.SaveChangesAsync();
-            await SetDefaultPaymentAsync(userId, paymentId);
+
+            if (isDefault)
+            {
+                await SetDefaultPaymentAsync(userId, paymentId);
+            }
         }
 
         public async Task DeletePaymentAsync(string userId, string paymentId)

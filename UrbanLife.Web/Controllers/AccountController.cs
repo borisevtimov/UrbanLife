@@ -180,5 +180,10 @@ namespace UrbanLife.Web.Controllers
 
             return Redirect("/user/account/payments");
         }
+
+        public IActionResult Subscriptions()
+        {
+            return View();
+        }
     }
 }
