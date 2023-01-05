@@ -12,7 +12,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
 builder.Services.AddScoped<UserService>()
-    .AddScoped<PaymentService>();
+    .AddScoped<PaymentService>()
+    .AddScoped<ScheduleService>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

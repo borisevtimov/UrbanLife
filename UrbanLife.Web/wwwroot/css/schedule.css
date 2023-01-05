@@ -1,0 +1,70 @@
+﻿main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../images/test.jpg');
+    background-size: cover;
+    background-position-y: 10%;
+}
+
+#lines {
+    text-align: center;
+    margin-bottom: 16px;
+    padding: 16px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 12px;
+    -webkit-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+}
+
+.sub-title {
+    margin: 0px;
+}
+
+.line-title {
+    margin-bottom: 6px;
+}
+
+.no-result {
+    margin-top: 0px;
+}
+
+.form-row {
+    margin-bottom: 6px;
+}
+
+.main-form-input {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    font-family: 'Roboto Flex', sans-serif;
+}
+
+label {
+    margin-right: 6px;
+}
+
+.submit-btn {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+    .submit-btn:hover {
+        transition: 0.3s;
+        cursor: pointer;
+        background-color: var(--clr-main-green);
+    }
+
+.line-anchor {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    margin-right: 6px;
+}
+
+    .line-anchor:hover {
+        color: var(--clr-main-green);
+    }

@@ -1,0 +1,86 @@
+﻿@using UrbanLife.Core.ViewModels;
+@using UrbanLife.Data.Data.Models;
+@using UrbanLife.Data.Enums;
+@model ScheduleViewModel
+@{
+    ViewData["Title"] = "Всички линии";
+}
+
+<h1>Изберете разписание за линия</h1>
+<section id="lines">
+    <h3 class="sub-title line-title">Или вижте само линиите, които минават през желаната спирка</h3>
+    <p class="no-result">Въведете името на спирката или нейния код и натиснете &#8220;Търси&#8221;</p>
+    <form class="search-form" action="/schedule/all" method="post">
+        <div class="form-row">
+            <label asp-for=@Model.StopNameInput>Име на спирка</label>
+            <input asp-for=@Model.StopNameInput type="text" list="stop-names" class="main-form-input" id="stop-name-input" placeholder="напр. - пл. &#8220;Орлов мост&#8221;" />
+            <datalist id="stop-names">
+                @foreach (string stopName in Model.StopNames)
+                {
+                    <option value='@stopName'></option>
+                }
+            </datalist>
+        </div>
+        <div class="form-row">
+            <label asp-for=@Model.StopCodeInput>Код</label>
+            <input asp-for=@Model.StopCodeInput type="text" class="main-form-input" list="stop-codes" id="stop-code-input" placeholder="напр. 1253" />
+            <datalist id="stop-codes">
+                @foreach (string stopCode in Model.StopCodes)
+                {
+                    <option value=@stopCode></option>
+                }
+            </datalist>
+        </div>
+        <input type="submit" value="Търси" class="submit-btn main-form-input" />
+    </form>
+    <h2 class="line-title">Автобусни линии</h2>
+    <div class="lines-container">
+        @if (Model.Lines.Where(l => l.Type == LineType.BUS).Count() != 0)
+        {
+            @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.BUS).OrderBy(l => l.Number))
+            {
+                <a class="line-anchor" href="/schedule/line?lineId=@line.Id">@line.Number</a>
+            }
+        }
+        else
+        {
+            <p class="no-result">Няма намерени резултати!</p>
+        }
+    </div>
+    <h2 class="line-title">Трамвайни линии</h2>
+    <div class="lines-container">
+        @if (Model.Lines.Where(l => l.Type == LineType.TRAM).Count() != 0)
+        {
+            @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TRAM).OrderBy(l => l.Number))
+            {
+                <a class="line-anchor" href="/schedule/line?lineId=@line.Id">@line.Number</a>
+            }
+        }
+        else
+        {
+            <p class="no-result">Няма намерени резултати!</p>
+        }
+    </div>
+    <h2 class="line-title">Тролейбусни линии</h2>
+    <div class="lines-container">
+        @if (Model.Lines.Where(l => l.Type == LineType.TROLLEY).Count() != 0)
+        {
+            @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TROLLEY).OrderBy(l => l.Number))
+            {
+                <a class="line-anchor" href="/schedule/line?lineId=@line.Id">@line.Number</a>
+            }
+        }
+        else
+        {
+            <p class="no-result">Няма намерени резултати!</p>
+        }
+    </div>
+</section>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/schedule.css" />
+}
+
+@section Scripts {
+    <script src="~/js/lineSearch.js"></script>
+}
