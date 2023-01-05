@@ -6,7 +6,7 @@ using UrbanLife.Data.Enums;
 
 namespace UrbanLife.Data.Data.Models
 {
-    public class TimeTable
+    public class Schedule
     {
         [Key]
         public string Id { get; set; }
@@ -19,6 +19,9 @@ namespace UrbanLife.Data.Data.Models
         [ForeignKey(nameof(Stop))]
         [Column(TypeName = "char(4)")]
         public string StopCode { get; set; }
+
+        [ForeignKey(nameof(NextStopCode))]
+        public string? NextStopCode { get; set; }
 
         [Required]
         [Column(TypeName = "time")]
@@ -33,7 +36,9 @@ namespace UrbanLife.Data.Data.Models
         [Required]
         public Stop Stop { get; set; }
 
-        public TimeTable()
+        public Stop? NextStop { get; set; }
+
+        public Schedule()
         {
             Id = Guid.NewGuid().ToString();
         }

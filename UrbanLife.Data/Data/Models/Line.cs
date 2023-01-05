@@ -16,12 +16,12 @@ namespace UrbanLife.Data.Data.Models
         [Required]
         public LineType Type { get; set; }
 
-        public ICollection<TimeTable> TimeTables { get; set; }
+        public ICollection<Schedule> Schedules { get; set; }
 
         public Line()
         {
             Id = Guid.NewGuid().ToString();
-            TimeTables = new HashSet<TimeTable>();
+            Schedules = new HashSet<Schedule>();
         }
     }
 }

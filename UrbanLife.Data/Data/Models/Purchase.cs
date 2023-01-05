@@ -31,6 +31,9 @@ namespace UrbanLife.Data.Data.Models
         public bool IsCard { get; set; } = true;
 
         [Required]
+        public string ReceiptPath { get; set; }
+
+        [Required]
         public User User { get; set; }
 
         public Payment? Payment { get; set; }

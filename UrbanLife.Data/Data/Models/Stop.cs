@@ -15,11 +15,16 @@ namespace UrbanLife.Data.Data.Models
         [MaxLength(50)]
         public string Name { get; set; }
 
-        public ICollection<TimeTable> TimeTables { get; set; }
+        [InverseProperty("Stop")]
+        public ICollection<Schedule> ArrivingSchedules { get; set; }
+
+        [InverseProperty("NextStop")]
+        public ICollection<Schedule> NextStopSchedules { get; set; }
 
         public Stop()
         {
-            TimeTables = new HashSet<TimeTable>();
+            ArrivingSchedules = new HashSet<Schedule>();
+            NextStopSchedules = new HashSet<Schedule>();
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
+using System.Text.RegularExpressions;
 using UrbanLife.Data.Data.Models;
 #nullable disable warnings
 
@@ -17,7 +19,7 @@ namespace UrbanLife.Data.Data
 
         public DbSet<Line> Lines { get; set; }
 
-        public DbSet<TimeTable> TimeTables { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
 
         public DbSet<Purchase> Purchases { get; set; }
 
