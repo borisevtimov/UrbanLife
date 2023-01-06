@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UrbanLife.Data.Data;
 
@@ -11,9 +12,10 @@ using UrbanLife.Data.Data;
 namespace UrbanLife.Data.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230106130234_ChangedIsWeekendToIsGoing")]
+    partial class ChangedIsWeekendToIsGoing
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -345,9 +347,6 @@ namespace UrbanLife.Data.Data.Migrations
 
                     b.Property<TimeSpan>("Arrival")
                         .HasColumnType("time");
-
-                    b.Property<bool>("IsFirstStop")
-                        .HasColumnType("bit");
 
                     b.Property<bool>("IsGoing")
                         .HasColumnType("bit");

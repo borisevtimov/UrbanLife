@@ -28,7 +28,10 @@ namespace UrbanLife.Data.Data.Models
         public TimeSpan Arrival { get; set; }
 
         [Required]
-        public bool IsWeekday { get; set; } = true;
+        public bool IsGoing { get; set; } = true;
+
+        [Required]
+        public bool IsFirstStop { get; set; } = false;
 
         [Required]
         public Line Line { get; set; }
