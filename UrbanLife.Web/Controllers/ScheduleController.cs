@@ -2,6 +2,8 @@
 using System.Data.Common;
 using UrbanLife.Core.Services;
 using UrbanLife.Core.ViewModels;
+using UrbanLife.Data.Data.Models;
+using UrbanLife.Data.Enums;
 
 namespace UrbanLife.Web.Controllers
 {
@@ -55,9 +57,38 @@ namespace UrbanLife.Web.Controllers
             return View(newModel);
         }
 
-        public IActionResult Line(string lineId)
+        public async Task<IActionResult> Line(int lineNumber, LineType lineType, LineViewModel model)
         {
-            return View();
+            UrbanLife.Data.Data.Models.Line line = await scheduleService.GetLineIdAsync(lineNumber, lineType);
+            model.StopCodes = await scheduleService.GetStopCodesForLineAsync(line.Id);
+            List<string> endStopsNames = await scheduleService.GetFirstAndLastStopNameForGoingAsync(line.Id);
+
+            model.FirstStop = endStopsNames[0];
+            model.LastStop = endStopsNames[1];
+
+            if (model.ChosenDestination == null)
+            {
+                model.ChosenDestination = model.LastStop;
+            }
+            if (model.ChosenStopCode == null)
+            {
+                model.ChosenStopCode = model.StopCodes.First();
+            }
+
+            bool isLineGoing = await scheduleService.IsLineGoingAsync(line.Id, model.ChosenDestination);
+
+            if (isLineGoing) { }
+
+            model.Arrivals = await scheduleService
+                .GetArrivalsForLineStopAsync(line.Id, model.ChosenStopCode, isLineGoing);
+
+            return View(model);
+        }
+
+        public IActionResult ChooseLine(LineViewModel model)
+        {
+            return RedirectToAction(nameof(Line),
+                new { lineNumber = model.LineNumber, lineType = model.LineType.ToString().ToLower(), model });
         }
     }
 }

@@ -39,7 +39,10 @@
         {
             @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.BUS).OrderBy(l => l.Number))
             {
-                <a class="line-anchor" href="/schedule/line?lineId=@line.Id">@line.Number</a>
+                <a class="line-anchor"
+           href="/schedule/line?lineNumber=@line.Number&lineType=@line.Type.ToString().ToLower()">
+                    @line.Number
+                </a>
             }
         }
         else
@@ -53,7 +56,10 @@
         {
             @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TRAM).OrderBy(l => l.Number))
             {
-                <a class="line-anchor" href="/schedule/line?lineId=@line.Id">@line.Number</a>
+                <a class="line-anchor"
+           href="/schedule/line?lineNumber=@line.Number&lineType=@line.Type.ToString().ToLower()">
+                    @line.Number
+                </a>
             }
         }
         else
@@ -67,7 +73,10 @@
         {
             @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TROLLEY).OrderBy(l => l.Number))
             {
-                <a class="line-anchor" href="/schedule/line?lineId=@line.Id">@line.Number</a>
+                <a class="line-anchor"
+           href="/schedule/line?lineNumber=@line.Number&lineType=@line.Type.ToString().ToLower()">
+                    @line.Number
+                </a>
             }
         }
         else
