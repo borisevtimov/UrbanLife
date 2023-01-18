@@ -1,78 +1,115 @@
 ﻿@using UrbanLife.Core.ViewModels;
+@using UrbanLife.Data.Enums;
 @model LineViewModel
 @{
-    ViewData["Title"] = $"Линия {Model.LineNumber}";
+    if (Model.LineType == LineType.BUS)
+    {
+        ViewData["Title"] = $"Линия {Model.LineNumber} автобус";
+    }
+    else if (Model.LineType == LineType.TRAM)
+    {
+        ViewData["Title"] = $"Линия {Model.LineNumber} трамвай";
+    }
+    else if (Model.LineType == LineType.TROLLEY)
+    {
+        ViewData["Title"] = $"Линия {Model.LineNumber} тролей";
+    }
+
 }
 
-<h1>Разписание за линия @Model.LineNumber</h1>
+@if (Model.LineType == LineType.BUS)
+{
+    <h1>Разписание за линия @Model.LineNumber автобус</h1>
+}
+else if (Model.LineType == LineType.TRAM)
+{
+    <h1>Разписание за линия @Model.LineNumber трамвай</h1>
+}
+else if (Model.LineType == LineType.TROLLEY)
+{
+    <h1>Разписание за линия @Model.LineNumber тролей</h1>
+}
+
 <form class="choose-stop-form" action="/schedule/line" method="get">
     <input asp-for=@Model.LineNumber type="hidden" />
     <input asp-for=@Model.LineType type="hidden" />
-    <label asp-for=@Model.ChosenStopCode>Изберете код на спирка</label>
-    <select asp-for=@Model.ChosenStopCode>
-        @foreach (string stopCode in Model.StopCodes)
-        {
-            <option value=@stopCode>@stopCode</option>
-        }
-    </select>
-    <p>Изберете посока</p>
-    <label asp-for=@Model.ChosenDestination>@Model.FirstStop - @Model.LastStop</label>
-    <!--Value-то показва коя е крайната спирка-->
-    <input asp-for=@Model.ChosenDestination type="radio" value="@Model.LastStop" checked />
-    <label asp-for=@Model.ChosenDestination>@Model.LastStop - @Model.FirstStop</label>
-    <input asp-for=@Model.ChosenDestination type="radio" value="@Model.FirstStop" />
-    <input type="submit" value="Избери" />
+    <div class="form-row form-select-row">
+        <label asp-for=@Model.ChosenStopCode>Изберете код на спирка</label>
+        <select asp-for=@Model.ChosenStopCode class="main-select-input">
+            @foreach (string stopCode in Model.StopCodes)
+            {
+                <option value=@stopCode>@stopCode</option>
+            }
+        </select>
+    </div>
+    <p class="direction">Посока</p>
+    <div class="form-row">
+        <input asp-for=@Model.ChosenDestination type="radio" value="@Model.LastStop" checked />
+        <label asp-for=@Model.ChosenDestination>@Model.FirstStop - @Model.LastStop</label>
+    </div>
+    <div class="form-row second-direction-row">
+        <!--Value-то показва коя е крайната спирка-->
+        <input asp-for=@Model.ChosenDestination type="radio" value="@Model.FirstStop" />
+        <label asp-for=@Model.ChosenDestination>@Model.LastStop - @Model.FirstStop</label>
+    </div>
+    <div class="form-row">
+        <input type="submit" value="Търсене" class="main-form-input submit-btn" />
+    </div>
 </form>
-<table>
-    <caption>Натиснете върху даден час, за да си купите билет за него!</caption>
+<p class="caption">Натиснете върху даден час, за да си купите билет за него!</p>
+<table class="schedule-table">
     <thead>
-        <tr>
+        <tr class="schedule-row">
             <th>Час</th>
             <th colspan="9">Пристига</th>
         </tr>
     </thead>
     <tbody>
-        <tr>
-            <td>06:00 - 08:00</td>
+        <tr class="schedule-row">
+            <td class="arrival-interval">06:00 - 08:00</td>
             @foreach (TimeSpan time in Model.Arrivals.Where(a => a.Hours > 5 && a.Hours < 9).OrderBy(a => a.Ticks))
             {
-                <td><a href="#">@time</a></td>
+                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time</a></td>
             }
         </tr>
-        <tr>
-            <td>09:00 - 11:00</td>
+        <tr class="schedule-row">
+            <td class="arrival-interval">09:00 - 11:00</td>
             @foreach (TimeSpan time in Model.Arrivals.Where(a => a.Hours > 8 && a.Hours < 12).OrderBy(a => a.Ticks))
             {
-                <td><a href="#">@time</a></td>
+                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time</a></td>
             }
         </tr>
-        <tr>
-            <td>12:00 - 14:00</td>
+        <tr class="schedule-row">
+            <td class="arrival-interval">12:00 - 14:00</td>
             @foreach (TimeSpan time in Model.Arrivals.Where(a => a.Hours > 11 && a.Hours < 15).OrderBy(a => a.Ticks))
             {
-                <td><a href="#">@time</a></td>
+                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time</a></td>
             }
         </tr>
-        <tr>
-            <td>15:00 - 17:00</td>
+        <tr class="schedule-row">
+            <td class="arrival-interval">15:00 - 17:00</td>
             @foreach (TimeSpan time in Model.Arrivals.Where(a => a.Hours > 14 && a.Hours < 18).OrderBy(a => a.Ticks))
             {
-                <td><a href="#">@time</a></td>
+                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time</a></td>
             }
         </tr>
-        <tr>
-            <td>18:00 - 20:00</td>
+        <tr class="schedule-row">
+            <td class="arrival-interval">18:00 - 20:00</td>
             @foreach (TimeSpan time in Model.Arrivals.Where(a => a.Hours > 17 && a.Hours < 21).OrderBy(a => a.Ticks))
             {
-                <td><a href="#">@time</a></td>
+                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time</a></td>
             }
         </tr>
-        <tr>
-            <td>21:00 - 23:00</td>
+        <tr class="schedule-row">
+            <td class="arrival-interval">21:00 - 23:00</td>
             @foreach (TimeSpan time in Model.Arrivals.Where(a => a.Hours > 20 && a.Hours < 24).OrderBy(a => a.Ticks))
             {
-                <td><a href="#">@time</a></td>
+                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time</a></td>
             }
         </tr>
     </tbody>
 </table>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/line.css" />
+}

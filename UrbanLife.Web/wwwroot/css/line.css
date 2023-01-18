@@ -1,0 +1,109 @@
+﻿main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-image: url('../images/test.jpg');
+    background-size: cover;
+    background-position-y: 10%;
+}
+
+.choose-stop-form {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.form-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-select-row {
+    gap: 8px;
+}
+
+.direction {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 3px;
+}
+
+.second-direction-row {
+    margin-bottom: 20px;
+}
+
+.main-select-input {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    font-family: 'Roboto Flex', sans-serif;
+}
+
+.main-form-input {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    font-family: 'Roboto Flex', sans-serif;
+}
+
+.submit-btn {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+    .submit-btn:hover {
+        transition: 0.3s;
+        cursor: pointer;
+        background-color: var(--clr-main-green);
+    }
+
+.schedule-table {
+    background-color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 12px;
+    -webkit-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+}
+
+.caption {
+    background-color: rgba(0, 0, 0, 0.5);
+    font-style: italic;
+    color: white;
+    font-weight: 700;
+    margin-bottom: 10px;
+    padding: 5px 20px;
+    border-radius: 12px;
+    -webkit-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+}
+
+tbody > .schedule-row:first-of-type > td {
+    padding-top: 10px;
+}
+
+.arrival-time-col {
+    padding-bottom: 10px;
+    padding-right: 10px;
+}
+
+.arrival-interval {
+    padding-right: 20px;
+    text-decoration: overline;
+}
+
+.arrive-time-link {
+    color: white;
+    text-decoration: none;
+}
+
+    .arrive-time-link:hover {
+        color: var(--clr-main-green);
+    }

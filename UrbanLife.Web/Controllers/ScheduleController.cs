@@ -77,8 +77,6 @@ namespace UrbanLife.Web.Controllers
 
             bool isLineGoing = await scheduleService.IsLineGoingAsync(line.Id, model.ChosenDestination);
 
-            if (isLineGoing) { }
-
             model.Arrivals = await scheduleService
                 .GetArrivalsForLineStopAsync(line.Id, model.ChosenStopCode, isLineGoing);
 
