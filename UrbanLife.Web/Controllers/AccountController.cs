@@ -73,10 +73,7 @@ namespace UrbanLife.Web.Controllers
                     PictureProcessor.DeleteProfilePicture(webHostEnvironment.WebRootPath, user.ProfileImageName);
                 }
 
-                if (fileName != null)
-                {
-                    await userService.UpdateProfileAsync(user, model, fileName);
-                }
+                await userService.UpdateProfileAsync(user, model, fileName);
             }
             catch (IOException)
             {

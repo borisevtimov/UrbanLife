@@ -90,7 +90,7 @@ namespace UrbanLife.Core.Services
             return user != null;
         }
 
-        public async Task UpdateProfileAsync(User user, UpdateProfileViewModel updateModel, string fileName)
+        public async Task UpdateProfileAsync(User user, UpdateProfileViewModel updateModel, string? fileName)
         {
             if (updateModel.Email != null)
             {
