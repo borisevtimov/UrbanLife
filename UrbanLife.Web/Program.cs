@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using UrbanLife.Core.Services;
+using UrbanLife.Core.Utilities;
 using UrbanLife.Data.Data;
 using UrbanLife.Data.Data.Models;
 
@@ -11,7 +12,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddScoped<UserService>()
+builder.Services.AddScoped<DataSeeder>()
+    .AddScoped<UserService>()
     .AddScoped<PaymentService>()
     .AddScoped<ScheduleService>();
 

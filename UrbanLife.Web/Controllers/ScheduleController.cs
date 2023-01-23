@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Data.Common;
 using UrbanLife.Core.Services;
+using UrbanLife.Core.Utilities;
 using UrbanLife.Core.ViewModels;
 using UrbanLife.Data.Data.Models;
 using UrbanLife.Data.Enums;
@@ -60,7 +61,6 @@ namespace UrbanLife.Web.Controllers
         public async Task<IActionResult> Line(int lineNumber, LineType lineType, LineViewModel model)
         {
             UrbanLife.Data.Data.Models.Line line = await scheduleService.GetLineIdAsync(lineNumber, lineType);
-            model.StopCodes = await scheduleService.GetStopCodesForLineAsync(line.Id);
             List<string> endStopsNames = await scheduleService.GetFirstAndLastStopNameForGoingAsync(line.Id);
 
             model.FirstStop = endStopsNames[0];
@@ -70,12 +70,16 @@ namespace UrbanLife.Web.Controllers
             {
                 model.ChosenDestination = model.LastStop;
             }
+            
+            bool isLineGoing = await scheduleService.IsLineGoingAsync(line.Id, model.ChosenDestination);
+            model.StopCodes = await scheduleService.GetStopCodesAndNamesForLineAsync(line.Id, isLineGoing);
+
             if (model.ChosenStopCode == null)
             {
                 model.ChosenStopCode = model.StopCodes.First();
             }
 
-            bool isLineGoing = await scheduleService.IsLineGoingAsync(line.Id, model.ChosenDestination);
+            model.ChosenStopCode = model.ChosenStopCode.Split(" - ", StringSplitOptions.RemoveEmptyEntries)[0];
 
             model.Arrivals = await scheduleService
                 .GetArrivalsForLineStopAsync(line.Id, model.ChosenStopCode, isLineGoing);

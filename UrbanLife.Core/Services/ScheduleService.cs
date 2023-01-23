@@ -12,10 +12,12 @@ namespace UrbanLife.Core.Services
     public class ScheduleService
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly DataSeeder dataSeeder;
 
-        public ScheduleService(ApplicationDbContext dbContext)
+        public ScheduleService(ApplicationDbContext dbContext, DataSeeder dataSeeder)
         {
             this.dbContext = dbContext;
+            this.dataSeeder = dataSeeder;
         }
 
         public async Task<List<string>> GetAllStopCodesAsync()
@@ -60,12 +62,35 @@ namespace UrbanLife.Core.Services
             return line;
         }
 
-        public async Task<List<string>> GetStopCodesForLineAsync(string lineId)
+        public async Task<List<string>> GetStopCodesAndNamesForLineAsync(string lineId, bool isGoing)
         {
-            return await dbContext.Schedules
-                .Where(s => s.LineId == lineId && s.IsGoing)
-                .Select(s => s.StopCode)
+            var schedules = await dbContext.Schedules
+                .Where(s => s.LineId == lineId && s.IsGoing == isGoing)
+                .OrderByDescending(s => s.IsFirstStop)
+                .Select(s => new
+                {
+                    StopCode = s.StopCode,
+                    IsFirstStop = s.IsFirstStop,
+                    NextStopCode = s.NextStopCode,
+                    StopName = s.Stop.Name
+                })
+                .Distinct()
                 .ToListAsync();
+
+            List<string> resultStopCodesAndNames = new();
+            var currentSchedule = schedules.First(s => s.IsFirstStop);
+
+            for (int i = 0; i < schedules.Count; i++)
+            {
+                resultStopCodesAndNames.Add($"{currentSchedule.StopCode} - {currentSchedule.StopName}");
+
+                if (currentSchedule.NextStopCode != null)
+                {
+                    currentSchedule = schedules.First(s => s.StopCode == currentSchedule.NextStopCode);
+                }
+            }
+
+            return resultStopCodesAndNames;
         }
 
         public async Task<List<string>> GetFirstAndLastStopNameForGoingAsync(string lineId)
@@ -73,17 +98,16 @@ namespace UrbanLife.Core.Services
             return await dbContext.Schedules.Where(s => s.LineId == lineId && s.IsFirstStop)
                 .OrderByDescending(s => s.IsGoing)
                 .Select(s => s.Stop.Name)
+                .Distinct()
                 .ToListAsync();
         }
 
         public async Task<List<TimeSpan>> GetArrivalsForLineStopAsync(string lineId, string stopCode, bool isGoing)
         {
-            TimeSpan timeSpan = await dbContext.Schedules
+            return await dbContext.Schedules
                 .Where(s => s.LineId == lineId && s.StopCode == stopCode && s.IsGoing == isGoing)
                 .Select(s => s.Arrival)
-                .FirstOrDefaultAsync();
-
-            return AddArrivalsToLineStopAsync(timeSpan);
+                .ToListAsync();
         }
 
         public async Task<bool> IsLineGoingAsync(string lineId, string endStop)
@@ -92,17 +116,10 @@ namespace UrbanLife.Core.Services
                 .AnyAsync(s => s.LineId == lineId && s.Stop.Name == endStop && s.NextStopCode == null && s.IsGoing);
         }
 
-        private List<TimeSpan> AddArrivalsToLineStopAsync(TimeSpan timeSpan)
+        // DELETES AND CREATES THE SCHEDULES!!!
+        public async Task GenerateSchedulesAsync()
         {
-            List<TimeSpan> addedHours = DataSeeder.AddHoursToArrival(timeSpan);
-            List<TimeSpan> addedMinutes = DataSeeder.AddMinutesToArrival(timeSpan);
-
-            List<TimeSpan> timeSpans = new();
-            timeSpans.Add(timeSpan);
-            timeSpans.AddRange(addedHours);
-            timeSpans.AddRange(addedMinutes);
-
-            return timeSpans;
+            await dataSeeder.CreateSchedulesAsync();
         }
     }
 }
