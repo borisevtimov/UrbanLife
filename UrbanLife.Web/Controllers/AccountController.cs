@@ -47,7 +47,7 @@ namespace UrbanLife.Web.Controllers
 
             if (model.Password != null && model.ConfirmPassword != null)
             {
-                if (await userService.PasswordExists(user.Email, model.Password))
+                if (await userService.PasswordExistsAsync(user.Email, model.Password))
                 {
                     model.SamePassword = 1;
                 }

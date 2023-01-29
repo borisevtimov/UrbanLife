@@ -38,7 +38,7 @@ namespace UrbanLife.Core.Services
                 .FirstOrDefaultAsync(u => u.NormalizedEmail == email.ToUpper()) != null;
         }
 
-        public async Task<bool> PasswordExists(string email, string password)
+        public async Task<bool> PasswordExistsAsync(string email, string password)
         {
             return await dbContext.Users.FirstOrDefaultAsync(u => u.NormalizedEmail == email.ToUpper()
                 && u.PasswordHash == HashPassword(password)) != null;

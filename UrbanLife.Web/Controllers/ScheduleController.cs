@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Data.Common;
 using UrbanLife.Core.Services;
-using UrbanLife.Core.Utilities;
 using UrbanLife.Core.ViewModels;
-using UrbanLife.Data.Data.Models;
 using UrbanLife.Data.Enums;
 
 namespace UrbanLife.Web.Controllers

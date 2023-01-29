@@ -42,14 +42,6 @@ namespace UrbanLife.Web.Controllers
                 return Redirect("/");
             }
 
-            if (!await userService.SignUserAsync(model))
-            {
-                model.InvalidProfile = 1;
-            }
-
-            ModelState.Clear();
-            TryValidateModel(model);
-
             if (!ModelState.IsValid)
             {
                 return View();
@@ -77,14 +69,6 @@ namespace UrbanLife.Web.Controllers
             {
                 return Redirect("/");
             }
-
-            if (await userService.UserExistsAsync(registerViewModel.Email))
-            {
-                registerViewModel.EmailAlreadyUsed = 1;
-            }
-
-            ModelState.Clear();
-            TryValidateModel(registerViewModel);
 
             if (!ModelState.IsValid)
             {
@@ -119,6 +103,21 @@ namespace UrbanLife.Web.Controllers
             }
 
             return Redirect("/");
+        }
+
+        public async Task<JsonResult> CheckLoginCredentials(string email, string password)
+        {
+            if (email == null || password == null)
+            {
+                return Json(false);
+            }
+
+            return Json(await userService.PasswordExistsAsync(email, password)); 
+        }
+
+        public async Task<JsonResult> IsEmailAddressUsed(string email)
+        {
+            return Json(await userService.UserExistsAsync(email));
         }
     }
 }

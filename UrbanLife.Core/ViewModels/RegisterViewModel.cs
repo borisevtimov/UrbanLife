@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 #nullable disable warnings
 
@@ -27,8 +26,5 @@ namespace UrbanLife.Core.ViewModels
         public string? ConfirmPassword { get; set; }
 
         public IFormFile? ProfilePicture { get; set; }
-
-        [Range(0, 0, ErrorMessage = "Имейлът адресът вече е зает!")]
-        public int EmailAlreadyUsed { get; set; }
     }
 }
