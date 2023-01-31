@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\js\accountSettingsValidation.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\css\line.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\js\accountSettingsValidation.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,6 +31,10 @@
   <ItemGroup>
     <Folder Include="Areas\" />
     <Folder Include="wwwroot\images\profile-pictures\custom-pictures\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\accountSettingsValidation.js" />
   </ItemGroup>
 
 </Project>

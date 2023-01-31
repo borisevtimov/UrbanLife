@@ -117,6 +117,11 @@ namespace UrbanLife.Web.Controllers
 
         public async Task<JsonResult> IsEmailAddressUsed(string email)
         {
+            if (email == null)
+            {
+                return Json(false);
+            }
+
             return Json(await userService.UserExistsAsync(email));
         }
     }

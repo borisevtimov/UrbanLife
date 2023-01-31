@@ -35,26 +35,7 @@ namespace UrbanLife.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Settings(UpdateProfileViewModel model)
         {
-            if (model.Email != null)
-            {
-                if (await userService.UserExistsAsync(model.Email))
-                {
-                    model.EmailAlreadyUsed = 1;
-                }
-            }
-
             User user = await userManager.GetUserAsync(User);
-
-            if (model.Password != null && model.ConfirmPassword != null)
-            {
-                if (await userService.PasswordExistsAsync(user.Email, model.Password))
-                {
-                    model.SamePassword = 1;
-                }
-            }
-
-            ModelState.Clear();
-            TryValidateModel(model);
 
             if (!ModelState.IsValid)
             {
@@ -115,27 +96,6 @@ namespace UrbanLife.Web.Controllers
             List<Payment> paymentsByUser = await paymentService.GetPaymentsByUserAsync(user.Id);
             Payment payment = await paymentService.GetPaymentByNumberAsync(model.CardNumber);
 
-            if (payment != null)
-            {
-                if (payment.ExpireDate != model.ExpireDate ||
-                payment.FirstName != model.FirstName.ToUpper() ||
-                payment.LastName != model.LastName.ToUpper() ||
-                payment.Amount != model.Amount ||
-                payment.CVC != model.CVC)
-                {
-                    model.IsCardInvalid = 1;
-                }
-            }
-
-            if (paymentsByUser.FirstOrDefault(p => p.Number == model.CardNumber) != null)
-            {
-                model.IsCardAlreadyAdded = 1;
-                model.IsCardInvalid = 0;
-            }
-
-            ModelState.Clear();
-            TryValidateModel(model);
-
             if (!ModelState.IsValid)
             {
                 return View();
@@ -189,6 +149,54 @@ namespace UrbanLife.Web.Controllers
         public IActionResult Subscriptions()
         {
             return View();
+        }
+
+        public async Task<JsonResult> PasswordAlreadyUsed(string email, string password)
+        {
+            if (password == null)
+            {
+                return Json(false);
+            }
+            if (email == null)
+            {
+                UrbanLife.Data.Data.Models.User user = await userManager.GetUserAsync(User);
+                email = user.Email;
+            }
+
+            return Json(await userService.PasswordExistsAsync(email, password));
+        }
+
+        public async Task<JsonResult> CardCredentialsAreValid(string cardNumber, DateTime expireDate, string firstName,
+            string lastName, decimal amount, string cvc)
+        {
+            Payment payment = await paymentService.GetPaymentByNumberAsync(cardNumber);
+
+            if (payment != null)
+            {
+                if (payment.ExpireDate != expireDate ||
+                payment.FirstName != firstName.ToUpper() ||
+                payment.LastName != lastName.ToUpper() ||
+                payment.Amount != amount ||
+                payment.CVC != cvc)
+                {
+                    return Json(false);
+                }
+            }
+
+            return Json(true);
+        }
+
+        public async Task<JsonResult> CardAlreadyAdded(string cardNumber)
+        {
+            UrbanLife.Data.Data.Models.User user = await userManager.GetUserAsync(User);
+            List<Payment> paymentsByUser = await paymentService.GetPaymentsByUserAsync(user.Id);
+
+            if (paymentsByUser.FirstOrDefault(p => p.Number == cardNumber) != null)
+            {
+                return Json(true);
+            }
+
+            return Json(false);
         }
     }
 }

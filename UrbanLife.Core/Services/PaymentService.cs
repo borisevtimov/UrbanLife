@@ -43,6 +43,7 @@ namespace UrbanLife.Core.Services
                     IsDefault = p.UserPayments.Select(up => up.IsDefault == true).FirstOrDefault()
                 })
                 .OrderByDescending(p => p.IsDefault)
+                .ThenByDescending(p => p.Amount)
                 .ToListAsync();
         }
 

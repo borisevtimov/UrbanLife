@@ -42,7 +42,7 @@ else if (Model.LineType == LineType.TROLLEY)
             }
         </select>
     </div>
-    <p class="direction">Посока</p>
+    <h2 class="direction">Посока</h2>
     <div class="form-row">
         <input asp-for=@Model.ChosenDestination type="radio" value="@Model.LastStop" checked />
         <label asp-for=@Model.ChosenDestination>@Model.FirstStop - @Model.LastStop</label>
@@ -69,42 +69,42 @@ else if (Model.LineType == LineType.TROLLEY)
             <td class="arrival-interval">06:00 - 08:00</td>
             @foreach (TimeSpan time in Model.Arrivals.Where(a => a.Hours > 5 && a.Hours < 9).OrderBy(a => a.Ticks))
             {
-                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time</a></td>
+                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time.ToString(@"hh\:mm")</a></td>
             }
         </tr>
         <tr class="schedule-row">
             <td class="arrival-interval">09:00 - 11:00</td>
             @foreach (TimeSpan time in Model.Arrivals.Where(a => a.Hours > 8 && a.Hours < 12).OrderBy(a => a.Ticks))
             {
-                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time</a></td>
+                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time.ToString(@"hh\:mm")</a></td>
             }
         </tr>
         <tr class="schedule-row">
             <td class="arrival-interval">12:00 - 14:00</td>
             @foreach (TimeSpan time in Model.Arrivals.Where(a => a.Hours > 11 && a.Hours < 15).OrderBy(a => a.Ticks))
             {
-                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time</a></td>
+                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time.ToString(@"hh\:mm")</a></td>
             }
         </tr>
         <tr class="schedule-row">
             <td class="arrival-interval">15:00 - 17:00</td>
             @foreach (TimeSpan time in Model.Arrivals.Where(a => a.Hours > 14 && a.Hours < 18).OrderBy(a => a.Ticks))
             {
-                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time</a></td>
+                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time.ToString(@"hh\:mm")</a></td>
             }
         </tr>
         <tr class="schedule-row">
             <td class="arrival-interval">18:00 - 20:00</td>
             @foreach (TimeSpan time in Model.Arrivals.Where(a => a.Hours > 17 && a.Hours < 21).OrderBy(a => a.Ticks))
             {
-                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time</a></td>
+                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time.ToString(@"hh\:mm")</a></td>
             }
         </tr>
         <tr class="schedule-row">
             <td class="arrival-interval">21:00 - 23:00</td>
             @foreach (TimeSpan time in Model.Arrivals.Where(a => a.Hours > 20 && a.Hours < 24).OrderBy(a => a.Ticks))
             {
-                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time</a></td>
+                <td class="arrival-time-col"><a href="#" class="arrive-time-link">@time.ToString(@"hh\:mm")</a></td>
             }
         </tr>
     </tbody>

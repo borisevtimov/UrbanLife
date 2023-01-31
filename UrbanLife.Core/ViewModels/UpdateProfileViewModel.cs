@@ -22,11 +22,5 @@ namespace UrbanLife.Core.ViewModels
 
         [Compare(nameof(Password), ErrorMessage = "Паролите не съвпадат!")]
         public string? ConfirmPassword { get; set; }
-
-        [Range(0, 0, ErrorMessage = "Имейлът адресът вече е зает!")]
-        public int EmailAlreadyUsed { get; set; }
-
-        [Range(0, 0, ErrorMessage = "Вече използвате тази парола!")]
-        public int SamePassword { get; set; }
     }
 }

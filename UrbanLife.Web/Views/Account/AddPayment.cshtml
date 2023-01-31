@@ -21,15 +21,15 @@
         </div>
         <span asp-validation-for=@Model.CardNumber class="form-text-danger"></span>
         <span asp-validation-for=@Model.CVC class="form-text-danger"></span>
-        <span asp-validation-for=@Model.IsCardAlreadyAdded class="form-text-danger"></span>
+        <span class="form-text-danger error-field-card-added"></span>
         <div class="form-row">
             <div class="form-col wide-input-container card-number-input">
                 <label asp-for=@Model.CardNumber>*Номер на картата</label>
-                <input asp-for=@Model.CardNumber class="main-form-input" type="text" />
+                <input asp-for=@Model.CardNumber class="main-form-input" type="text" maxlength="19" />
             </div>
             <div class="form-col small-input-container">
                 <label asp-for=@Model.CVC>*Код &ensp;<i class="fa-solid fa-eye-slash cvc-eye-icon"></i></label>
-                <input asp-for=@Model.CVC class="main-form-input" type="password" />
+                <input asp-for=@Model.CVC class="main-form-input" type="password" maxlength="3" />
             </div>
         </div>
         <span asp-validation-for=@Model.ExpireDate class="form-text-danger"></span>
@@ -48,7 +48,7 @@
             <label asp-for=@Model.IsDefault>По подразбиране</label>
             <input asp-for=@Model.IsDefault type="checkbox" />
         </div>
-        <span asp-validation-for=@Model.IsCardInvalid class="form-text-danger"></span>
+        <span class="form-text-danger error-field-card-credentials"></span>
         <p class="all-fields-required">Полетата със * са задължителни!</p>
         <div class="form-row-submit">
             <input class="submit-btn main-form-input" type="submit" value="Добавяне" />
@@ -65,4 +65,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/cardForm.js"></script>
+    <script src="~/js/cardValidation.js"></script>
 }
