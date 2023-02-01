@@ -15,7 +15,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddScoped<DataSeeder>()
     .AddScoped<UserService>()
     .AddScoped<PaymentService>()
-    .AddScoped<ScheduleService>();
+    .AddScoped<ScheduleService>()
+    .AddScoped<TravelService>();
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 

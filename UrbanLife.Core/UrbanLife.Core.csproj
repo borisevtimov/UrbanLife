@@ -10,6 +10,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="XAct.Wintellect.PowerCollections" Version="0.0.1" />
   </ItemGroup>
 
   <ItemGroup>

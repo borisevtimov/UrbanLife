@@ -1,5 +1,28 @@
-﻿@{
+﻿@using UrbanLife.Core.ViewModels;
+@model TravelViewModel
+@{
     ViewData["Title"] = "Избиране на дестинация";
 }
 
-<p>Избиране на дестинация</p>
+<h1>Вижте най-бързите маршрути до дадена дестинация!</h1>
+<h2>Само изберете начална и крайна спирка и час на потегляне!</h2>
+<form>
+    <label for="first-stop">Начална спирка</label>
+    <input type="text" list="first-stop-datalist" name="first-stop" />
+    <datalist id="first-stop-datalist">
+        <option value="Кв. Биримирци"></option>
+    </datalist>
+    <label for="last-stop">Крайна спирка</label>
+    <input type="text" list="last-stop-datalist" name="last-stop" />
+    <datalist id="last-stop-datalist">
+        <option value="Ж.к Бъкстон"></option>
+    </datalist>
+    <input type="time" value="18:40" />
+    <input type="submit" />
+</form>
+@foreach (KeyValuePair<string, RouteViewModel> route in Model.Routes)
+{
+    <p>Потегля в @route.Value.Arrival.ToString(@"hh\:mm")ч. от @route.Value.StopCode (@route.Value.StopName) -> @route.Value.LineNumber @route.Value.LineType ->
+        @route.Value.NextStopCode (@route.Value.NextStopName) - @route.Value.LineRepeatings спирки 
+    </p>
+}
