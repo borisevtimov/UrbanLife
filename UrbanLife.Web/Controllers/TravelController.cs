@@ -39,37 +39,31 @@ namespace UrbanLife.Web.Controllers
             try
             {
                 string[]? stopCodes = null;
-
-                if (model.ChosenStopName != null && model.ChosenLastStopName != null)
+                if (model.ChosenStopCode != null && model.ChosenStopName != null
+                    && model.ChosenLastStopCode != null && model.ChosenLastStopName != null)
                 {
-
-                    string firstStopCode = await scheduleService.GetStopCodeAsync(model.ChosenStopName);
-                    string lastStopCode = await scheduleService.GetStopCodeAsync(model.ChosenLastStopName);
-
-                    model.ChosenStopCode = firstStopCode;
-                    model.ChosenLastStopCode = lastStopCode;
-
+                    model.ChosenStopName = await scheduleService.GetStopNameAsync(model.ChosenStopCode);
+                    model.ChosenLastStopName = await scheduleService.GetStopNameAsync(model.ChosenLastStopCode);
+                }
+                else if (model.ChosenStopName != null && model.ChosenLastStopName != null)
+                {
+                    model.ChosenStopCode = await scheduleService.GetStopCodeAsync(model.ChosenStopName);
+                    model.ChosenLastStopCode = await scheduleService.GetStopCodeAsync(model.ChosenLastStopName);
                 }
                 else if (model.ChosenStopCode != null && model.ChosenLastStopName != null)
                 {
-                    string lastStopCode = await scheduleService.GetStopCodeAsync(model.ChosenLastStopName);
-                    string firstStopName = await scheduleService.GetStopNameAsync(model.ChosenStopCode);
-                    model.ChosenLastStopCode = lastStopCode;
-                    model.ChosenStopName = firstStopName;
+                    model.ChosenLastStopCode = await scheduleService.GetStopCodeAsync(model.ChosenLastStopName);
+                    model.ChosenStopName = await scheduleService.GetStopNameAsync(model.ChosenStopCode);
                 }
                 else if (model.ChosenStopName != null && model.ChosenLastStopCode != null)
                 {
-                    string firstStopCode = await scheduleService.GetStopCodeAsync(model.ChosenStopName);
-                    string lastStopName = await scheduleService.GetStopNameAsync(model.ChosenLastStopCode);
-                    model.ChosenStopCode = firstStopCode;
-                    model.ChosenLastStopName = lastStopName;
+                    model.ChosenStopCode = await scheduleService.GetStopCodeAsync(model.ChosenStopName);
+                    model.ChosenLastStopName = await scheduleService.GetStopNameAsync(model.ChosenLastStopCode);
                 }
                 else if (model.ChosenStopCode != null && model.ChosenLastStopCode != null)
                 {
-                    string firstStopName = await scheduleService.GetStopNameAsync(model.ChosenStopCode);
-                    string lastStopName = await scheduleService.GetStopNameAsync(model.ChosenLastStopCode);
-                    model.ChosenStopName = firstStopName;
-                    model.ChosenLastStopName = lastStopName;
+                    model.ChosenStopName = await scheduleService.GetStopNameAsync(model.ChosenStopCode);
+                    model.ChosenLastStopName = await scheduleService.GetStopNameAsync(model.ChosenLastStopCode);
                 }
                 else if (model.ChosenStopCode == null || model.ChosenLastStopCode == null)
                 {
@@ -78,6 +72,11 @@ namespace UrbanLife.Web.Controllers
 
                 stopCodes = await travelService
                     .FindFastestRouteAsync(model.ChosenStopCode, model.ChosenLastStopCode, model.WantedTime);
+
+                if (stopCodes == null)
+                {
+                    return RedirectToAction(nameof(Choose));
+                }
 
                 Dictionary<string, RouteViewModel> routeViewModel = await travelService.GetRouteInfoAsync(stopCodes, model.WantedTime);
                 model.Routes = routeViewModel;

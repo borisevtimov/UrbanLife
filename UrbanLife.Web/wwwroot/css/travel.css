@@ -1,7 +1,9 @@
 ﻿main {
+    background-image: url('../images/bus-stop-hero.jpg');
+    background-size: cover;
+    background-position-y: 40%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     min-height: 80vh;
 }
@@ -12,6 +14,17 @@
 
 .secondary-title {
     margin-top: 0px;
+    margin-bottom: 5vh;
+}
+
+.travel-form {
+    padding: 16px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 12px;
+    -webkit-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
     margin-bottom: 5vh;
 }
 
@@ -36,6 +49,7 @@
 .main-input {
     height: 30px;
     border-radius: 5px;
+    font-family: 'Roboto Flex', sans-serif;
 }
 
 .input-label-container {
@@ -64,12 +78,24 @@
         background-color: var(--clr-main-green);
     }
 
+.route-title {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
 .routes {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 2vh;
-    margin-bottom: 1vh;
+    margin-bottom: 5vh;
+    padding: 16px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 12px;
+    -webkit-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
+    box-shadow: 1px 0px 49px -19px rgba(0,0,0,0.75);
 }
 
 .route-row {

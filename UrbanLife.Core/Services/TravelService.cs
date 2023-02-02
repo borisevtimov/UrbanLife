@@ -48,14 +48,14 @@ namespace UrbanLife.Core.Services
                 {
                     string otherNode = edge.First == minNode ? edge.Second : edge.First;
 
-                    if (distance[otherNode] == double.PositiveInfinity)
+                    if (otherNode != null && distance[otherNode] == double.PositiveInfinity)
                     {
                         bag.Add(otherNode);
                     }
 
                     double newDistance = distance[minNode] + edge.Time;
 
-                    if (newDistance < distance[otherNode])
+                    if (otherNode != null && newDistance < distance[otherNode])
                     {
                         parent[otherNode] = minNode;
                         distance[otherNode] = newDistance;
@@ -70,8 +70,6 @@ namespace UrbanLife.Core.Services
             }
             else
             {
-                Console.WriteLine(distance[lastStop]);
-
                 string currentNode = lastStop;
                 Stack<string> path = new Stack<string>();
 
@@ -80,8 +78,6 @@ namespace UrbanLife.Core.Services
                     path.Push(currentNode);
                     currentNode = parent[currentNode];
                 }
-
-                Console.WriteLine(string.Join(" ", path));
 
                 return path.ToArray();
             }
@@ -168,11 +164,11 @@ namespace UrbanLife.Core.Services
                     routesByStop.Add(secondStop, new List<Route>());
                 }
 
-                if (secondStop != null)
-                {
+                //if (secondStop != null)
+                //{
                     routesByStop[firstStop].Add(edge);
-                    routesByStop[secondStop].Add(edge);
-                }
+                    //routesByStop[secondStop].Add(edge);
+                //}
             }
 
             return routesByStop;

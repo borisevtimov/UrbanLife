@@ -116,12 +116,12 @@ namespace UrbanLife.Core.Services
                 .Select(s => s.Name)
                 .FirstOrDefaultAsync();
 
-            if (stopCode == null)
+            if (stopName == null)
             {
                 throw new ArgumentException("Такава спирка не съществува!");
             }
 
-            return stopCode;
+            return stopName;
         }
 
         public async Task<List<string>> GetFirstAndLastStopNameForGoingAsync(string lineId)

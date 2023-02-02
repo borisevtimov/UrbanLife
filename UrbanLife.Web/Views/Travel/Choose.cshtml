@@ -70,49 +70,57 @@
 </form>
 @if (Model.Routes != null)
 {
-    <h3>
-        От @Model.ChosenStopName (@Model.ChosenStopCode) до @Model.ChosenLastStopName (@Model.ChosenLastStopCode) -
-        @if (Model.Routes.Sum(s => s.Value.LineRepeatings) != 1)
-        {
-            <span>@Model.Routes.Sum(s => s.Value.LineRepeatings) спирки</span>
-        }
-        else
-        {
-            <span>@Model.Routes.Sum(s => s.Value.LineRepeatings) спирка</span>
-        }
-    </h3>
     <section class="routes">
-        @foreach (KeyValuePair<string, RouteViewModel> route in Model.Routes)
+        @if (Model.Routes.Count != 0)
         {
-            <p class="route-row">
-                @route.Value.LineNumber
-                @if (route.Value.LineType == LineType.BUS)
+            <h3 class="route-title">
+                От @Model.ChosenStopName (@Model.ChosenStopCode) до @Model.ChosenLastStopName (@Model.ChosenLastStopCode) -
+                @if (Model.Routes.Sum(s => s.Value.LineRepeatings) != 1)
                 {
-                    <span>автобус</span>
-                }
-                else if (route.Value.LineType == LineType.TROLLEY)
-                {
-                    <span>тролей</span>
-                }
-                else if (route.Value.LineType == LineType.TRAM)
-                {
-                    <span>трамвай</span>
-                }
-                в @route.Value.Arrival.ToString(@"hh\:mm")ч. -> от
-                @route.Value.StopName (@route.Value.StopCode) до @route.Value.NextStopName (@route.Value.NextStopCode) - @route.Value.LineRepeatings
-                @if (route.Value.LineRepeatings != 1)
-                {
-                    <span>спирки</span>
+                    <span>@Model.Routes.Sum(s => s.Value.LineRepeatings) спирки</span>
                 }
                 else
                 {
-                    <span>спирка</span>
+                    <span>@Model.Routes.Sum(s => s.Value.LineRepeatings) спирка</span>
                 }
-            </p>
+            </h3>
+            @foreach (KeyValuePair<string, RouteViewModel> route in Model.Routes)
+            {
+                <p class="route-row">
+                    @route.Value.LineNumber
+                    @if (route.Value.LineType == LineType.BUS)
+                    {
+                        <span>автобус</span>
+                    }
+                    else if (route.Value.LineType == LineType.TROLLEY)
+                    {
+                        <span>тролей</span>
+                    }
+                    else if (route.Value.LineType == LineType.TRAM)
+                    {
+                        <span>трамвай</span>
+                    }
+                    в @route.Value.Arrival.ToString(@"hh\:mm")ч. -> от
+                    @route.Value.StopName (@route.Value.StopCode) до @route.Value.NextStopName (@route.Value.NextStopCode) - @route.Value.LineRepeatings
+                    @if (route.Value.LineRepeatings != 1)
+                    {
+                        <span>спирки</span>
+                    }
+                    else
+                    {
+                        <span>спирка</span>
+                    }
+                </p>
+            }
+        }
+        else
+        {
+            <h3 class="route-title">Не беше намерен маршрут!</h3>
         }
     </section>
+
 }
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/travel.css" />
+    <link rel="stylesheet" href="~/css/travel.css" asp-append-version="true" />
 }
