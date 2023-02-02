@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel;
 using System.Net;
+using System.Security.Cryptography.X509Certificates;
 using UrbanLife.Core.Utilities;
 using UrbanLife.Core.ViewModels;
 using UrbanLife.Data.Data;
@@ -91,6 +92,36 @@ namespace UrbanLife.Core.Services
             }
 
             return resultStopCodesAndNames;
+        }
+
+        public async Task<string> GetStopCodeAsync(string stopName)
+        {
+            string? stopCode = await dbContext.Stops
+                .Where(s => s.Name == stopName)
+                .Select(s => s.Code)
+                .FirstOrDefaultAsync();
+
+            if (stopCode == null)
+            {
+                throw new ArgumentException("Такава спирка не съществува!");
+            }
+
+            return stopCode;
+        }
+
+        public async Task<string> GetStopNameAsync(string stopCode)
+        {
+            string? stopName = await dbContext.Stops
+                .Where(s => s.Code == stopCode)
+                .Select(s => s.Name)
+                .FirstOrDefaultAsync();
+
+            if (stopCode == null)
+            {
+                throw new ArgumentException("Такава спирка не съществува!");
+            }
+
+            return stopCode;
         }
 
         public async Task<List<string>> GetFirstAndLastStopNameForGoingAsync(string lineId)

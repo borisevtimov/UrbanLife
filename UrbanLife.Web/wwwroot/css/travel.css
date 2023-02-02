@@ -1,0 +1,77 @@
+﻿main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+}
+
+.main-title {
+    margin-bottom: 12px;
+}
+
+.secondary-title {
+    margin-top: 0px;
+    margin-bottom: 5vh;
+}
+
+.form-row {
+    display: flex;
+    justify-content: center;
+    gap: 5vw;
+}
+
+.first-row {
+    margin-bottom: 3vh;
+}
+
+.form-col {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1vh;
+}
+
+.main-input {
+    height: 30px;
+    border-radius: 5px;
+}
+
+.input-label-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-time-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 2vh;
+    gap: 8px;
+}
+
+.submit-btn {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+    .submit-btn:hover {
+        transition: 0.3s;
+        cursor: pointer;
+        background-color: var(--clr-main-green);
+    }
+
+.routes {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
+    margin-bottom: 1vh;
+}
+
+.route-row {
+    margin: 0px;
+}

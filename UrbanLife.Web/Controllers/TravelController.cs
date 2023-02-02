@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Text;
+using Newtonsoft.Json;
 using UrbanLife.Core.Services;
 using UrbanLife.Core.ViewModels;
 
@@ -8,28 +8,89 @@ namespace UrbanLife.Web.Controllers
     public class TravelController : Controller
     {
         private readonly TravelService travelService;
+        private readonly ScheduleService scheduleService;
 
-        public TravelController(TravelService travelService)
+        public TravelController(TravelService travelService, ScheduleService scheduleService)
         {
             this.travelService = travelService;
+            this.scheduleService = scheduleService;
         }
 
-        public async Task<IActionResult> Choose()
+        public async Task<IActionResult> Choose(TravelViewModel model)
         {
-            string firstStopCode = "6330";
-            string lastStopCode = "2483";
-            TimeSpan startTime = new(hours: 21, minutes: 20, seconds: 0);
+            model.AllStopNames = await scheduleService.GetAllStopNamesAsync();
+            model.AllStopCodes = await scheduleService.GetAllStopCodesAsync();
 
-            string[] stopCodes = await travelService.FindFastestRouteAsync(firstStopCode, lastStopCode, startTime);
-            TravelViewModel travelViewModel = new();
-            travelViewModel = await travelService.GetRouteInfoAsync(stopCodes, startTime);
+            if (TempData["WantedTime"] == null)
+            {
+                model.WantedTime = new TimeSpan(hours: 6, minutes: 30, seconds: 0);
+            }
 
-            return View(travelViewModel);
+            if (TempData["Routes"] != null)
+            {
+                model.Routes = JsonConvert.DeserializeObject<Dictionary<string, RouteViewModel>>(TempData["Routes"].ToString());
+            }
+
+            return View(model);
         }
 
-        public IActionResult ShowOptions()
+        public async Task<IActionResult> GetRoutes(TravelViewModel model)
         {
-            return RedirectToAction(nameof(Choose));
+            try
+            {
+                string[]? stopCodes = null;
+
+                if (model.ChosenStopName != null && model.ChosenLastStopName != null)
+                {
+
+                    string firstStopCode = await scheduleService.GetStopCodeAsync(model.ChosenStopName);
+                    string lastStopCode = await scheduleService.GetStopCodeAsync(model.ChosenLastStopName);
+
+                    model.ChosenStopCode = firstStopCode;
+                    model.ChosenLastStopCode = lastStopCode;
+
+                }
+                else if (model.ChosenStopCode != null && model.ChosenLastStopName != null)
+                {
+                    string lastStopCode = await scheduleService.GetStopCodeAsync(model.ChosenLastStopName);
+                    string firstStopName = await scheduleService.GetStopNameAsync(model.ChosenStopCode);
+                    model.ChosenLastStopCode = lastStopCode;
+                    model.ChosenStopName = firstStopName;
+                }
+                else if (model.ChosenStopName != null && model.ChosenLastStopCode != null)
+                {
+                    string firstStopCode = await scheduleService.GetStopCodeAsync(model.ChosenStopName);
+                    string lastStopName = await scheduleService.GetStopNameAsync(model.ChosenLastStopCode);
+                    model.ChosenStopCode = firstStopCode;
+                    model.ChosenLastStopName = lastStopName;
+                }
+                else if (model.ChosenStopCode != null && model.ChosenLastStopCode != null)
+                {
+                    string firstStopName = await scheduleService.GetStopNameAsync(model.ChosenStopCode);
+                    string lastStopName = await scheduleService.GetStopNameAsync(model.ChosenLastStopCode);
+                    model.ChosenStopName = firstStopName;
+                    model.ChosenLastStopName = lastStopName;
+                }
+                else if (model.ChosenStopCode == null || model.ChosenLastStopCode == null)
+                {
+                    return RedirectToAction(nameof(Choose));
+                }
+
+                stopCodes = await travelService
+                    .FindFastestRouteAsync(model.ChosenStopCode, model.ChosenLastStopCode, model.WantedTime);
+
+                Dictionary<string, RouteViewModel> routeViewModel = await travelService.GetRouteInfoAsync(stopCodes, model.WantedTime);
+                model.Routes = routeViewModel;
+
+                TempData["Routes"] = JsonConvert.SerializeObject(model.Routes);
+                TempData["WantedTime"] = JsonConvert.SerializeObject(model.WantedTime);
+            }
+            catch (ArgumentException)
+            {
+                return RedirectToAction(nameof(Choose));
+            }
+
+            return RedirectToAction(nameof(Choose), model);
         }
     }
 }

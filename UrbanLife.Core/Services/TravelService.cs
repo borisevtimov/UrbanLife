@@ -87,9 +87,8 @@ namespace UrbanLife.Core.Services
             }
         }
 
-        public async Task<TravelViewModel> GetRouteInfoAsync(string[] stopCodes, TimeSpan wantedTime)
+        public async Task<Dictionary<string, RouteViewModel>> GetRouteInfoAsync(string[] stopCodes, TimeSpan wantedTime)
         {
-            TravelViewModel resultModel = new();
             Dictionary<string, RouteViewModel> repeatingRoutes = new();
 
             for (int i = 0; i < stopCodes.Length - 1; i++)
@@ -134,9 +133,7 @@ namespace UrbanLife.Core.Services
                 }
             }
 
-            resultModel.Routes = repeatingRoutes;
-
-            return resultModel;
+            return repeatingRoutes;
         }
 
         private async Task<Dictionary<string, List<Route>>> FillRoutesAsync(TimeSpan startTime)
