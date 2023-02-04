@@ -64,7 +64,7 @@ namespace UrbanLife.Core.Services
                 }
             }
 
-            if (distance[lastStop] == double.PositiveInfinity)
+            if (!distance.ContainsKey(lastStop) || distance[lastStop] == double.PositiveInfinity)
             {
                 return null;
             }

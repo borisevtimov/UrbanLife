@@ -1,19 +1,48 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using UrbanLife.Data.Data;
 using UrbanLife.Data.Data.Models;
+using UrbanLife.Data.Enums;
 
 namespace UrbanLife.Core.Utilities
 {
     public class DataSeeder
     {
         private readonly ApplicationDbContext dbContext;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        public DataSeeder(ApplicationDbContext dbContext)
+        public DataSeeder(ApplicationDbContext dbContext, RoleManager<IdentityRole> roleManager)
         {
             this.dbContext = dbContext;
+            this.roleManager = roleManager;
         }
 
-        public async Task CreateSchedulesAsync()
+        /// <summary>
+        /// WARNING: Sets the database in its initial, stable state. Ensures the database is deleted, 
+        /// then applies the migrations from the project and seeds the data needed for the application to
+        /// work properly (seeds tables - AspNetRoles, Lines, Stops, Schedules)
+        /// </summary>
+        public async Task InitializeDataBaseAsync()
+        {
+            await dbContext.Database.EnsureDeletedAsync();
+            await dbContext.Database.MigrateAsync();
+
+            await CreateRolesAsync();
+            await CreateLinesAsync();
+            await CreateStopsAsync();
+            await CreateSchedulesAsync();
+        }
+
+        private async Task CreateRolesAsync()
+        {
+            IdentityRole userRole = new() { Name = "User", NormalizedName = "USER" };
+            IdentityRole adminRole = new() { Name = "Admin", NormalizedName = "ADMIN" };
+
+            await roleManager.CreateAsync(userRole);
+            await roleManager.CreateAsync(adminRole);
+        }
+
+        private async Task CreateSchedulesAsync()
         {
             List<Schedule> schedules = GenerateInitialRouteForLines();
             List<Schedule> allSchedules = new(schedules);
@@ -1150,6 +1179,66 @@ namespace UrbanLife.Core.Utilities
             List<Schedule> schedules = await dbContext.Schedules.ToListAsync();
             dbContext.Schedules.RemoveRange(schedules);
 
+            await dbContext.SaveChangesAsync();
+        }
+
+        private async Task CreateLinesAsync()
+        {
+            List<Line> lines = new()
+            {
+                new Line { Id = "abc", Number = 5, Type = LineType.TRAM },
+                new Line { Id = "cde", Number = 11, Type = LineType.BUS },
+                new Line { Id = "dadg", Number = 11, Type = LineType.TRAM },
+                new Line { Id = "dalf", Number = 22, Type = LineType.TRAM },
+                new Line { Id = "edf", Number = 83, Type = LineType.BUS },
+                new Line { Id = "gpasc", Number = 8, Type = LineType.TRAM },
+                new Line { Id = "hij", Number = 280, Type = LineType.BUS },
+                new Line { Id = "klm", Number = 5, Type = LineType.TROLLEY },
+                new Line { Id = "phaf", Number = 1, Type = LineType.TROLLEY }
+            };
+
+            await dbContext.Lines.AddRangeAsync(lines);
+            await dbContext.SaveChangesAsync();
+        }
+
+        private async Task CreateStopsAsync()
+        {
+            List<Stop> stops = new()
+            {
+                new Stop { Code = "1000", Name = "Софийски университет \"св. Климент Охридски\"" },
+                new Stop { Code = "1011", Name = "ул. \"Ген. Гурко\"" },
+                new Stop { Code = "1023", Name = "пл. \"Орлов мост\"" },
+                new Stop { Code = "1041", Name = "хотел \"Плиска\"" },
+                new Stop { Code = "1058", Name = "площад на Авиацията" },
+                new Stop { Code = "1072", Name = "Технически универистет" },
+                new Stop { Code = "1093", Name = "ул. \"8-ми декември\"" },
+                new Stop { Code = "1101", Name = "Студентски град" },
+                new Stop { Code = "1543", Name = "метростанция \"Европейски съюз\"" },
+                new Stop { Code = "1840", Name = "метростанция \"Константин Величков\"" },
+                new Stop { Code = "2231", Name = "ж.к. \"Красно село\"" },
+                new Stop { Code = "2254", Name = "бул. \"Христо Ботев\"" },
+                new Stop { Code = "2483", Name = "бул. \"Ломско шосе\"" },
+                new Stop { Code = "3002", Name = "метростанция \"Западен парк\"" },
+                new Stop { Code = "3281", Name = "ул. \"Опълченска\"" },
+                new Stop { Code = "3384", Name = "летище София" },
+                new Stop { Code = "4432", Name = "пл. \"Македония\"" },
+                new Stop { Code = "4443", Name = "бул. \"Димитър Петков\"" },
+                new Stop { Code = "4555", Name = "бул. \"Черни връх\"" },
+                new Stop { Code = "4766", Name = "централна ЖП гара" },
+                new Stop { Code = "4887", Name = "паметник \"Васил Левски\"" },
+                new Stop { Code = "5133", Name = "НДК" },
+                new Stop { Code = "5529", Name = "пл. \"Руски паметник\"" },
+                new Stop { Code = "5543", Name = "Телевизионна кула" },
+                new Stop { Code = "5564", Name = "ул. \"Орион\"" },
+                new Stop { Code = "5688", Name = "Южен парк" },
+                new Stop { Code = "6122", Name = "метростанция \"Младост 1\"" },
+                new Stop { Code = "6330", Name = "метростанция \"Г.М. Димитров\"" },
+                new Stop { Code = "6782", Name = "бул. \"Сливница\"" },
+                new Stop { Code = "8522", Name = "пл. \"Лъвов мост\"" },
+                new Stop { Code = "8874", Name = "бул. \"България\"" }
+            };
+
+            await dbContext.Stops.AddRangeAsync(stops);
             await dbContext.SaveChangesAsync();
         }
     }

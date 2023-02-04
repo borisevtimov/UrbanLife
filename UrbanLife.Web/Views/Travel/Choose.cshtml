@@ -87,7 +87,6 @@
             @foreach (KeyValuePair<string, RouteViewModel> route in Model.Routes)
             {
                 <p class="route-row">
-                    @route.Value.LineNumber
                     @if (route.Value.LineType == LineType.BUS)
                     {
                         <span>автобус</span>
@@ -100,8 +99,9 @@
                     {
                         <span>трамвай</span>
                     }
-                    в @route.Value.Arrival.ToString(@"hh\:mm")ч. -> от
-                    @route.Value.StopName (@route.Value.StopCode) до @route.Value.NextStopName (@route.Value.NextStopCode) - @route.Value.LineRepeatings
+                    @route.Value.LineNumber в @route.Value.Arrival.ToString(@"hh\:mm")ч. <i class="fa-regular fa-clock"></i> &nbsp; &nbsp; &nbsp;
+                    @route.Value.StopName (@route.Value.StopCode) &nbsp; <i class="fa-solid fa-right-long"></i> &nbsp;
+                    @route.Value.NextStopName (@route.Value.NextStopCode) - @route.Value.LineRepeatings
                     @if (route.Value.LineRepeatings != 1)
                     {
                         <span>спирки</span>

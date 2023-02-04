@@ -146,11 +146,5 @@ namespace UrbanLife.Core.Services
             return await dbContext.Schedules
                 .AnyAsync(s => s.LineId == lineId && s.Stop.Name == endStop && s.NextStopCode == null && s.IsGoing);
         }
-
-        // DELETES AND CREATES THE SCHEDULES!!!
-        public async Task GenerateSchedulesAsync()
-        {
-            await dataSeeder.CreateSchedulesAsync();
-        }
     }
 }
