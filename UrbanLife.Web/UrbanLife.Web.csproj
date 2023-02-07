@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="wwwroot\css\all-subscriptions.css" />
     <_ContentIncludedByDefault Remove="wwwroot\css\line.css" />
     <_ContentIncludedByDefault Remove="wwwroot\css\travel.css" />
     <_ContentIncludedByDefault Remove="wwwroot\js\accountSettingsValidation.js" />

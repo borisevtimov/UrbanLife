@@ -2,4 +2,51 @@
     ViewData["Title"] = "Избиране на абонамент";
 }
 
-<p>Всички абонаменти</p>
+<section class="hero-section">
+    <img class="hero-img" src="~/images/subscription-hero-img.jpg" />
+    <div class="hero-description">
+        <h1 class="main-title">Абонаментни методи</h1>
+        <h2 class="secondary-title">Изберете абонамент, който ви подхожда най-добре!</h2>
+        <p class="description">
+            UrbanLife понастоящем предлага 2 вида абонаменти - <strong>карта</strong> и <strong>билет</strong>, като и двата са виртуални.
+            По този начин няма нужда да си изкарвате физическа карта или да си купувате хартиен билет!
+            Харесайте си абонамент и натиснете &ldquo;Избери&rdquo;, след което изберете продължителността и обхвата на абонамента!
+        </p>
+    </div>
+</section>
+<h2 class="subscriptions-header">Абонаменти</h2>
+<hr class="divider" />
+<div class="subscription-types-container">
+    <div class="subscription-container">
+        <h3 class="subscription-card-title">Карта</h3>
+        <p class="subscription-text"><b>Характеристики</b></p>
+        <ul class="unordered-list subscription-features-list">
+            <li><i class="fa-solid fa-triangle-exclamation"></i>&ensp;Зареждане за 1 месец, 3 месеца или 1 година</li>
+            <li><i class="fa-solid fa-triangle-exclamation"></i>&ensp;Важи за конкренти линии или за всички</li>
+        </ul>
+        <p class="subscription-text"><b>Препоръчителна опция ако:</b></p>
+        <ul class="unordered-list subscription-benefits-list">
+            <li><i class="fa-solid fa-circle-check"></i>&ensp;Пътувате редовно с градски транспорт</li>
+            <li><i class="fa-solid fa-circle-check"></i>&ensp;Ще пътувате често с градски транспорт в дадения период</li>
+        </ul>
+        <a class="main-input anchor-button submit-btn" href="#">Зареждане на карта</a>
+    </div>
+    <div class="subscription-container">
+        <h3 class="subscription-card-title">Билет</h3>
+        <p class="subscription-text"><b>Характеристики</b></p>
+        <ul class="unordered-list subscription-features-list">
+            <li><i class="fa-solid fa-triangle-exclamation"></i>&ensp;Важи за 30 минути, 60 минути или 1 ден</li>
+            <li><i class="fa-solid fa-triangle-exclamation"></i>&ensp;За конкретна линия и час, за време, или за всички линии за ден</li>
+        </ul>
+        <p class="subscription-text"><b>Препоръчителна опция ако:</b></p>
+        <ul class="unordered-list subscription-benefits-list">
+            <li><i class="fa-solid fa-circle-check"></i>&ensp;Пътувате с градски транспорт по изключение</li>
+            <li><i class="fa-solid fa-circle-check"></i>&ensp;Имате динамичен ден, но нямате абонаментна карта за градски транпосрт</li>
+        </ul>
+        <a class="main-input anchor-button submit-btn" href="#">Купуване на билет</a>
+    </div>
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/all-subscriptions.css" asp-append-version="true" />
+}
