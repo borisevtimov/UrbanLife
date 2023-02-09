@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using UrbanLife.Data.Enums;
 #nullable disable warnings
 
 namespace UrbanLife.Data.Data.Models
@@ -28,7 +29,7 @@ namespace UrbanLife.Data.Data.Models
         public DateTime End { get; set; }
 
         [Required]
-        public bool IsCard { get; set; } = true;
+        public PurchaseType Type { get; set; }
 
         [Required]
         public string ReceiptPath { get; set; }

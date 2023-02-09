@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using UrbanLife.Core.Services;
 using UrbanLife.Core.Utilities;
 using UrbanLife.Core.ViewModels;
@@ -112,7 +113,7 @@ namespace UrbanLife.Web.Controllers
                 return Json(false);
             }
 
-            return Json(await userService.PasswordExistsAsync(email, password)); 
+            return Json(await userService.PasswordExistsAsync(email, password));
         }
 
         public async Task<JsonResult> IsEmailAddressUsed(string email)

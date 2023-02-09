@@ -1,0 +1,77 @@
+﻿@using UrbanLife.Core.ViewModels;
+@using UrbanLife.Data.Enums;
+@model BuySubscriptionViewModel
+@{
+    ViewData["Title"] = "Покупка на абонамент";
+}
+
+<form>
+    @if (Model.PurchaseType == PurchaseType.CARD)
+    {
+        <p>Избран метод: карта</p>
+        <div>
+            <label>Зареждане за:</label>
+            <select>
+                <option value="1-month">1 месец</option>
+                <option value="3-month">3 месеца</option>
+                <option value="1-year">1 година</option>
+            </select>
+            <label>Влиза в сила от:</label>
+            <input type="date" min="{Първата свободна дата}" />
+        </div>
+    }
+    else if (Model.PurchaseType == PurchaseType.TICKET)
+    {
+        <p>Избран метод: билет</p>
+        <div>
+            <label>Валидност за:</label>
+            <select>
+                <option value="1-day">1 ден</option>
+                <option value="30-minute">30 минути</option>
+                <option value="60-minute">60 минути</option>
+                <option value="one-way">еднократно</option>
+            </select>
+            <label>Влиза в сила от:</label>
+            @if (Model.TicketStartTime.HasValue)
+            {
+                <input type="time" value=@Model.TicketStartTime.Value.ToString(@"hh\:mm") disabled />
+            }
+            else
+            {
+                <input type="time" />
+            }
+        </div>
+    }
+
+    <label>Изберете линии</label>
+    <select multiple>
+        <option>Всички</option>
+        <optgroup label="Автобус">
+            <option>280</option>
+            <option>84</option>
+        </optgroup>
+        <optgroup label="Трамвай">
+            <option>11</option>
+            <option>8</option>
+        </optgroup>
+        <optgroup label="Тролей">
+            <option>1</option>
+            <option>5</option>
+        </optgroup>
+    </select>
+    <label>Избрани линии</label>
+    <input type="text" disabled />
+    <p>Сума: {35.50} лв.</p>
+    <label>Платежен метод:</label>
+    <select>
+        <option value="{CardId}">1111-1111-1111-1111</option>
+        <option value="{CardId}">2222-2222-2222-2222</option>
+        <option value="{CardId}" selected>3333-3333-3333-3333</option>
+        <option value="{CardId}">4444-4444-4444-4444</option>
+    </select>
+    <p>Налична сума: 336.50лв</p>
+</form>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/purchase-subscription.css" />
+}
