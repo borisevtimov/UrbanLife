@@ -1,4 +1,5 @@
 ﻿@using UrbanLife.Core.ViewModels;
+@using UrbanLife.Data.Data.Models;
 @using UrbanLife.Data.Enums;
 @model BuySubscriptionViewModel
 @{
@@ -25,12 +26,22 @@
         <p>Избран метод: билет</p>
         <div>
             <label>Валидност за:</label>
-            <select>
-                <option value="1-day">1 ден</option>
-                <option value="30-minute">30 минути</option>
-                <option value="60-minute">60 минути</option>
-                <option value="one-way">еднократно</option>
-            </select>
+            @if (Model.LineType.HasValue && Model.LineNumber.HasValue)
+            {
+                <select disabled>
+                    <option value="one-way">еднократно</option>
+                </select>
+            }
+            else
+            {
+                <select>
+                    <option value="1-day">1 ден</option>
+                    <option value="30-minute">30 минути</option>
+                    <option value="60-minute">60 минути</option>
+                    <option value="one-way">еднократно</option>
+                </select>
+            }
+
             <label>Влиза в сила от:</label>
             @if (Model.TicketStartTime.HasValue)
             {
@@ -44,34 +55,69 @@
     }
 
     <label>Изберете линии</label>
-    <select multiple>
-        <option>Всички</option>
-        <optgroup label="Автобус">
-            <option>280</option>
-            <option>84</option>
-        </optgroup>
-        <optgroup label="Трамвай">
-            <option>11</option>
-            <option>8</option>
-        </optgroup>
-        <optgroup label="Тролей">
-            <option>1</option>
-            <option>5</option>
-        </optgroup>
-    </select>
-    <label>Избрани линии</label>
-    <input type="text" disabled />
+    @if (Model.LineType.HasValue && Model.LineNumber.HasValue)
+    {
+        <select disabled>
+            <option value="@Model.LineNumber - @Model.LineType.ToString()" selected>@Model.LineNumber</option>
+        </select>
+    }
+    else
+    {
+        <select class="lines-list" multiple>
+            <option>Всички</option>
+            <optgroup label="Автобус">
+                @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.BUS).OrderBy(l => l.Number))
+                {
+                    <option value="@line.Number-@line.Type">@line.Number</option>
+                }
+            </optgroup>
+            <optgroup label="Трамвай">
+                @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TRAM).OrderBy(l => l.Number))
+                {
+                    <option value="@line.Number-@line.Type">@line.Number</option>
+                }
+            </optgroup>
+            <optgroup label="Тролей">
+                @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TROLLEY).OrderBy(l => l.Number))
+                {
+                    <option value="@line.Number-@line.Type">@line.Number</option>
+                }
+            </optgroup>
+        </select>
+    }
+
+    <label>Избрани линии: </label>
+    <input asp-for=@Model.ChosenLines type="text" class="chosen-lines" value=@string.Join(", ", Model.ChosenLines) disabled />
     <p>Сума: {35.50} лв.</p>
-    <label>Платежен метод:</label>
-    <select>
-        <option value="{CardId}">1111-1111-1111-1111</option>
-        <option value="{CardId}">2222-2222-2222-2222</option>
-        <option value="{CardId}" selected>3333-3333-3333-3333</option>
-        <option value="{CardId}">4444-4444-4444-4444</option>
-    </select>
-    <p>Налична сума: 336.50лв</p>
+    @if (Model.Cards.Count != 0)
+    {
+        <label>Платежен метод:</label>
+        <select class="payment-method">
+            @foreach (SubscriptionPaymentViewModel payment in Model.Cards)
+            {
+                @if (payment.IsDefault)
+                {
+                    <option value=@payment.CardNumber selected>@payment.CardNumber / ПП</option>
+                    continue;
+                }
+
+                <option value=@payment.CardNumber>@payment.CardNumber</option>
+            }
+        </select>
+        <p class="funds"></p>
+        <input type="submit" value="Плащане" />
+    }
+    else
+    {
+        <p>Нямате добавени платежни методи!</p>
+        <a href="/user/account/addPayment">Добави платежен метод</a>
+    }
 </form>
 
 @section Styles {
     <link rel="stylesheet" href="~/css/purchase-subscription.css" />
+}
+
+@section Scripts {
+    <script src="~/js/purchaseSubscription.js"></script>
 }
