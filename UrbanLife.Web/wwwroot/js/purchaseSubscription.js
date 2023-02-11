@@ -17,17 +17,43 @@ if (paymentMethod != null) {
     });
 }
 
-document.querySelector('.lines-list').addEventListener('change', function (event) {
+// ADDS LINES TO INPUT
+document.querySelector('.lines-list').addEventListener('change', async function (event) {
+    const chosenLinesInput = document.querySelector('.chosen-lines');
+
     const options = event.target.options;
     let selectedOptions = [];
+    let selectedOptionsValues = [];
 
     for (const option of options) {
         if (option.selected) {
             selectedOptions.push(option.textContent);
+            selectedOptionsValues.push(option.value);
         }
     }
 
-    document.querySelector('.chosen-lines').value = selectedOptions.join(', ');
+    chosenLinesInput.value = selectedOptions.join(', ');
+
+    // CALCULATE TOTALPRICE
+    const subscriptionType = document.querySelector('.subscription-type');
+    const totalPriceParagraph = document.querySelector('.total-price');
+    const chosenDuration = document.querySelector('.duration');
+
+    const url = new URL('https://localhost:7226/subscription/getTotalPrice');
+    url.searchParams.append('subscriptionType', subscriptionType.value);
+    url.searchParams.append('lines', selectedOptionsValues);
+    url.searchParams.append('duration', chosenDuration.value);
+
+    const response = await fetch(url);
+
+    if (response.ok) {
+        const totalPrice = await response.json();
+
+        if (!Number.isNaN(totalPrice)) {
+            totalPriceParagraph.textContent = `Обща сума: ${totalPrice.toFixed(2)} лв.`;
+            document.querySelector('.final-hidden-price').value = `${totalPrice.toFixed(2)}`;
+        }
+    }
 });
 
 async function getFunds(paymentNumber) {

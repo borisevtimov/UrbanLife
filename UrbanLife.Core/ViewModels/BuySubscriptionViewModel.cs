@@ -6,7 +6,7 @@ namespace UrbanLife.Core.ViewModels
 {
     public class BuySubscriptionViewModel
     {
-        public PurchaseType PurchaseType { get; set; }
+        public SubscriptionType SubscriptionType { get; set; }
 
         public TimeSpan? TicketStartTime { get; set; }
 
@@ -15,6 +15,8 @@ namespace UrbanLife.Core.ViewModels
         public int? LineNumber { get; set; }
 
         public string? ChosenLines { get; set; }
+
+        public decimal FinalPrice { get; set; }
 
         public List<SubscriptionPaymentViewModel> Cards { get; set; }
 

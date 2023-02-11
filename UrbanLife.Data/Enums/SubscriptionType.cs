@@ -1,6 +1,6 @@
 ﻿namespace UrbanLife.Data.Enums
 {
-    public enum PurchaseType
+    public enum SubscriptionType
     {
         CARD = 0,
         TICKET = 1

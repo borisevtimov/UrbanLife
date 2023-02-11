@@ -29,7 +29,7 @@ namespace UrbanLife.Data.Data.Models
         public DateTime End { get; set; }
 
         [Required]
-        public PurchaseType Type { get; set; }
+        public SubscriptionType Type { get; set; }
 
         [Required]
         public string ReceiptPath { get; set; }
