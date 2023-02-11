@@ -33,6 +33,8 @@ namespace UrbanLife.Web.Controllers
                 return Redirect("/");
             }
 
+            TempData["PreviousPage"] = Request.Headers["Referer"];
+
             return View();
         }
 
@@ -50,6 +52,13 @@ namespace UrbanLife.Web.Controllers
             }
 
             await userService.SignUserAsync(model);
+
+            string previousPage = ((string[])TempData["PreviousPage"])[0];
+
+            if (previousPage != null && previousPage.ToLower().Contains("/subscription/all"))
+            {
+                return Redirect("/subscription/all");
+            }
 
             return Redirect("/");
         }

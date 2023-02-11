@@ -9,6 +9,7 @@
 <form action="/subscription/purchase" method="post">
     <input asp-for=@Model.FinalPrice type="hidden" class="final-hidden-price" />
     <input asp-for=@Model.SubscriptionType type="hidden" class="subscription-type" value=@Model.SubscriptionType />
+    <input asp-for=@Model.ChosenLines type="hidden" class="hidden-chosen-lines" />
     @if (Model.SubscriptionType == SubscriptionType.CARD)
     {
         <p>Избран метод: карта</p>
@@ -109,7 +110,8 @@
     }
 
     <label>Избрани линии: </label>
-    <input asp-for=@Model.ChosenLines type="text" class="chosen-lines" value=@string.Join(", ", Model.ChosenLines) disabled />
+    <span class="chosen-lines"></span>
+    @*<input asp-for=@Model.ChosenLines type="text" class="chosen-lines" value=@string.Join(", ", Model.ChosenLines) disabled />*@
     <p class="total-price">Сума: {35.50} лв.</p>
     @if (Model.Cards.Count != 0)
     {

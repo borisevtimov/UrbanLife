@@ -19,7 +19,7 @@ if (paymentMethod != null) {
 
 // ADDS LINES TO INPUT
 document.querySelector('.lines-list').addEventListener('change', async function (event) {
-    const chosenLinesInput = document.querySelector('.chosen-lines');
+    const chosenLinesParagraph = document.querySelector('.chosen-lines');
 
     const options = event.target.options;
     let selectedOptions = [];
@@ -32,7 +32,8 @@ document.querySelector('.lines-list').addEventListener('change', async function 
         }
     }
 
-    chosenLinesInput.value = selectedOptions.join(', ');
+    chosenLinesParagraph.textContent = selectedOptions.join(', ');
+    document.querySelector('.hidden-chosen-lines').value = selectedOptionsValues.join(', ');
 
     // CALCULATE TOTALPRICE
     const subscriptionType = document.querySelector('.subscription-type');
