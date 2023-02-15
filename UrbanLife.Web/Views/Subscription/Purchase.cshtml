@@ -6,12 +6,42 @@
     ViewData["Title"] = "Покупка на абонамент";
 }
 
+<h1>Ценоразпис</h1>
 <form action="/subscription/purchase" method="post">
     <input asp-for=@Model.FinalPrice type="hidden" class="final-hidden-price" />
     <input asp-for=@Model.SubscriptionType type="hidden" class="subscription-type" value=@Model.SubscriptionType />
     <input asp-for=@Model.ChosenLines type="hidden" class="hidden-chosen-lines" />
     @if (Model.SubscriptionType == SubscriptionType.CARD)
     {
+        <section class="rates">
+            <h2>Цени за карта</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Време</th>
+                        <th>За всички линии</th>
+                        <th>За една линия</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1 месец</td>
+                        <td>50лв.</td>
+                        <td>15лв.</td>
+                    </tr>
+                    <tr>
+                        <td>3 месеца</td>
+                        <td>120лв.</td>
+                        <td>35лв.</td>
+                    </tr>
+                    <tr>
+                        <td>1 година</td>
+                        <td>300лв.</td>
+                        <td>100лв.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
         <p>Избран метод: карта</p>
         <div>
             <label>Зареждане за:</label>
@@ -54,7 +84,7 @@
             @if (Model.LineType.HasValue && Model.LineNumber.HasValue)
             {
                 <select class="duration" disabled>
-                    <option value="one-way">еднократно</option>
+                    <option value="one-way" selected>еднократно</option>
                 </select>
             }
             else
@@ -63,7 +93,7 @@
                     <option value="1-day">1 ден</option>
                     <option value="30-minute">30 минути</option>
                     <option value="60-minute">60 минути</option>
-                    <option value="one-way">еднократно</option>
+                    <option value="one-way" selected>еднократно</option>
                 </select>
             }
 
@@ -80,7 +110,7 @@
         <label>Изберете линии</label>
         @if (Model.LineType.HasValue && Model.LineNumber.HasValue)
         {
-            <select disabled>
+            <select class="lines-list" disabled>
                 <option value="@Model.LineNumber - @Model.LineType.ToString()" selected>@Model.LineNumber</option>
             </select>
         }
@@ -111,8 +141,7 @@
 
     <label>Избрани линии: </label>
     <span class="chosen-lines"></span>
-    @*<input asp-for=@Model.ChosenLines type="text" class="chosen-lines" value=@string.Join(", ", Model.ChosenLines) disabled />*@
-    <p class="total-price">Сума: {35.50} лв.</p>
+    <p class="total-price"></p>
     @if (Model.Cards.Count != 0)
     {
         <label>Платежен метод:</label>

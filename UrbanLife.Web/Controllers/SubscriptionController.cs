@@ -77,6 +77,7 @@ namespace UrbanLife.Web.Controllers
         public JsonResult GetTotalPrice(SubscriptionType subscriptionType, string lines, string duration)
         {
             decimal totalPrice = 0m;
+
             int chosenLinesCount = lines.Split(',').Length;
 
             if (subscriptionType == SubscriptionType.CARD)

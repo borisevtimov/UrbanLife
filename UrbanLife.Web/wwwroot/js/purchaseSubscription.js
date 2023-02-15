@@ -17,11 +17,42 @@ if (paymentMethod != null) {
     });
 }
 
-// ADDS LINES TO INPUT
+// UPDATE THE PRICE AND LINES WHEN DURATION IS CHANGED
+document.querySelector('.duration').addEventListener('change', async function () {
+    const linesList = document.querySelector('.lines-list');
+
+    const selectedOptionsValues = addSelectedLines(linesList);
+
+    if (selectedOptionsValues.length != 0) {
+        document.querySelector('.hidden-chosen-lines').value = selectedOptionsValues;
+        calculateTotalPrice(selectedOptionsValues);
+    }
+});
+
+// ADDS LINES AND CALCULATES PRICE ON LOAD
+addEventListener('load', async function () {
+    const linesList = this.document.querySelector('.lines-list');
+
+    const selectedOptionsValues = addSelectedLines(linesList);
+
+    if (selectedOptionsValues.length != 0) {
+        document.querySelector('.hidden-chosen-lines').value = selectedOptionsValues;
+        calculateTotalPrice(selectedOptionsValues);
+    }
+});
+
+// ADDS LINES TO PARAGRAPH
 document.querySelector('.lines-list').addEventListener('change', async function (event) {
+    const selectedOptionsValues = addSelectedLines(event.target);
+    document.querySelector('.hidden-chosen-lines').value = selectedOptionsValues;
+
+    calculateTotalPrice(selectedOptionsValues);
+});
+
+function addSelectedLines(linesList) {
     const chosenLinesParagraph = document.querySelector('.chosen-lines');
 
-    const options = event.target.options;
+    const options = linesList.options;
     let selectedOptions = [];
     let selectedOptionsValues = [];
 
@@ -33,9 +64,10 @@ document.querySelector('.lines-list').addEventListener('change', async function 
     }
 
     chosenLinesParagraph.textContent = selectedOptions.join(', ');
-    document.querySelector('.hidden-chosen-lines').value = selectedOptionsValues.join(', ');
+    return selectedOptionsValues.join(', ');
+}
 
-    // CALCULATE TOTALPRICE
+async function calculateTotalPrice(selectedOptionsValues) {
     const subscriptionType = document.querySelector('.subscription-type');
     const totalPriceParagraph = document.querySelector('.total-price');
     const chosenDuration = document.querySelector('.duration');
@@ -55,7 +87,7 @@ document.querySelector('.lines-list').addEventListener('change', async function 
             document.querySelector('.final-hidden-price').value = `${totalPrice.toFixed(2)}`;
         }
     }
-});
+}
 
 async function getFunds(paymentNumber) {
     const fundsParagraph = document.querySelector('.funds');
