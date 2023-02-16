@@ -1,4 +1,5 @@
-﻿@using UrbanLife.Core.ViewModels;
+﻿@using UrbanLife.Core.Utilities.Constants;
+@using UrbanLife.Core.ViewModels;
 @using UrbanLife.Data.Data.Models;
 @using UrbanLife.Data.Enums;
 @model BuySubscriptionViewModel
@@ -18,26 +19,30 @@
             <table>
                 <thead>
                     <tr>
+                        <th></th>
+                        <th colspan="2">Цена</th>
+                    </tr>
+                    <tr>
                         <th>Време</th>
-                        <th>За всички линии</th>
-                        <th>За една линия</th>
+                        <th>Една линия</th>
+                        <th>Всички линии</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>1 месец</td>
-                        <td>50лв.</td>
-                        <td>15лв.</td>
+                        <td>@(Domain.CardOneMonthLine)лв.</td>
+                        <td>@(Domain.CardOneMonthAll)лв.</td>
                     </tr>
                     <tr>
                         <td>3 месеца</td>
-                        <td>120лв.</td>
-                        <td>35лв.</td>
+                        <td>@(Domain.CardThreeMonthLine)лв.</td>
+                        <td>@(Domain.CardThreeMonthAll)лв.</td>
                     </tr>
                     <tr>
                         <td>1 година</td>
-                        <td>300лв.</td>
-                        <td>100лв.</td>
+                        <td>@(Domain.CardOneYearLine)лв.</td>
+                        <td>@(Domain.CardOneYearAll)лв.</td>
                     </tr>
                 </tbody>
             </table>
@@ -78,6 +83,44 @@
     }
     else if (Model.SubscriptionType == SubscriptionType.TICKET)
     {
+        <section class="rates">
+            <h2>Цени за билет</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th colspan="2">Цена</th>
+                    </tr>
+                    <tr>
+                        <th>Време</th>
+                        <th>Една линия</th>
+                        <th>Всички линии</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Еднократно</td>
+                        <td>@(Domain.TicketLineOneTime)лв.</td>
+                        <td>X</td>
+                    </tr>
+                    <tr>
+                        <td>30 минути</td>
+                        <td>@(Domain.TicketHalfHour)лв.</td>
+                        <td>X</td>
+                    </tr>
+                    <tr>
+                        <td>60 минути</td>
+                        <td>@(Domain.TicketOneHour)лв.</td>
+                        <td>X</td>
+                    </tr>
+                    <tr>
+                        <td>24 часа</td>
+                        <td>X</td>
+                        <td>@(Domain.TicketOneDayAll)лв.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
         <p>Избран метод: билет</p>
         <div>
             <label>Валидност за:</label>
@@ -90,10 +133,10 @@
             else
             {
                 <select class="duration">
-                    <option value="1-day">1 ден</option>
+                    <option value="1-day" selected>1 ден</option>
                     <option value="30-minute">30 минути</option>
                     <option value="60-minute">60 минути</option>
-                    <option value="one-way" selected>еднократно</option>
+                    <option value="one-way">еднократно</option>
                 </select>
             }
 
@@ -117,6 +160,7 @@
         else
         {
             <select class="lines-list">
+                <option value="all-lines">Всички</option>
                 <optgroup label="Автобус">
                     @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.BUS).OrderBy(l => l.Number))
                     {
@@ -158,7 +202,9 @@
             }
         </select>
         <p class="funds"></p>
-        <input type="submit" value="Плащане" />
+        <p class="invalid-combination"></p>
+        <p class="insufficient-funds"></p>
+        <input type="submit" class="submit-btn" value="Плащане" />
     }
     else
     {

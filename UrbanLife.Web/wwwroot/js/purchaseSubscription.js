@@ -1,10 +1,31 @@
-﻿// GET THE INITIAL FUNDS
+﻿// CHANGES THE DURATION TO 1 DAY IF SELECTED ALL-LINES
+document.querySelector('.lines-list').addEventListener('change', function () {
+    checkDurationLineCombination();
+});
+
+// CHANGES THE LINES TO ALL-LINES IF DURATION IS 1 DAY
+document.querySelector('.duration').addEventListener('change', function () {
+    checkDurationLineCombination();
+});
+
+// GET THE INITIAL FUNDS
 addEventListener('load', async function () {
     const funds = this.document.querySelector('.funds');
 
     if (funds != null && funds.textContent.length == 0) {
         const payment = this.document.querySelector('.payment-method');
-        getFunds(payment.value);
+        const availableFunds = await getFunds(payment.value);
+        const totalPrice = Number(this.document.querySelector('.final-hidden-price').value);
+        const insufficientFunds = this.document.querySelector('.insufficient-funds');
+
+        if (availableFunds != undefined && availableFunds < totalPrice) {
+            insufficientFunds.textContent = 'Нямате достатъчно средства!';
+            this.document.querySelector('.submit-btn').disabled = true;
+        }
+        else if (availableFunds != undefined && availableFunds >= totalPrice) {
+            insufficientFunds.textContent = '';
+            this.document.querySelector('.submit-btn').disabled = false;
+        }
     }
 });
 
@@ -13,7 +34,7 @@ const paymentMethod = document.querySelector('.payment-method');
 
 if (paymentMethod != null) {
     paymentMethod.addEventListener('change', async function (event) {
-        getFunds(event.target.value);
+        await checkForInsufficientFunds();
     });
 }
 
@@ -26,6 +47,8 @@ document.querySelector('.duration').addEventListener('change', async function ()
     if (selectedOptionsValues.length != 0) {
         document.querySelector('.hidden-chosen-lines').value = selectedOptionsValues;
         calculateTotalPrice(selectedOptionsValues);
+
+        await checkForInsufficientFunds();
     }
 });
 
@@ -38,6 +61,8 @@ addEventListener('load', async function () {
     if (selectedOptionsValues.length != 0) {
         document.querySelector('.hidden-chosen-lines').value = selectedOptionsValues;
         calculateTotalPrice(selectedOptionsValues);
+
+        await checkForInsufficientFunds();
     }
 });
 
@@ -47,7 +72,57 @@ document.querySelector('.lines-list').addEventListener('change', async function 
     document.querySelector('.hidden-chosen-lines').value = selectedOptionsValues;
 
     calculateTotalPrice(selectedOptionsValues);
+    await checkForInsufficientFunds();
 });
+
+function checkDurationLineCombination() {
+    const subscriptionType = document.querySelector('.subscription-type');
+
+    if (subscriptionType.value == 'TICKET') {
+        const linesList = document.querySelector('.lines-list');
+        const duration = document.querySelector('.duration');
+        const invalidCombination = document.querySelector('.invalid-combination');
+        const submitBtn = document.querySelector('.submit-btn');
+
+        if ((linesList.value == 'all-lines' && duration.value != '1-day')
+            || (duration.value == '1-day' && linesList.value != 'all-lines')) {
+            invalidCombination.textContent = 'Билетът за 1 ден е в комбинация само с всички линии!';
+            submitBtn.disabled = true;
+        }
+        else if ((linesList.value == 'all-lines' && duration.value == '1-day') || (linesList.value != 'all-lines' && duration.value != '1-day')) {
+            invalidCombination.textContent = '';
+
+            if (document.querySelector('.insufficient-funds').textContent.length == 0) {
+                submitBtn.disabled = false;
+            }
+        }
+
+        return submitBtn.disabled;
+    }
+}
+
+async function checkForInsufficientFunds() {
+    const payment = document.querySelector('.payment-method');
+
+    if (payment != null) {
+        const availableFunds = await getFunds(payment.value);
+        const totalPrice = Number(document.querySelector('.final-hidden-price').value);
+        const insufficientFunds = document.querySelector('.insufficient-funds');
+        const submitBtn = document.querySelector('.submit-btn');
+
+        if (availableFunds != undefined && availableFunds < totalPrice) {
+            insufficientFunds.textContent = 'Нямате достатъчно средства!';
+            submitBtn.disabled = true;
+        }
+        else if (availableFunds != undefined && availableFunds >= totalPrice) {
+            insufficientFunds.textContent = '';
+
+            if (!checkDurationLineCombination()) {
+                submitBtn.disabled = false;
+            }
+        }
+    }
+}
 
 function addSelectedLines(linesList) {
     const chosenLinesParagraph = document.querySelector('.chosen-lines');
@@ -72,20 +147,26 @@ async function calculateTotalPrice(selectedOptionsValues) {
     const totalPriceParagraph = document.querySelector('.total-price');
     const chosenDuration = document.querySelector('.duration');
 
-    const url = new URL('https://localhost:7226/subscription/getTotalPrice');
-    url.searchParams.append('subscriptionType', subscriptionType.value);
-    url.searchParams.append('lines', selectedOptionsValues);
-    url.searchParams.append('duration', chosenDuration.value);
+    if (selectedOptionsValues.length != 0) {
+        const url = new URL('https://localhost:7226/subscription/getTotalPrice');
+        url.searchParams.append('subscriptionType', subscriptionType.value);
+        url.searchParams.append('lines', selectedOptionsValues);
+        url.searchParams.append('duration', chosenDuration.value);
 
-    const response = await fetch(url);
+        const response = await fetch(url);
 
-    if (response.ok) {
-        const totalPrice = await response.json();
+        if (response.ok) {
+            const totalPrice = await response.json();
 
-        if (!Number.isNaN(totalPrice)) {
-            totalPriceParagraph.textContent = `Обща сума: ${totalPrice.toFixed(2)} лв.`;
-            document.querySelector('.final-hidden-price').value = `${totalPrice.toFixed(2)}`;
+            if (!Number.isNaN(totalPrice)) {
+                totalPriceParagraph.textContent = `Обща сума: ${totalPrice.toFixed(2)} лв.`;
+                document.querySelector('.final-hidden-price').value = `${totalPrice.toFixed(2)}`;
+            }
         }
+    }
+    else {
+        totalPriceParagraph.textContent = `Обща сума: 0.00 лв.`;
+        document.querySelector('.final-hidden-price').value = 0.00;
     }
 }
 
@@ -104,5 +185,7 @@ async function getFunds(paymentNumber) {
 
             fundsParagraph.textContent = `Налична сума: ${paymentFunds.toFixed(2)} лв.`;
         }
+
+        return paymentFunds;
     }
 }
