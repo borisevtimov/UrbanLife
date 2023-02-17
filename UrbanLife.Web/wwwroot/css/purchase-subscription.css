@@ -1,3 +1,117 @@
-﻿.lines-list {
+﻿main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.rate-table {
+    border: 1px solid black;
     text-align: center;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 5px 20px;
+    border: 1px solid black;
+}
+
+.subscription-form {
+    border: 1px solid black;
+    padding: 10px 15px;
+    margin-bottom: 5vh;
+    margin-top: 5vh;
+}
+
+    .subscription-form > p:first-of-type {
+        margin-top: 0px;
+        margin-bottom: 16px;
+    }
+
+    .subscription-form > .form-row:first-of-type {
+        margin-bottom: 10px;
+    }
+
+.form-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.input-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.form-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lines-label {
+    margin-bottom: 5px;
+}
+
+.lines-list {
+    text-align: center;
+    width: 10vw;
+    height: 150px;
+}
+
+.total-price {
+    margin: 0px;
+    margin-bottom: 12px;
+}
+
+.default-payment {
+    margin-top: 3px;
+    color: var(--clr-main-green);
+}
+
+.funds {
+    margin-top: 5px;
+}
+
+.messages {
+    text-align: center;
+}
+
+    .messages > p {
+        margin: 0px;
+    }
+
+    .messages > p:last-of-type {
+        margin-bottom: 12px;
+    }
+
+.form-text-danger {
+    color: var(--clr-log-out-red);
+}
+
+.submit-btn {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+    .submit-btn:hover {
+        transition: 0.3s;
+        cursor: pointer;
+        background-color: var(--clr-main-green);
+    }
+
+.main-form-input {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-radius: 5px;
+    font-family: 'Roboto Flex', sans-serif;
+}
+
+.main-select-input {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5px;
+    font-family: 'Roboto Flex', sans-serif;
 }

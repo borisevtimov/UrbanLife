@@ -7,121 +7,144 @@
     ViewData["Title"] = "Покупка на абонамент";
 }
 
-<h1>Ценоразпис</h1>
-<form action="/subscription/purchase" method="post">
+@if (Model.SubscriptionType == SubscriptionType.CARD)
+{
+    <h1 class="title">Ценоразпис за карта</h1>
+}
+else if (Model.SubscriptionType == SubscriptionType.TICKET)
+{
+    <h1 class="title">Ценоразпис за билет</h1>
+}
+
+<section class="rates">
+    @if (Model.SubscriptionType == SubscriptionType.CARD)
+    {
+        <table class="rate-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="table-price" colspan="2">Цена</th>
+                </tr>
+                <tr>
+                    <th>Време</th>
+                    <th>Една линия</th>
+                    <th>Всички линии</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1 месец</td>
+                    <td>@(Domain.CardOneMonthLine) лв.</td>
+                    <td>@(Domain.CardOneMonthAll) лв.</td>
+                </tr>
+                <tr>
+                    <td>3 месеца</td>
+                    <td>@(Domain.CardThreeMonthLine) лв.</td>
+                    <td>@(Domain.CardThreeMonthAll) лв.</td>
+                </tr>
+                <tr>
+                    <td>1 година</td>
+                    <td>@(Domain.CardOneYearLine) лв.</td>
+                    <td>@(Domain.CardOneYearAll) лв.</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+    else if (Model.SubscriptionType == SubscriptionType.TICKET)
+    {
+        <table class="rate-table">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th colspan="2">Цена</th>
+                </tr>
+                <tr>
+                    <th>Време</th>
+                    <th>Една линия</th>
+                    <th>Всички линии</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Еднократно</td>
+                    <td>@(Domain.TicketLineOneTime) лв.</td>
+                    <td><i class="fa-solid fa-circle-xmark"></i></td>
+                </tr>
+                <tr>
+                    <td>30 минути</td>
+                    <td>@(Domain.TicketHalfHour) лв.</td>
+                    <td><i class="fa-solid fa-circle-xmark"></i></td>
+                </tr>
+                <tr>
+                    <td>60 минути</td>
+                    <td>@(Domain.TicketOneHour) лв.</td>
+                    <td><i class="fa-solid fa-circle-xmark"></i></td>
+                </tr>
+                <tr>
+                    <td>24 часа</td>
+                    <td><i class="fa-solid fa-circle-xmark"></i></td>
+                    <td>@(Domain.TicketOneDayAll) лв.</td>
+                </tr>
+            </tbody>
+        </table>
+    }
+</section>
+
+<form action="/subscription/purchase" method="post" class="subscription-form">
     <input asp-for=@Model.FinalPrice type="hidden" class="final-hidden-price" />
     <input asp-for=@Model.SubscriptionType type="hidden" class="subscription-type" value=@Model.SubscriptionType />
     <input asp-for=@Model.ChosenLines type="hidden" class="hidden-chosen-lines" />
     @if (Model.SubscriptionType == SubscriptionType.CARD)
     {
-        <section class="rates">
-            <h2>Цени за карта</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th colspan="2">Цена</th>
-                    </tr>
-                    <tr>
-                        <th>Време</th>
-                        <th>Една линия</th>
-                        <th>Всички линии</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1 месец</td>
-                        <td>@(Domain.CardOneMonthLine)лв.</td>
-                        <td>@(Domain.CardOneMonthAll)лв.</td>
-                    </tr>
-                    <tr>
-                        <td>3 месеца</td>
-                        <td>@(Domain.CardThreeMonthLine)лв.</td>
-                        <td>@(Domain.CardThreeMonthAll)лв.</td>
-                    </tr>
-                    <tr>
-                        <td>1 година</td>
-                        <td>@(Domain.CardOneYearLine)лв.</td>
-                        <td>@(Domain.CardOneYearAll)лв.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-        <p>Избран метод: карта</p>
-        <div>
-            <label>Зареждане за:</label>
-            <select class="duration">
-                <option value="1-month">1 месец</option>
-                <option value="3-month">3 месеца</option>
-                <option value="1-year">1 година</option>
-            </select>
-            <label>Влиза в сила от:</label>
-            <input type="date" min="{Първата свободна дата}" />
+        <p>Избран абонамент: <b>карта</b></p>
+        <div class="form-row">
+            <div class="input-grup">
+                <label>Зареждане за:</label>
+                <select class="duration main-select-input">
+                    <option value="1-month">1 месец</option>
+                    <option value="3-month">3 месеца</option>
+                    <option value="1-year">1 година</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Влиза в сила от:</label>
+                <input type="date" min=@DateTime.Now.ToString("yyyy-MM-dd") class="main-select-input" />
+            </div>
         </div>
-        <label>Изберете линии</label>
-        <select class="lines-list" multiple>
-            <option value="all-lines">Всички</option>
-            <optgroup label="Автобус">
-                @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.BUS).OrderBy(l => l.Number))
-                {
-                    <option value="@line.Number-@line.Type">@line.Number</option>
-                }
-            </optgroup>
-            <optgroup label="Трамвай">
-                @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TRAM).OrderBy(l => l.Number))
-                {
-                    <option value="@line.Number-@line.Type">@line.Number</option>
-                }
-            </optgroup>
-            <optgroup label="Тролей">
-                @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TROLLEY).OrderBy(l => l.Number))
-                {
-                    <option value="@line.Number-@line.Type">@line.Number</option>
-                }
-            </optgroup>
-        </select>
+        <div class="form-row">
+            <div class="form-col">
+                <label class="lines-label">Изберете линии</label>
+                <select class="lines-list main-select-input" multiple>
+                    <option value="all-lines">Всички</option>
+                    <optgroup label="Автобус">
+                        @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.BUS).OrderBy(l => l.Number))
+                        {
+                            <option value="@line.Number-@line.Type">@line.Number</option>
+                        }
+                    </optgroup>
+                    <optgroup label="Трамвай">
+                        @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TRAM).OrderBy(l => l.Number))
+                        {
+                            <option value="@line.Number-@line.Type">@line.Number</option>
+                        }
+                    </optgroup>
+                    <optgroup label="Тролей">
+                        @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TROLLEY).OrderBy(l => l.Number))
+                        {
+                            <option value="@line.Number-@line.Type">@line.Number</option>
+                        }
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <p>Избрани линии: <span class="chosen-lines"></span></p>
+        </div>
+
     }
     else if (Model.SubscriptionType == SubscriptionType.TICKET)
     {
-        <section class="rates">
-            <h2>Цени за билет</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th></th>
-                        <th colspan="2">Цена</th>
-                    </tr>
-                    <tr>
-                        <th>Време</th>
-                        <th>Една линия</th>
-                        <th>Всички линии</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Еднократно</td>
-                        <td>@(Domain.TicketLineOneTime)лв.</td>
-                        <td>X</td>
-                    </tr>
-                    <tr>
-                        <td>30 минути</td>
-                        <td>@(Domain.TicketHalfHour)лв.</td>
-                        <td>X</td>
-                    </tr>
-                    <tr>
-                        <td>60 минути</td>
-                        <td>@(Domain.TicketOneHour)лв.</td>
-                        <td>X</td>
-                    </tr>
-                    <tr>
-                        <td>24 часа</td>
-                        <td>X</td>
-                        <td>@(Domain.TicketOneDayAll)лв.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </section>
-        <p>Избран метод: билет</p>
+        <p>Избран абонамент: <b>билет</b></p>
         <div>
             <label>Валидност за:</label>
             @if (Model.LineType.HasValue && Model.LineNumber.HasValue)
@@ -180,31 +203,46 @@
                     }
                 </optgroup>
             </select>
+            <div class="form-row">
+                <p>Избрани линии: <span class="chosen-lines"></span></p>
+            </div>
         }
     }
 
-    <label>Избрани линии: </label>
-    <span class="chosen-lines"></span>
-    <p class="total-price"></p>
+    <div class="form-row">
+        <p class="total-price"></p>
+    </div>
     @if (Model.Cards.Count != 0)
     {
-        <label>Платежен метод:</label>
-        <select class="payment-method">
-            @foreach (SubscriptionPaymentViewModel payment in Model.Cards)
-            {
-                @if (payment.IsDefault)
+        <div class="input-group">
+            <label>Платежен метод:</label>
+            <select class="payment-method main-select-input">
+                @foreach (SubscriptionPaymentViewModel payment in Model.Cards)
                 {
-                    <option value=@payment.CardNumber selected>@payment.CardNumber / ПП</option>
-                    continue;
-                }
+                    @if (payment.IsDefault)
+                    {
+                        <option value=@payment.CardNumber selected>@payment.CardNumber</option>
+                        <i class="fa-solid fa-circle-xmark"></i>
+                        continue;
+                    }
 
-                <option value=@payment.CardNumber>@payment.CardNumber</option>
-            }
-        </select>
-        <p class="funds"></p>
-        <p class="invalid-combination"></p>
-        <p class="insufficient-funds"></p>
-        <input type="submit" class="submit-btn" value="Плащане" />
+                    <option value=@payment.CardNumber>@payment.CardNumber</option>
+                }
+            </select>
+        </div>
+        <div class="form-row">
+            <span class="default-payment"><i class="fa-solid fa-circle-check"></i> По подразбиране!</span>
+        </div>
+        <div class="form-row">
+            <p class="funds"></p>
+        </div>
+        <div class="messages">
+            <p class="invalid-combination form-text-danger"></p>
+            <p class="insufficient-funds form-text-danger"></p>
+        </div>
+        <div class="form-row">
+            <input type="submit" class="submit-btn main-form-input" value="Плащане" />
+        </div>
     }
     else
     {

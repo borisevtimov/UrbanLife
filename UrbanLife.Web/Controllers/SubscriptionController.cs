@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UrbanLife.Core.Services;
 using UrbanLife.Core.Utilities.Constants;
@@ -57,9 +58,10 @@ namespace UrbanLife.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Purchase(BuySubscriptionViewModel model)
         {
-            return RedirectToAction(nameof(Purchase));
+            return Redirect("/user/account/subscriptions");
         }
 
         public async Task<JsonResult> GetFundsForPayment(string cardNumber)
@@ -72,6 +74,13 @@ namespace UrbanLife.Web.Controllers
             }
 
             return Json(payment.Amount);
+        }
+
+        public async Task<JsonResult> CheckIfPaymentIsDefault(string cardNumber)
+        {
+            User user = await userManager.GetUserAsync(User);
+
+            return Json(await paymentService.CheckIfPaymentIsDefaultAsync(user.Id, cardNumber));
         }
 
         public JsonResult GetTotalPrice(SubscriptionType subscriptionType, string lines, string duration)

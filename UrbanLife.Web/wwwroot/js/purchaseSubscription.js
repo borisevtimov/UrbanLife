@@ -8,6 +8,10 @@ document.querySelector('.duration').addEventListener('change', function () {
     checkDurationLineCombination();
 });
 
+addEventListener('load', async function () {
+    await checkIfPaymentIsDefault();
+});
+
 // GET THE INITIAL FUNDS
 addEventListener('load', async function () {
     const funds = this.document.querySelector('.funds');
@@ -34,6 +38,7 @@ const paymentMethod = document.querySelector('.payment-method');
 
 if (paymentMethod != null) {
     paymentMethod.addEventListener('change', async function (event) {
+        await checkIfPaymentIsDefault();
         await checkForInsufficientFunds();
     });
 }
@@ -74,6 +79,28 @@ document.querySelector('.lines-list').addEventListener('change', async function 
     calculateTotalPrice(selectedOptionsValues);
     await checkForInsufficientFunds();
 });
+
+async function checkIfPaymentIsDefault() {
+    const paymentMethod = document.querySelector('.payment-method');
+
+    if (paymentMethod != null) {
+        const url = new URL('https://localhost:7226/subscription/checkIfPaymentIsDefault');
+        url.searchParams.append('cardNumber', paymentMethod.value);
+
+        const response = await fetch(url);
+
+        if (response.ok) {
+            const isDefault = await response.json();
+
+            if (isDefault) {
+                document.querySelector('.default-payment').style.display = 'inline';
+            }
+            else {
+                document.querySelector('.default-payment').style.display = 'none';
+            }
+        }
+    }
+}
 
 function checkDurationLineCombination() {
     const subscriptionType = document.querySelector('.subscription-type');

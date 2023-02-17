@@ -21,6 +21,12 @@ namespace UrbanLife.Core.Services
                 .ToListAsync();
         }
 
+        public async Task<bool> CheckIfPaymentIsDefaultAsync(string userId, string cardNumber)
+        {
+            return await dbContext.UserPayments
+                .AnyAsync(up => up.UserId == userId && up.Payment.Number == cardNumber && up.IsDefault);
+        }
+
         public async Task<List<SubscriptionPaymentViewModel>> GetSubscriptionPaymentsForUserAsync(string userId)
         {
             return await dbContext.UserPayments
