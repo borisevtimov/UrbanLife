@@ -86,6 +86,7 @@ namespace UrbanLife.Web.Controllers
         public JsonResult GetTotalPrice(SubscriptionType subscriptionType, string lines, string duration)
         {
             decimal totalPrice = 0m;
+            string cheaperOptionMsg = string.Empty;
 
             int chosenLinesCount = lines.Split(',').Length;
 
@@ -111,14 +112,29 @@ namespace UrbanLife.Web.Controllers
                     if (duration == "1-month")
                     {
                         totalPrice = chosenLinesCount * Domain.CardOneMonthLine;
+                        if (totalPrice > Domain.CardOneMonthAll)
+                        {
+                            cheaperOptionMsg = $"Карта за всички линии за месец струва {Domain.CardOneMonthAll} лв. " +
+                                $"(Спестявате - {totalPrice - Domain.CardOneMonthAll} лв.!)";
+                        }
                     }
                     else if (duration == "3-month")
                     {
                         totalPrice = chosenLinesCount * Domain.CardThreeMonthLine;
+                        if (totalPrice > Domain.CardOneMonthAll)
+                        {
+                            cheaperOptionMsg = $"Карта за всички линии за 3 месецa струва {Domain.CardThreeMonthAll} лв. " +
+                                $"(Спестявате - {totalPrice - Domain.CardThreeMonthAll} лв.!)";
+                        }
                     }
                     else if (duration == "1-year")
                     {
                         totalPrice = chosenLinesCount * Domain.CardOneYearLine;
+                        if (totalPrice > Domain.CardOneYearAll)
+                        {
+                            cheaperOptionMsg = $"Карта за всички линии за 1 година струва {Domain.CardOneYearAll} лв. " +
+                                $"(Спестявате - {totalPrice - Domain.CardOneYearAll} лв.!)";
+                        }
                     }
                 }
             }
@@ -142,7 +158,7 @@ namespace UrbanLife.Web.Controllers
                 }
             }
 
-            return Json(totalPrice);
+            return Json(new { totalPrice, cheaperOptionMsg });
         }
     }
 }

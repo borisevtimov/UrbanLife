@@ -8,6 +8,7 @@ document.querySelector('.duration').addEventListener('change', function () {
     checkDurationLineCombination();
 });
 
+// CHECKS IF PAYMENT METHOD IS DEFAULT
 addEventListener('load', async function () {
     await checkIfPaymentIsDefault();
 });
@@ -183,11 +184,18 @@ async function calculateTotalPrice(selectedOptionsValues) {
         const response = await fetch(url);
 
         if (response.ok) {
-            const totalPrice = await response.json();
+            const resultObj = await response.json();
 
-            if (!Number.isNaN(totalPrice)) {
-                totalPriceParagraph.textContent = `Обща сума: ${totalPrice.toFixed(2)} лв.`;
-                document.querySelector('.final-hidden-price').value = `${totalPrice.toFixed(2)}`;
+            if (!Number.isNaN(resultObj.totalPrice)) {
+                totalPriceParagraph.textContent = `Обща сума: ${resultObj.totalPrice.toFixed(2)} лв.`;
+                document.querySelector('.final-hidden-price').value = `${resultObj.totalPrice.toFixed(2)}`;
+            }
+
+            if (resultObj.cheaperOptionMsg != '') {
+                document.querySelector('.cheaper-option').textContent = resultObj.cheaperOptionMsg;
+            }
+            else {
+                document.querySelector('.cheaper-option').textContent = '';
             }
         }
     }

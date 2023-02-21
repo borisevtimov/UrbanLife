@@ -15,7 +15,9 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
 {
     <h1 class="title">Ценоразпис за билет</h1>
 }
-
+<div class="image-background-container">
+    <img src=~/images/19199683.jpg />
+</div>
 <section class="rates">
     @if (Model.SubscriptionType == SubscriptionType.CARD)
     {
@@ -114,7 +116,7 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
         <div class="form-row">
             <div class="form-col">
                 <label class="lines-label">Изберете линии</label>
-                <select class="lines-list main-select-input" multiple>
+                <select class="lines-list main-select-input card-lines" multiple>
                     <option value="all-lines">Всички</option>
                     <optgroup label="Автобус">
                         @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.BUS).OrderBy(l => l.Number))
@@ -140,22 +142,21 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
         <div class="form-row">
             <p>Избрани линии: <span class="chosen-lines"></span></p>
         </div>
-
     }
     else if (Model.SubscriptionType == SubscriptionType.TICKET)
     {
         <p>Избран абонамент: <b>билет</b></p>
-        <div>
+        <div class="form-row">
             <label>Валидност за:</label>
             @if (Model.LineType.HasValue && Model.LineNumber.HasValue)
             {
-                <select class="duration" disabled>
+                <select class="duration main-select-input" disabled>
                     <option value="one-way" selected>еднократно</option>
                 </select>
             }
             else
             {
-                <select class="duration">
+                <select class="duration main-select-input">
                     <option value="1-day" selected>1 ден</option>
                     <option value="30-minute">30 минути</option>
                     <option value="60-minute">60 минути</option>
@@ -166,49 +167,50 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
             <label>Влиза в сила от:</label>
             @if (Model.TicketStartTime.HasValue)
             {
-                <input type="time" value=@Model.TicketStartTime.Value.ToString(@"hh\:mm") disabled />
+                <input type="time" class="main-select-input" value=@Model.TicketStartTime.Value.ToString(@"hh\:mm") disabled />
             }
             else
             {
-                <input type="time" />
+                <input type="time" class="main-select-input" />
             }
         </div>
-        <label>Изберете линии</label>
-        @if (Model.LineType.HasValue && Model.LineNumber.HasValue)
-        {
-            <select class="lines-list" disabled>
-                <option value="@Model.LineNumber - @Model.LineType.ToString()" selected>@Model.LineNumber</option>
-            </select>
-        }
-        else
-        {
-            <select class="lines-list">
-                <option value="all-lines">Всички</option>
-                <optgroup label="Автобус">
-                    @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.BUS).OrderBy(l => l.Number))
-                    {
-                        <option value="@line.Number-@line.Type">@line.Number</option>
-                    }
-                </optgroup>
-                <optgroup label="Трамвай">
-                    @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TRAM).OrderBy(l => l.Number))
-                    {
-                        <option value="@line.Number-@line.Type">@line.Number</option>
-                    }
-                </optgroup>
-                <optgroup label="Тролей">
-                    @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TROLLEY).OrderBy(l => l.Number))
-                    {
-                        <option value="@line.Number-@line.Type">@line.Number</option>
-                    }
-                </optgroup>
-            </select>
-            <div class="form-row">
-                <p>Избрани линии: <span class="chosen-lines"></span></p>
-            </div>
-        }
+        <div class="input-group">
+            <label>Изберете линия</label>
+            @if (Model.LineType.HasValue && Model.LineNumber.HasValue)
+            {
+                <select class="lines-list main-select-input" disabled>
+                    <option value="@Model.LineNumber - @Model.LineType.ToString()" selected>@Model.LineNumber</option>
+                </select>
+            }
+            else
+            {
+                <select class="lines-list main-select-input">
+                    <option value="all-lines">Всички</option>
+                    <optgroup label="Автобус">
+                        @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.BUS).OrderBy(l => l.Number))
+                        {
+                            <option value="@line.Number-@line.Type">@line.Number</option>
+                        }
+                    </optgroup>
+                    <optgroup label="Трамвай">
+                        @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TRAM).OrderBy(l => l.Number))
+                        {
+                            <option value="@line.Number-@line.Type">@line.Number</option>
+                        }
+                    </optgroup>
+                    <optgroup label="Тролей">
+                        @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TROLLEY).OrderBy(l => l.Number))
+                        {
+                            <option value="@line.Number-@line.Type">@line.Number</option>
+                        }
+                    </optgroup>
+                </select>
+            }
+        </div>
+        <div class="form-row">
+            <p>Избрана линия: <span class="chosen-lines"></span></p>
+        </div>
     }
-
     <div class="form-row">
         <p class="total-price"></p>
     </div>
@@ -237,8 +239,9 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
             <p class="funds"></p>
         </div>
         <div class="messages">
-            <p class="invalid-combination form-text-danger"></p>
-            <p class="insufficient-funds form-text-danger"></p>
+            <span class="cheaper-option form-text-warning"></span>
+            <span class="invalid-combination form-text-danger"></span>
+            <span class="insufficient-funds form-text-danger"></span>
         </div>
         <div class="form-row">
             <input type="submit" class="submit-btn main-form-input" value="Плащане" />
@@ -246,8 +249,12 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
     }
     else
     {
-        <p>Нямате добавени платежни методи!</p>
-        <a href="/user/account/addPayment">Добави платежен метод</a>
+        <div class="form-row">
+            <p class="form-text-warning">Нямате добавени платежни методи!</p>
+        </div>
+        <div class="form-row">
+            <a href="/user/account/addPayment" class="anchor-button main-form-input submit-btn">Добави платежен метод</a>
+        </div>
     }
 </form>
 
