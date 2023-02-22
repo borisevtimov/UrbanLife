@@ -102,15 +102,15 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
         <div class="form-row">
             <div class="input-grup">
                 <label>Зареждане за:</label>
-                <select class="duration main-select-input">
+                <select asp-for=@Model.ChosenDuration class="duration main-select-input">
                     <option value="1-month">1 месец</option>
                     <option value="3-month">3 месеца</option>
                     <option value="1-year">1 година</option>
                 </select>
             </div>
             <div class="input-group">
-                <label>Влиза в сила от:</label>
-                <input type="date" min=@DateTime.Now.ToString("yyyy-MM-dd") class="main-select-input" />
+                <label asp-for=@Model.ChosenCardStartDate>Влиза в сила от:</label>
+                <input asp-for=@Model.ChosenCardStartDate type="date" min=@DateTime.Now.ToString("yyyy-MM-dd") class="main-select-input" />
             </div>
         </div>
         <div class="form-row">
@@ -150,13 +150,13 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
             <label>Валидност за:</label>
             @if (Model.LineType.HasValue && Model.LineNumber.HasValue)
             {
-                <select class="duration main-select-input" disabled>
+                <select asp-for=@Model.ChosenDuration class="duration main-select-input" disabled>
                     <option value="one-way" selected>еднократно</option>
                 </select>
             }
             else
             {
-                <select class="duration main-select-input">
+                <select asp-for=@Model.ChosenDuration class="duration main-select-input">
                     <option value="1-day" selected>1 ден</option>
                     <option value="30-minute">30 минути</option>
                     <option value="60-minute">60 минути</option>
@@ -164,14 +164,14 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
                 </select>
             }
 
-            <label>Влиза в сила от:</label>
-            @if (Model.TicketStartTime.HasValue)
+            <label asp-for=@Model.ChosenTicketStartTime>Влиза в сила от:</label>
+            @if (Model.ChosenTicketStartTime.HasValue)
             {
-                <input type="time" class="main-select-input" value=@Model.TicketStartTime.Value.ToString(@"hh\:mm") disabled />
+                <input asp-for=@Model.ChosenTicketStartTime type="time" class="main-select-input" value=@Model.ChosenTicketStartTime.Value.ToString(@"hh\:mm") disabled />
             }
             else
             {
-                <input type="time" class="main-select-input" />
+                <input asp-for=@Model.ChosenTicketStartTime type="time" class="main-select-input" />
             }
         </div>
         <div class="input-group">
@@ -218,7 +218,7 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
     {
         <div class="input-group">
             <label>Платежен метод:</label>
-            <select class="payment-method main-select-input">
+            <select asp-for=@Model.ChosenCardNumber class="payment-method main-select-input">
                 @foreach (SubscriptionPaymentViewModel payment in Model.Cards)
                 {
                     @if (payment.IsDefault)

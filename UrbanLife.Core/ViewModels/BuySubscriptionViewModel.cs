@@ -8,18 +8,25 @@ namespace UrbanLife.Core.ViewModels
     {
         public SubscriptionType SubscriptionType { get; set; }
 
-        public TimeSpan? TicketStartTime { get; set; }
-
         public LineType? LineType { get; set; }
 
         public int? LineNumber { get; set; }
 
-        public string? ChosenLines { get; set; }
-
-        public decimal FinalPrice { get; set; }
+        public List<Line> Lines { get; set; }
 
         public List<SubscriptionPaymentViewModel> Cards { get; set; }
 
-        public List<Line> Lines { get; set; }
+        public decimal FinalPrice { get; set; }
+
+        public string ChosenLines { get; set; }
+
+        public string ChosenCardNumber { get; set; }
+
+        public string ChosenDuration { get; set; }
+
+        public TimeSpan? ChosenTicketStartTime { get; set; }
+
+        public DateTime? ChosenCardStartDate { get; set; }
+
     }
 }

@@ -7,9 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="IronPdf" Version="2023.1.11416" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.ViewFeatures" Version="2.2.0" />
+    <PackageReference Include="Net.Codecrete.QrCodeGenerator" Version="2.0.3" />
     <PackageReference Include="XAct.Wintellect.PowerCollections" Version="0.0.1" />
   </ItemGroup>
 

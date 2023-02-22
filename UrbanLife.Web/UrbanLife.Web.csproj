@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <Folder Include="Areas\" />
+    <Folder Include="wwwroot\images\receipts\" />
     <Folder Include="wwwroot\images\profile-pictures\custom-pictures\" />
   </ItemGroup>
 

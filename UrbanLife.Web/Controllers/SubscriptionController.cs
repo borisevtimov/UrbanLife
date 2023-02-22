@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using UrbanLife.Core.Services;
+using UrbanLife.Core.Utilities;
 using UrbanLife.Core.Utilities.Constants;
 using UrbanLife.Core.ViewModels;
 using UrbanLife.Data.Data.Models;
@@ -14,14 +15,17 @@ namespace UrbanLife.Web.Controllers
         private readonly UserManager<User> userManager;
         private readonly PaymentService paymentService;
         private readonly ScheduleService scheduleService;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
         public SubscriptionController(PaymentService paymentService,
-             UserManager<User> userManager,
-             ScheduleService scheduleService)
+            UserManager<User> userManager,
+            ScheduleService scheduleService,
+            IWebHostEnvironment webHostEnvironment)
         {
             this.paymentService = paymentService;
             this.userManager = userManager;
             this.scheduleService = scheduleService;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult All()
@@ -44,7 +48,7 @@ namespace UrbanLife.Web.Controllers
                 SubscriptionType = subscriptionType,
                 LineType = lineType,
                 LineNumber = lineNumber,
-                TicketStartTime = ticketStartTime,
+                ChosenTicketStartTime = ticketStartTime,
                 Cards = await paymentService.GetSubscriptionPaymentsForUserAsync(user.Id),
                 Lines = await scheduleService.GetAllLinesAsync()
             };
@@ -59,8 +63,29 @@ namespace UrbanLife.Web.Controllers
 
         [HttpPost]
         [Authorize]
-        public IActionResult Purchase(BuySubscriptionViewModel model)
+        public async Task<IActionResult> Purchase(BuySubscriptionViewModel model)
         {
+            User user = await userManager.GetUserAsync(User);
+            Payment payment = await paymentService.GetPaymentByNumberAsync(model.ChosenCardNumber);
+            int chosenLinesCount = model.ChosenLines == null ? 0 : model.ChosenLines.Split(',').Length;
+
+            if (chosenLinesCount == 0 || payment == null
+                || payment.ExpireDate < DateTime.Now || payment.Amount < model.FinalPrice)
+            {
+                return Redirect(nameof(Purchase));
+            }
+
+            PictureProcessor.GenerateReceipt(webHostEnvironment.WebRootPath, model, user);
+
+            if (model.SubscriptionType == SubscriptionType.CARD)
+            {
+
+            }
+            else if (model.SubscriptionType == SubscriptionType.TICKET)
+            {
+
+            }
+
             return Redirect("/user/account/subscriptions");
         }
 
