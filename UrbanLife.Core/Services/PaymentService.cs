@@ -2,15 +2,18 @@
 using UrbanLife.Core.ViewModels;
 using UrbanLife.Data.Data;
 using UrbanLife.Data.Data.Models;
+using UrbanLife.Data.Enums;
 
 namespace UrbanLife.Core.Services
 {
     public class PaymentService
     {
+        private readonly ScheduleService scheduleService;
         private readonly ApplicationDbContext dbContext;
 
-        public PaymentService(ApplicationDbContext dbContext)
+        public PaymentService(ScheduleService scheduleService, ApplicationDbContext dbContext)
         {
+            this.scheduleService = scheduleService;
             this.dbContext = dbContext;
         }
 
@@ -185,6 +188,91 @@ namespace UrbanLife.Core.Services
             return payment;
         }
 
+        public async Task PurchaseSubscriptionAsync(BuySubscriptionViewModel model,
+            Purchase purchase, string webHostEnvironmentUrl)
+        {
+            purchase.Amount = model.FinalPrice;
+            purchase.Type = model.SubscriptionType;
+            purchase.Date = DateTime.Now;
 
+            Payment payment = await GetPaymentByNumberAsync(model.ChosenCardNumber);
+            purchase.PaymentId = payment.Id;
+
+            if (model.ChosenTicketStartTime.HasValue)
+            {
+                DateTime ticketStartDateTime = new DateTime(year: DateTime.Now.Year, month: DateTime.Now.Month,
+                    day: DateTime.Now.Day, hour: model.ChosenTicketStartTime.Value.Hours,
+                    minute: model.ChosenTicketStartTime.Value.Minutes, second: model.ChosenTicketStartTime.Value.Seconds);
+
+                purchase.Start = ticketStartDateTime;
+
+                if (model.ChosenDuration == "one-way" || model.ChosenDuration == "60-minute")
+                {
+                    purchase.End = ticketStartDateTime.AddHours(1);
+                }
+                else if (model.ChosenDuration == "30-minute")
+                {
+                    purchase.End = ticketStartDateTime.AddMinutes(30);
+                }
+                else if (model.ChosenDuration == "1-day")
+                {
+                    purchase.End = ticketStartDateTime.AddDays(1);
+                }
+            }
+            else if (model.ChosenCardStartDate.HasValue)
+            {
+                purchase.Start = model.ChosenCardStartDate.Value;
+
+                if (model.ChosenDuration == "1-month")
+                {
+                    purchase.End = model.ChosenCardStartDate.Value.AddMonths(1);
+                }
+                else if (model.ChosenDuration == "3-month")
+                {
+                    purchase.End = model.ChosenCardStartDate.Value.AddMonths(3);
+                }
+                else if (model.ChosenDuration == "1-year")
+                {
+                    purchase.End = model.ChosenCardStartDate.Value.AddYears(1);
+                }
+            }
+
+            await ExecuteTransactionAsync(payment.Id, model.FinalPrice);
+            await dbContext.Purchases.AddAsync(purchase);
+            await dbContext.SaveChangesAsync();
+
+            string[] chosenLinesGroups = model.ChosenLines.Split(',');
+
+            if (!chosenLinesGroups.Contains("all-lines"))
+            {
+                List<PurchaseLine> purchaseLines = new();
+
+                foreach (string lineGroup in chosenLinesGroups)
+                {
+                    string[] parsedLineTokens = lineGroup.Split('-');
+                    int lineNumber = int.Parse(parsedLineTokens[0]);
+                    LineType lineType = (LineType)Enum.Parse(typeof(LineType), parsedLineTokens[1], true);
+
+                    Line line = await scheduleService.GetLineIdAsync(lineNumber, lineType);
+                    purchaseLines.Add(new PurchaseLine { LineId = line.Id, PurchaseId = purchase.Id });
+                }
+
+                await dbContext.PurchaseLines.AddRangeAsync(purchaseLines);
+                await dbContext.SaveChangesAsync();
+            }
+
+        }
+
+        public async Task ExecuteTransactionAsync(string paymentId, decimal price)
+        {
+            Payment? payment = await dbContext.Payments.FirstOrDefaultAsync(p => p.Id == paymentId);
+
+            if (payment != null && payment.Amount >= price)
+            {
+                payment.Amount -= price;
+            }
+
+            await dbContext.SaveChangesAsync();
+        }
     }
 }

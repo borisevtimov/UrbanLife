@@ -7,7 +7,7 @@ namespace UrbanLife.Data.Data.Models
 {
     public class PurchaseLine
     {
-        [Key]
+        [Required]
         [ForeignKey(nameof(Purchase))]
         public string PurchaseId { get; set; }
 

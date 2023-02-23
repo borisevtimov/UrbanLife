@@ -75,15 +75,17 @@ namespace UrbanLife.Web.Controllers
                 return Redirect(nameof(Purchase));
             }
 
-            PictureProcessor.GenerateReceipt(webHostEnvironment.WebRootPath, model, user);
+            Purchase purchase = new();
+            purchase.UserId = user.Id;
 
-            if (model.SubscriptionType == SubscriptionType.CARD)
+            try
             {
-
+                PictureProcessor.GenerateReceipt(webHostEnvironment.WebRootPath, model, user, purchase.Id);
+                await paymentService.PurchaseSubscriptionAsync(model, purchase, webHostEnvironment.WebRootPath);
             }
-            else if (model.SubscriptionType == SubscriptionType.TICKET)
+            catch (Exception e)
             {
-
+                return Redirect(nameof(Purchase));
             }
 
             return Redirect("/user/account/subscriptions");
@@ -146,7 +148,7 @@ namespace UrbanLife.Web.Controllers
                     else if (duration == "3-month")
                     {
                         totalPrice = chosenLinesCount * Domain.CardThreeMonthLine;
-                        if (totalPrice > Domain.CardOneMonthAll)
+                        if (totalPrice > Domain.CardThreeMonthAll)
                         {
                             cheaperOptionMsg = $"Карта за всички линии за 3 месецa струва {Domain.CardThreeMonthAll} лв. " +
                                 $"(Спестявате - {totalPrice - Domain.CardThreeMonthAll} лв.!)";

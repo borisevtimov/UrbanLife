@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UrbanLife.Data.Data;
 
@@ -11,9 +12,10 @@ using UrbanLife.Data.Data;
 namespace UrbanLife.Data.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230223153415_RemovedReceiptPath")]
+    partial class RemovedReceiptPath
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -324,9 +326,10 @@ namespace UrbanLife.Data.Data.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("LineId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("PurchaseId", "LineId");
+                    b.HasKey("PurchaseId");
 
                     b.HasIndex("LineId");
 

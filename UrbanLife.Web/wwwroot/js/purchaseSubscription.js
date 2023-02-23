@@ -112,12 +112,15 @@ function checkDurationLineCombination() {
         const invalidCombination = document.querySelector('.invalid-combination');
         const submitBtn = document.querySelector('.submit-btn');
 
-        if ((linesList.value == 'all-lines' && duration.value != '1-day')
-            || (duration.value == '1-day' && linesList.value != 'all-lines')) {
-            invalidCombination.textContent = 'Билетът за 1 ден е в комбинация само с всички линии!';
+        if (linesList.value == 'all-lines' && duration.value == 'one-way') {
+            invalidCombination.textContent = 'Еднократният билет е в комбинация само с избрана линия!';
             submitBtn.disabled = true;
         }
-        else if ((linesList.value == 'all-lines' && duration.value == '1-day') || (linesList.value != 'all-lines' && duration.value != '1-day')) {
+        else if (linesList.value != 'all-lines' && duration.value != 'one-way') {
+            invalidCombination.textContent = 'Билетите за време са в комбинация само с всички линии!';
+            submitBtn.disabled = true;
+        }
+        else if ((linesList.value != 'all-lines' && duration.value == 'one-way') || (linesList.value == 'all-lines' && duration.value != 'one-way')) {
             invalidCombination.textContent = '';
 
             if (document.querySelector('.insufficient-funds').textContent.length == 0) {

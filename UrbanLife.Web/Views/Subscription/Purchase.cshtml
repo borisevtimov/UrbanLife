@@ -171,7 +171,7 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
             }
             else
             {
-                <input asp-for=@Model.ChosenTicketStartTime type="time" class="main-select-input" />
+                <input asp-for=@Model.ChosenTicketStartTime type="time" min=@DateTime.Now.TimeOfDay.ToString(@"hh\:mm") class="main-select-input" />
             }
         </div>
         <div class="input-group">
