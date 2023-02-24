@@ -188,8 +188,7 @@ namespace UrbanLife.Core.Services
             return payment;
         }
 
-        public async Task PurchaseSubscriptionAsync(BuySubscriptionViewModel model,
-            Purchase purchase, string webHostEnvironmentUrl)
+        public async Task PurchaseSubscriptionAsync(BuySubscriptionViewModel model, Purchase purchase)
         {
             purchase.Amount = model.FinalPrice;
             purchase.Type = model.SubscriptionType;

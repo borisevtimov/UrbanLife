@@ -135,7 +135,6 @@ namespace UrbanLife.Core.Utilities
                                 });
                                 column.Item().AlignCenter().Text(descriptor =>
                                 {
-                                    
                                     if (model.ChosenDuration == "30-minute")
                                     {
                                         descriptor.Span($"До: {chosenDateTime.AddMinutes(30)} ч.")

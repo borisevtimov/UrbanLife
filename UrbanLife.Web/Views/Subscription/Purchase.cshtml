@@ -96,12 +96,17 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
     <input asp-for=@Model.FinalPrice type="hidden" class="final-hidden-price" />
     <input asp-for=@Model.SubscriptionType type="hidden" class="subscription-type" value=@Model.SubscriptionType />
     <input asp-for=@Model.ChosenLines type="hidden" class="hidden-chosen-lines" />
+    @if (Model.ChosenTicketStartTime.HasValue && Model.LineType.HasValue)
+    {
+        <input asp-for=@Model.ChosenTicketStartTime type="hidden" value=@Model.ChosenTicketStartTime />
+        <input asp-for=@Model.ChosenDuration type="hidden" value="one-way" />
+    }
     @if (Model.SubscriptionType == SubscriptionType.CARD)
     {
         <p>Избран абонамент: <b>карта</b></p>
         <div class="form-row">
             <div class="input-grup">
-                <label>Зареждане за:</label>
+                <label asp-for=@Model.ChosenDuration>Зареждане за:</label>
                 <select asp-for=@Model.ChosenDuration class="duration main-select-input">
                     <option value="1-month">1 месец</option>
                     <option value="3-month">3 месеца</option>
@@ -147,7 +152,7 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
     {
         <p>Избран абонамент: <b>билет</b></p>
         <div class="form-row">
-            <label>Валидност за:</label>
+            <label asp-for=@Model.ChosenDuration>Валидност за:</label>
             @if (Model.LineType.HasValue && Model.LineNumber.HasValue)
             {
                 <select asp-for=@Model.ChosenDuration class="duration main-select-input" disabled>
@@ -167,19 +172,20 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
             <label asp-for=@Model.ChosenTicketStartTime>Влиза в сила от:</label>
             @if (Model.ChosenTicketStartTime.HasValue)
             {
-                <input asp-for=@Model.ChosenTicketStartTime type="time" class="main-select-input" value=@Model.ChosenTicketStartTime.Value.ToString(@"hh\:mm") disabled />
+                <input asp-for=@Model.ChosenTicketStartTime type="time" class="main-select-input" value=@Model.ChosenTicketStartTime disabled />
             }
             else
             {
-                <input asp-for=@Model.ChosenTicketStartTime type="time" min=@DateTime.Now.TimeOfDay.ToString(@"hh\:mm") class="main-select-input" />
+                <input asp-for=@Model.ChosenTicketStartTime type="time" value=@DateTime.Now.TimeOfDay.ToString(@"hh\:mm")
+                       min=@DateTime.Now.TimeOfDay.ToString(@"hh\:mm") class="main-select-input" />
             }
         </div>
         <div class="input-group">
-            <label>Изберете линия</label>
+            <label asp-for=@Model.ChosenLines>Изберете линия</label>
             @if (Model.LineType.HasValue && Model.LineNumber.HasValue)
             {
                 <select class="lines-list main-select-input" disabled>
-                    <option value="@Model.LineNumber - @Model.LineType.ToString()" selected>@Model.LineNumber</option>
+                    <option value="@Model.LineNumber-@Model.LineType.ToString()" selected>@Model.LineNumber</option>
                 </select>
             }
             else

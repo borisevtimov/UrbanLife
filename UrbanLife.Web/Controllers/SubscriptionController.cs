@@ -81,7 +81,7 @@ namespace UrbanLife.Web.Controllers
             try
             {
                 PictureProcessor.GenerateReceipt(webHostEnvironment.WebRootPath, model, user, purchase.Id);
-                await paymentService.PurchaseSubscriptionAsync(model, purchase, webHostEnvironment.WebRootPath);
+                await paymentService.PurchaseSubscriptionAsync(model, purchase);
             }
             catch (Exception e)
             {
