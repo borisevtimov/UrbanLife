@@ -2,4 +2,40 @@
     ViewData["Title"] = "Моите абонаменти";
 }
 
-<p>Моите абонаменти</p>
+<h1>Моите абонаменти</h1>
+<p>Сортиране по: </p>
+<div>
+    <button>Дата на закупуване <i class="fa-solid fa-arrow-down"></i></button>
+    <button>Дата на изтичане <i class="fa-solid fa-arrow-down"></i></button>
+    <label>Валидност</label>
+    <input type="checkbox" />
+    <label>Линии</label>
+    <select>
+        <option>Всички</option>
+        <option>83</option>
+        <option>11</option>
+    </select>
+    <button>Цена <i class="fa-solid fa-arrow-down"></i></button>
+</div>
+<section class="receipts-section">
+    <div class="receipts-container">
+        @for (int i = 0; i < 3; i++)
+        {
+            <div class="receipt-card">
+                <iframe src="~/images/receipts/4ea45472-103a-4789-93db-e0a89766220e.pdf#toolbar=0&view=Fit" class="frame-item" height="420px" frameborder="0">
+                </iframe>
+            </div>
+        }
+        <div class="page-navigation-container">
+            @for (int i = 1; i <= 10; i++)
+            {
+                <a href="#" class="nav-page-link">@i</a>
+            }
+        </div>
+    </div>
+    
+</section>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/my-subscription.css" />
+}

@@ -1,0 +1,21 @@
+﻿.receipts-container {
+    position: relative;
+    display: flex;
+}
+
+.page-navigation-container {
+    position: absolute;
+    bottom: -30px;
+    width: 900.2px;
+    display: flex;
+    justify-content: center;
+}
+
+.nav-page-link {
+    border: 1px solid black;
+    padding: 1vh 1vw;
+}
+
+.nav-page-link:not(:last-of-type) {
+    border-right: none;
+}
