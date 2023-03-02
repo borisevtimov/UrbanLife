@@ -273,5 +273,30 @@ namespace UrbanLife.Core.Services
 
             await dbContext.SaveChangesAsync();
         }
+
+        public List<Line> GetLinesForUserPurchase(string userId, string purchaseId)
+        {
+            return dbContext.PurchaseLines
+                .Where(pl => pl.Purchase.UserId == userId && pl.PurchaseId == purchaseId)
+                .Select(pl => pl.Line)
+                .ToList();
+        }
+
+        public async Task<List<Line>> GetAllUserLinesAsync(string userId)
+        {
+            return await dbContext.PurchaseLines
+                .Where(pl => pl.Purchase.UserId == userId)
+                .Select(pl => pl.Line)
+                .Distinct()
+                .OrderBy(l => l.Number)
+                .ToListAsync();
+        }
+
+        public async Task<bool> HasUserAllLinesSubscriptionAsync(string userId)
+        {
+            return await dbContext.Purchases
+                .Where(p => p.UserId == userId && !p.PurchaseLines.Select(pl => pl.PurchaseId).Contains(p.Id))          
+                .AnyAsync();
+        }
     }
 }

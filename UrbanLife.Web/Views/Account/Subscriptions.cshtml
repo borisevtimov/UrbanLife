@@ -1,41 +1,96 @@
-﻿@{
+﻿@using UrbanLife.Core.ViewModels;
+@using UrbanLife.Data.Data.Models;
+@using UrbanLife.Data.Enums;
+@model MySubscriptionViewModel
+@{
     ViewData["Title"] = "Моите абонаменти";
 }
 
-<h1>Моите абонаменти</h1>
-<p>Сортиране по: </p>
-<div>
-    <button>Дата на закупуване <i class="fa-solid fa-arrow-down"></i></button>
-    <button>Дата на изтичане <i class="fa-solid fa-arrow-down"></i></button>
-    <label>Валидност</label>
-    <input type="checkbox" />
-    <label>Линии</label>
-    <select>
-        <option>Всички</option>
-        <option>83</option>
-        <option>11</option>
-    </select>
-    <button>Цена <i class="fa-solid fa-arrow-down"></i></button>
-</div>
-<section class="receipts-section">
-    <div class="receipts-container">
-        @for (int i = 0; i < 3; i++)
-        {
-            <div class="receipt-card">
-                <iframe src="~/images/receipts/4ea45472-103a-4789-93db-e0a89766220e.pdf#toolbar=0&view=Fit" class="frame-item" height="420px" frameborder="0">
-                </iframe>
-            </div>
-        }
-        <div class="page-navigation-container">
-            @for (int i = 1; i <= 10; i++)
+<h1 class="main-title">Моите абонаменти</h1>
+@if (Model.Receipts.Count > 0)
+{
+    <p>Сортиране по: </p>
+    <div class="filter-container">
+        <button>Дата на закупуване <i class="fa-solid fa-arrow-down"></i></button>
+        <label>Валидност</label>
+        <input type="checkbox" />
+        <label>Линии</label>
+        <select>
+            <option selected>Без филтър</option>
+            @if (Model.HasAllLines)
             {
-                <a href="#" class="nav-page-link">@i</a>
+                <option value="all-lines">Всички</option>
+            }
+            @if (Model.Lines.Any(l => l.Type == LineType.BUS))
+            {
+                <optgroup label="Автобус">
+                    @foreach (Line line in Model.Lines)
+                    {
+                        <option value=@line.Id>@line.Number</option>
+                    }
+                </optgroup>
+            }
+            @if (Model.Lines.Any(l => l.Type == LineType.TRAM))
+            {
+                <optgroup label="Трамвай">
+                    @foreach (Line line in Model.Lines)
+                    {
+                        <option value=@line.Id>@line.Number</option>
+                    }
+                </optgroup>
+            }
+            @if (Model.Lines.Any(l => l.Type == LineType.TROLLEY))
+            {
+                <optgroup label="Тролей">
+                    @foreach (Line line in Model.Lines)
+                    {
+                        <option value=@line.Id>@line.Number</option>
+                    }
+                </optgroup>
+            }
+        </select>
+    </div>
+    <section class="receipts-section">
+        <div class="receipts-container">
+            @foreach (MySubscriptionDTO receipt in Model.Receipts)
+            {
+                <div class="receipt-card">
+                    <div class="receipt-validation-container">
+                        @if (receipt.IsValid)
+                        {
+                            <span>Валиден</span>
+                        }
+                        else
+                        {
+                            <span>Невалиден</span>
+                        }
+                    </div>
+                    <iframe src="~/images/receipts/@(receipt.PurchaseId).pdf#toolbar=0&view=Fit" class="frame-item" height="420px" frameborder="0">
+                    </iframe>
+                </div>
             }
         </div>
-    </div>
-    
-</section>
+        <div class="page-navigation-container">
+            <span>Страница</span>
+            <div class="page-navigation-links">
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <a href="/user/account/subscriptions?page=2" class="nav-page-link">@i</a>
+                }
+            </div>
+        </div>
+    </section>
+}
+else
+{
+    <p>Още нямате абонаменти!</p>
+    <a href="/subscription/all">Избиране на абонамент</a>
+}
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/my-subscription.css" />
+    <link rel="stylesheet" href="~/css/my-subscription.css" asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/mySubscriptions.js"></script>
 }

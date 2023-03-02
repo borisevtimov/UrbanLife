@@ -90,6 +90,11 @@ namespace UrbanLife.Core.Services
             return user != null;
         }
 
+        public async Task<List<Purchase>> GetPurchasesForUserAsync(string userId)
+        {
+            return await dbContext.Purchases.Where(p => p.UserId == userId).ToListAsync();
+        }
+
         public async Task UpdateProfileAsync(User user, UpdateProfileViewModel updateModel, string? fileName)
         {
             if (updateModel.Email != null)

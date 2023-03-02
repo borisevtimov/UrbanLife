@@ -1,21 +1,47 @@
-﻿.receipts-container {
-    position: relative;
+﻿main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-title {
+    margin-bottom: 0px;
+}
+
+.filter-container {
+    margin-bottom: 30px;
+}
+
+.receipts-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.receipts-container {
     display: flex;
 }
 
+.receipt-validation-container {
+    text-align: center;
+}
+
 .page-navigation-container {
-    position: absolute;
-    bottom: -30px;
-    width: 900.2px;
+    width: 300px;
+    text-align: center;
+}
+
+.page-navigation-links {
     display: flex;
     justify-content: center;
 }
 
 .nav-page-link {
     border: 1px solid black;
-    padding: 1vh 1vw;
+    width: 25px;
 }
 
-.nav-page-link:not(:last-of-type) {
-    border-right: none;
+.nav-page-link:not(:first-of-type) {
+    border-left: none;
 }

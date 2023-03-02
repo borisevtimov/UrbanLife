@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using UrbanLife.Core.Services;
 using UrbanLife.Core.Utilities;
 using UrbanLife.Core.ViewModels;
@@ -146,9 +147,46 @@ namespace UrbanLife.Web.Controllers
             return Redirect("/user/account/payments");
         }
 
-        public IActionResult Subscriptions()
+        public async Task<IActionResult> Subscriptions(int page = 1, bool purchaseDateDesc = true,
+            bool isValid = true, string? line = null)
         {
-            return View();
+            User user = await userManager.GetUserAsync(User);
+            List<Purchase> purchases = await userService.GetPurchasesForUserAsync(user.Id);
+            MySubscriptionViewModel resultModel = new();
+
+            // resultPurchases' count is 0 because there are no valid subscriptions!
+
+            List<MySubscriptionDTO> resultPurchases = purchases.Select(p => new MySubscriptionDTO
+            {
+                PurchaseId = p.Id,
+                PurchaseDate = p.Date,
+                IsValid = p.Start < DateTime.Now && p.End > DateTime.Now,
+                Lines = paymentService.GetLinesForUserPurchase(user.Id, p.Id)
+            })
+            .Where(p => p.IsValid == isValid)
+            .ToList();
+
+            if (line == "all-lines")
+            {
+                // TO DO...
+            }
+            else if (line != null)
+            {
+                resultPurchases = resultPurchases.Where(p => p.Lines.All(l => l.Id == line)).ToList();
+            }
+
+            resultPurchases = purchaseDateDesc 
+                ? resultPurchases.OrderByDescending(p => p.PurchaseDate).ToList() 
+                : resultPurchases.OrderBy(p => p.PurchaseDate).ToList();
+
+            resultModel.HasAllLines = await paymentService.HasUserAllLinesSubscriptionAsync(user.Id);
+            resultModel.Lines = await paymentService.GetAllUserLinesAsync(user.Id);
+            resultModel.TotalPages = resultPurchases.Count / 3 >= 1 ? resultPurchases.Count / 3 : 1;
+
+            resultPurchases = resultPurchases.Take(3).ToList();
+            resultModel.Receipts = resultPurchases;
+
+            return View(resultModel);
         }
 
         public async Task<JsonResult> PasswordAlreadyUsed(string email, string password)
