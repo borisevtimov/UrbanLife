@@ -5,18 +5,31 @@
 @{
     ViewData["Title"] = "Моите абонаменти";
 }
-
+<div class="image-background-container">
+    <img src=~/images/my_subscriptions-background.jpg />
+</div>
+<input type="hidden" id="current-page" value=@Model.CurrentPage />
+<input type="hidden" id="chosen-line" value=@Model.LineFilter />
 <h1 class="main-title">Моите абонаменти</h1>
 @if (Model.Receipts.Count > 0)
 {
     <p>Сортиране по: </p>
     <div class="filter-container">
-        <button>Дата на закупуване <i class="fa-solid fa-arrow-down"></i></button>
+        @if (Model.IsPurchaseDateDesc)
+        {
+            <button id="purchase-filter" class="main-form-input">Дата на закупуване &nbsp; <i class="fa-solid fa-arrow-down"></i></button>
+        }
+        else
+        {
+            <button id="purchase-filter" class="main-form-input">Дата на закупуване &nbsp; <i class="fa-solid fa-arrow-up"></i></button>
+        }
         <label>Валидност</label>
-        <input type="checkbox" />
+        <label class="form-control">
+            <input type="checkbox" class="filter-input" id="valid-filter" checked=@Model.IsValidFilter />
+        </label>
         <label>Линии</label>
-        <select>
-            <option selected>Без филтър</option>
+        <select class="filter-input main-select-input" id="lines-filter">
+            <option value="all">Без филтър</option>
             @if (Model.HasAllLines)
             {
                 <option value="all-lines">Всички</option>
@@ -24,7 +37,7 @@
             @if (Model.Lines.Any(l => l.Type == LineType.BUS))
             {
                 <optgroup label="Автобус">
-                    @foreach (Line line in Model.Lines)
+                    @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.BUS))
                     {
                         <option value=@line.Id>@line.Number</option>
                     }
@@ -33,7 +46,7 @@
             @if (Model.Lines.Any(l => l.Type == LineType.TRAM))
             {
                 <optgroup label="Трамвай">
-                    @foreach (Line line in Model.Lines)
+                    @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TRAM))
                     {
                         <option value=@line.Id>@line.Number</option>
                     }
@@ -42,7 +55,7 @@
             @if (Model.Lines.Any(l => l.Type == LineType.TROLLEY))
             {
                 <optgroup label="Тролей">
-                    @foreach (Line line in Model.Lines)
+                    @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TROLLEY))
                     {
                         <option value=@line.Id>@line.Number</option>
                     }
@@ -75,7 +88,8 @@
             <div class="page-navigation-links">
                 @for (int i = 1; i <= Model.TotalPages; i++)
                 {
-                    <a href="/user/account/subscriptions?page=2" class="nav-page-link">@i</a>
+                    <a href="/user/account/subscriptions?page=@i&purchaseDateDesc=@Model.IsPurchaseDateDesc&isValid=@Model.IsValidFilter&line=@Model.LineFilter"
+                       class="nav-page-link">@i</a>
                 }
             </div>
         </div>

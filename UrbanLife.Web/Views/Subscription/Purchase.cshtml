@@ -16,7 +16,7 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
     <h1 class="title">Ценоразпис за билет</h1>
 }
 <div class="image-background-container">
-    <img src=~/images/19199683.jpg />
+    <img src=~/images/purchase-subscription-background.jpg />
 </div>
 <section class="rates">
     @if (Model.SubscriptionType == SubscriptionType.CARD)
@@ -74,13 +74,13 @@ else if (Model.SubscriptionType == SubscriptionType.TICKET)
                 </tr>
                 <tr>
                     <td>30 минути</td>
-                    <td>@(Domain.TicketHalfHour) лв.</td>
                     <td><i class="fa-solid fa-circle-xmark"></i></td>
+                    <td>@(Domain.TicketHalfHour) лв.</td>
                 </tr>
                 <tr>
                     <td>60 минути</td>
-                    <td>@(Domain.TicketOneHour) лв.</td>
                     <td><i class="fa-solid fa-circle-xmark"></i></td>
+                    <td>@(Domain.TicketOneHour) лв.</td>
                 </tr>
                 <tr>
                     <td>24 часа</td>

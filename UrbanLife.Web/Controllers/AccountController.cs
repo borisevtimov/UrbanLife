@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using UrbanLife.Core.Services;
 using UrbanLife.Core.Utilities;
 using UrbanLife.Core.ViewModels;
@@ -147,14 +146,19 @@ namespace UrbanLife.Web.Controllers
             return Redirect("/user/account/payments");
         }
 
-        public async Task<IActionResult> Subscriptions(int page = 1, bool purchaseDateDesc = true,
-            bool isValid = true, string? line = null)
+        public async Task<IActionResult> Subscriptions(int page = 1, bool purchaseDateDesc = false,
+            bool isValid = true, string line = "all")
         {
             User user = await userManager.GetUserAsync(User);
             List<Purchase> purchases = await userService.GetPurchasesForUserAsync(user.Id);
-            MySubscriptionViewModel resultModel = new();
 
-            // resultPurchases' count is 0 because there are no valid subscriptions!
+            MySubscriptionViewModel resultModel = new()
+            {
+                IsPurchaseDateDesc = purchaseDateDesc,
+                CurrentPage = page,
+                IsValidFilter = isValid,
+                LineFilter = line
+            };
 
             List<MySubscriptionDTO> resultPurchases = purchases.Select(p => new MySubscriptionDTO
             {
@@ -163,27 +167,27 @@ namespace UrbanLife.Web.Controllers
                 IsValid = p.Start < DateTime.Now && p.End > DateTime.Now,
                 Lines = paymentService.GetLinesForUserPurchase(user.Id, p.Id)
             })
-            .Where(p => p.IsValid == isValid)
+            .Where(rp => rp.IsValid == isValid)
             .ToList();
 
             if (line == "all-lines")
             {
-                // TO DO...
+                resultPurchases = resultPurchases.Where(p => p.Lines.All(l => l.Id == null)).ToList();
             }
-            else if (line != null)
+            else if (line != "all" && line != "all-lines" && line != null)
             {
                 resultPurchases = resultPurchases.Where(p => p.Lines.All(l => l.Id == line)).ToList();
             }
 
-            resultPurchases = purchaseDateDesc 
-                ? resultPurchases.OrderByDescending(p => p.PurchaseDate).ToList() 
+            resultPurchases = purchaseDateDesc
+                ? resultPurchases.OrderByDescending(p => p.PurchaseDate).ToList()
                 : resultPurchases.OrderBy(p => p.PurchaseDate).ToList();
 
             resultModel.HasAllLines = await paymentService.HasUserAllLinesSubscriptionAsync(user.Id);
             resultModel.Lines = await paymentService.GetAllUserLinesAsync(user.Id);
-            resultModel.TotalPages = resultPurchases.Count / 3 >= 1 ? resultPurchases.Count / 3 : 1;
+            resultModel.TotalPages = ((double)resultPurchases.Count / 3 - 1) > 0 ? (resultPurchases.Count + 2) / 3 : 1;
 
-            resultPurchases = resultPurchases.Take(3).ToList();
+            resultPurchases = resultPurchases.Skip(3 * (page - 1)).Take(3).ToList();
             resultModel.Receipts = resultPurchases;
 
             return View(resultModel);
