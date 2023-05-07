@@ -14,9 +14,6 @@ namespace UrbanLife.Data.Data.Models
         [ForeignKey(nameof(User))]
         public string UserId { get; set; }
 
-        [ForeignKey(nameof(Payment))]
-        public string? PaymentId { get; set; }
-
         public decimal? Amount { get; set; }
 
         [Required]
@@ -34,7 +31,7 @@ namespace UrbanLife.Data.Data.Models
         [Required]
         public User User { get; set; }
 
-        public Payment? Payment { get; set; }
+        //public Payment? Payment { get; set; }
 
         public ICollection<PurchaseLine> PurchaseLines { get; set; }
 

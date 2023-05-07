@@ -195,7 +195,6 @@ namespace UrbanLife.Core.Services
             purchase.Date = DateTime.Now;
 
             Payment payment = await GetPaymentByNumberAsync(model.ChosenCardNumber);
-            purchase.PaymentId = payment.Id;
 
             if (model.ChosenTicketStartTime.HasValue)
             {
