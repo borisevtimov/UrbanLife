@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    min-height: 69vh;
 }
 
 .image-background-container {
@@ -58,6 +59,34 @@
     border-radius: 5px;
     font-family: 'Roboto Flex', sans-serif;
 }
+
+.main-input {
+    height: 30px;
+    border-radius: 5px;
+}
+
+.anchor-button {
+    border: 1px solid black;
+    text-decoration: none;
+    color: black;
+}
+
+.submit-btn {
+    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    padding-left: 30px;
+    padding-right: 30px;
+    font-size: 16px;
+    border: 1px solid black;
+    background-color: white;
+}
+
+    .submit-btn:hover {
+        transition: 0.3s;
+        background-color: var(--clr-main-green);
+        border: 2px solid black;
+    }
 
 .receipts-section {
     display: flex;

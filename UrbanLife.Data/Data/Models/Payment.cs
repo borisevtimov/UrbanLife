@@ -37,13 +37,10 @@ namespace UrbanLife.Data.Data.Models
 
         public ICollection<UserPayment> UserPayments { get; set; }
 
-        public ICollection<Purchase> Purchases { get; set; }
-
         public Payment()
         {
             Id = Guid.NewGuid().ToString();
             UserPayments = new HashSet<UserPayment>();
-            Purchases = new HashSet<Purchase>();
         }
     }
 }

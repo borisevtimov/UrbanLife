@@ -5,6 +5,7 @@
 @{
     ViewData["Title"] = "Моите абонаменти";
 }
+
 <div class="image-background-container">
     <img src=~/images/my_subscriptions-background.jpg />
 </div>
@@ -97,8 +98,58 @@
 }
 else
 {
-    <p>Още нямате абонаменти!</p>
-    <a href="/subscription/all">Избиране на абонамент</a>
+    <p>Сортиране по: </p>
+    <div class="filter-container">
+        @if (Model.IsPurchaseDateDesc)
+        {
+            <button id="purchase-filter" class="main-form-input">Дата на закупуване &nbsp; <i class="fa-solid fa-arrow-down"></i></button>
+        }
+        else
+        {
+            <button id="purchase-filter" class="main-form-input">Дата на закупуване &nbsp; <i class="fa-solid fa-arrow-up"></i></button>
+        }
+        <label>Валидност</label>
+        <label class="form-control">
+            <input type="checkbox" class="filter-input" id="valid-filter" checked=@Model.IsValidFilter />
+        </label>
+        <label>Линии</label>
+        <select class="filter-input main-select-input" id="lines-filter">
+            <option value="all">Без филтър</option>
+            @if (Model.HasAllLines)
+            {
+                <option value="all-lines">Всички</option>
+            }
+            @if (Model.Lines.Any(l => l.Type == LineType.BUS))
+            {
+                <optgroup label="Автобус">
+                    @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.BUS))
+                    {
+                        <option value=@line.Id>@line.Number</option>
+                    }
+                </optgroup>
+            }
+            @if (Model.Lines.Any(l => l.Type == LineType.TRAM))
+            {
+                <optgroup label="Трамвай">
+                    @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TRAM))
+                    {
+                        <option value=@line.Id>@line.Number</option>
+                    }
+                </optgroup>
+            }
+            @if (Model.Lines.Any(l => l.Type == LineType.TROLLEY))
+            {
+                <optgroup label="Тролей">
+                    @foreach (Line line in Model.Lines.Where(l => l.Type == LineType.TROLLEY))
+                    {
+                        <option value=@line.Id>@line.Number</option>
+                    }
+                </optgroup>
+            }
+        </select>
+    </div>
+    <h2>Нямате такива абонаменти!</h2>
+    <a href="/subscription/all" class="main-input anchor-button submit-btn">Избиране на абонамент</a>
 }
 
 @section Styles {

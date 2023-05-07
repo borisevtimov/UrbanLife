@@ -31,8 +31,6 @@ namespace UrbanLife.Data.Data.Models
         [Required]
         public User User { get; set; }
 
-        //public Payment? Payment { get; set; }
-
         public ICollection<PurchaseLine> PurchaseLines { get; set; }
 
         public Purchase()
